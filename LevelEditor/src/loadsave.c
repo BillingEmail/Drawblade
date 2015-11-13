@@ -1,4 +1,4 @@
-#include "include/loadsave.h"
+#include "../include/loadsave.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,10 +49,10 @@ This collects a string input from the user
 It does this by using fgets, and then removing 
 */
 char * GetFileName(void) {
-	char *FileName = malloc(sizeof(char) * 32);	
+	char *FileName = malloc(sizeof(char) * 64);	
 	char Buffer[16];;
 	printf("\nEnter the name of the File: ");
-	strcpy(FileName, "Levels/");
+	strcpy(FileName, "../../assets/levels/");
 	scanf("%s", Buffer);
 	strcat(FileName, Buffer);;
 	strcat(FileName, ".lvl");

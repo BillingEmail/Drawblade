@@ -1,6 +1,5 @@
-#include "include/loadsave.h"
-#include "include/editrun.h"
-#include <SDL/SDL2.h>
+#include "../include/loadsave.h"
+//#include <SDL/SDL2.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -8,7 +7,7 @@
 
 int main (int argc, const char* argv[]) {
 	Level * level = LoadLevel();
-	runLevelEditor(level);
+	level->tileArray[0][1] = ENEMY;
 	SaveLevel(level);
 
 	return 0;

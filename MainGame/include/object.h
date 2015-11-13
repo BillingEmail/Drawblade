@@ -23,8 +23,8 @@
 
 #include <stdbool.h>
 #include <SDL2/SDL.h>
-#include "texture.h"
-#include "spritesheet.h"
+#include "../../../shared/include/texture.h"
+#include "../../../shared/include/spritesheet.h"
 
 enum {
 	TOP_HITBOX,

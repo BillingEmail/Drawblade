@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "world.h"
+#include "../include/world.h"
 
 World * NewWorld_FromFile(char *path) {
 	World *ret;

@@ -6,8 +6,8 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "character.h"
-#include "object.h"
+#include "../include/character.h"
+#include "../include/object.h"
 
 /* Create a new CharacterType */
 CharacterType * New_CharacterType(ObjectType *ot, bool affected_by_gravity) {
@@ -33,7 +33,8 @@ CharacterType * New_CharacterType(ObjectType *ot, bool affected_by_gravity) {
 /* Destroy a CharacterType and each instance */
 void Destroy_CharacterType(CharacterType *ct) {
 	/* The only dynamically allocated aspect of CharacterType is the list of traits */
-	for (int i = 0; i < ct->object_type->instance_count; i++) {
+	int i;
+	for (i = 0; i < ct->object_type->instance_count; i++) {
 		free(ct->character_traits);
 	}
 	/* This will take care of everything else */
@@ -46,7 +47,7 @@ void Destroy_CharacterType(CharacterType *ct) {
 void CharacterType_AddCharacter(CharacterType *ct, int x, int y,
 		int default_animation, int default_sprite) {
 	ObjectType_AddObject(ct->object_type, x, y, default_animation, default_sprite);
-	
+
 	/* losing my patience with commenting rn tbh */
 	if (ct->character_traits_count >= ct->character_traits_size - 1) {
 		ct->character_traits = realloc(ct->character_traits,
@@ -87,7 +88,7 @@ void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, int fr
 	/* ch_traits are the traits of the character instance */
 	CharacterTraits *ch_traits = &ct->character_traits[instance_index];
 
-	/* Apply gravity */	
+	/* Apply gravity */
 	if (ct->affected_by_gravity) {
 		ch_traits->velocity.y += ch_traits->acceleration.y;
 	}

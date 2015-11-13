@@ -7,8 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include "texture.h"
-#include "spritesheet.h"
+#include "../include/texture.h"
+#include "../include/spritesheet.h"
 
 /* Create a new spritesheet from a texture, using an animation count,
  * and a list of how many frames are in each animation.
