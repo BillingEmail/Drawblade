@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "texture.h"
+#include "../include/texture.h"
 
 /* Create a new texture from an image path */
 Texture * New_Texture(SDL_Renderer *renderer, char *path) {

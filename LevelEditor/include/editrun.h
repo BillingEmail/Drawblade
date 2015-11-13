@@ -1,10 +1,12 @@
 #ifndef editrun_h
 #define editrun_h
-#include "../../shared/level.h"
-void runLevelEditor(level);
-void startLevelEditor(level);
-void LevelEditing(level);
-void stopLevelEditor(level);
+
+#include "../../shared/include/level.h"
+
+void runLevelEditor(Level *level);
+void startLevelEditor(Level *level);
+void LevelEditing(Level *level);
+void stopLevelEditor(Level *level);
 
 
 #endif

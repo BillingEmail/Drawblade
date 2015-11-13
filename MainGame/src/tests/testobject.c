@@ -2,9 +2,9 @@
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "../object.h"
-#include "../spritesheet.h"
-#include "../texture.h"
+#include "../../include/object.h"
+#include "../../../shared/include/spritesheet.h"
+#include "../../../shared/include/texture.h"
 
 #define SCREEN_WIDTH  640
 #define SCREEN_HEIGHT 480
@@ -38,7 +38,7 @@ int main(void) {
 		New_Spritesheet(
 			New_Texture(
 				renderer,
-				"src/img/brick.png"
+				"../assets/img/brick.png"
 			),
 			1,
 			20
@@ -60,7 +60,7 @@ int main(void) {
 	ObjectType_AddObject(brickType, 256 + 128, 480 - 512, 0, 0);
 
 
-	background = New_Texture(renderer, "src/img/sky.png");
+	background = New_Texture(renderer, "../assets/img/sky.png");
 
 	while (running) {
 		UpdateCamera(&Camera, KeyboardState);
