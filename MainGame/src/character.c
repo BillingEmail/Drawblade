@@ -6,11 +6,13 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "../include/character.h"
 #include "../include/object.h"
+#include "../include/behavior.h"
 
 /* Create a new CharacterType */
-CharacterType * New_CharacterType(ObjectType *ot, bool affected_by_gravity) {
+CharacterType * New_CharacterType(ObjectType *ot, BehaviorFunction behavior) {
 	CharacterType *ret = malloc(sizeof(CharacterType));
 	if (!ret) {
 		fprintf(stderr, "Error creating CharacterType\n");
@@ -19,7 +21,7 @@ CharacterType * New_CharacterType(ObjectType *ot, bool affected_by_gravity) {
 
 	/* Copy the passed values */
 	ret->object_type = ot;
-	ret->affected_by_gravity = affected_by_gravity;
+	ret->behavior = behavior;
 
 	/* Create room for one character trait - increased when added */
 	ret->character_traits = malloc(sizeof(CharacterTraits));
@@ -88,10 +90,8 @@ void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, int fr
 	/* ch_traits are the traits of the character instance */
 	CharacterTraits *ch_traits = &ct->character_traits[instance_index];
 
-	/* Apply gravity */
-	if (ct->affected_by_gravity) {
-		ch_traits->velocity.y += ch_traits->acceleration.y;
-	}
+	/* need to pass player to this -- playerType global? */
+	ct->BehaviorFunction(ct, instance_index, NULL, 0);
 
 	/* Cap velocities at +-5 */
 	if (ch_traits->velocity.x > 5) {
@@ -106,11 +106,7 @@ void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, int fr
 	if (ch_traits->velocity.y < -5) {
 		ch_traits->velocity.y = -5;
 	}
-/*
-	if (ct->character_traits[instance_index].x == 0) {
-		ObjectType_SetObjectAnimation(ct->object_type, instance_index, 3);
-	}
-*/
+
 	if (frame % 3 == 0) {
 		if (ch_traits->velocity.x != 0) {
 			/* Update sprite */
@@ -119,10 +115,6 @@ void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, int fr
 			ct->object_type->instances[instance_index].sprite_index = 0;
 		}
 	}
-
-	/* Apply acceleration */
-	ch_traits->velocity.y *= 0.9;
-	ch_traits->velocity.x *= 0.9;
 
 	/* Apply velocities to the position */
 	ch_object->dstrect.x += ch_traits->velocity.x;

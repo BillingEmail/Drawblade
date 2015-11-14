@@ -11,6 +11,7 @@
 #define CHARACTER_H
 
 #include "object.h"
+#include "behavior.h"
 
 /* Traits unique to characters */
 typedef struct _character_traits {
@@ -39,7 +40,7 @@ typedef struct _charactertype {
 
 	int character_traits_size; /* size of traits array */
 
-	bool affected_by_gravity; /* Whether or not the type is affected by gravity */
+	BehaviorFunction behavior;
 
 } CharacterType;
 
