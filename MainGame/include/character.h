@@ -11,7 +11,6 @@
 #define CHARACTER_H
 
 #include "object.h"
-#include "behavior.h"
 
 /* Traits unique to characters */
 typedef struct _character_traits {
@@ -40,12 +39,14 @@ typedef struct _charactertype {
 
 	int character_traits_size; /* size of traits array */
 
-	BehaviorFunction behavior;
+	void (*behavior)(struct _charactertype *self, int, struct _charactertype, int);
 
 } CharacterType;
 
+typedef void (*Behavior)(CharacterType *s, int, CharacterType, int);
+
 /* Create a new character type from an ObjectType and whether or not it falls */
-CharacterType * New_CharacterType(ObjectType *ot, bool affected_by_gravity);
+CharacterType * New_CharacterType(ObjectType *ot, Behavior behavior);
 
 /* Destroy a charactertype, including it's objecttype etc */
 void Destroy_CharacterType(CharacterType *t);

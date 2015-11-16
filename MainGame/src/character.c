@@ -12,7 +12,7 @@
 #include "../include/behavior.h"
 
 /* Create a new CharacterType */
-CharacterType * New_CharacterType(ObjectType *ot, BehaviorFunction behavior) {
+CharacterType * New_CharacterType(ObjectType *ot, Behavior behavior) {
 	CharacterType *ret = malloc(sizeof(CharacterType));
 	if (!ret) {
 		fprintf(stderr, "Error creating CharacterType\n");
@@ -56,9 +56,9 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y,
 			2 * ct->character_traits_size * sizeof(CharacterTraits));
 		ct->character_traits_size *= 2;
 	}
-	if (ct->affected_by_gravity) {
-		ct->character_traits[ct->character_traits_count].acceleration.y = 2;
-	}
+//	if (ct->affected_by_gravity) {
+//		ct->character_traits[ct->character_traits_count].acceleration.y = 2;
+//	}
 	ct->character_traits_count++;
 }
 
@@ -91,7 +91,7 @@ void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, int fr
 	CharacterTraits *ch_traits = &ct->character_traits[instance_index];
 
 	/* need to pass player to this -- playerType global? */
-	ct->BehaviorFunction(ct, instance_index, NULL, 0);
+	ct->behavior(ct, instance_index, NULL, 0);
 
 	/* Cap velocities at +-5 */
 	if (ch_traits->velocity.x > 5) {
