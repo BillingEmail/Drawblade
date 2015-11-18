@@ -23,10 +23,11 @@ typedef struct _character_traits {
 		float x;
 		float y;
 	} acceleration;
-
+	
+	int hitpoints;
+	bool is_dead;
 	bool is_on_floor;
 	bool jumping;
-
 } CharacterTraits;
 
 typedef struct _charactertype {
@@ -55,7 +56,7 @@ void Destroy_CharacterType(CharacterType *t);
 #define CharacterType_RenderCharacter(CT, R, II, C) ObjectType_RenderObject((CT)->object_type, (R), (II), (C))
 
 /* Add another instance of the CharacterType to the list of instances */
-//#define CharacterType_AddCharacter(CT, X, Y, DA, DS) 
+#define CharacterType_AddCharacter(CT, X, Y, DA, DS) 
 //	ObjectType_AddObject((CT)->object_type, (X), (Y), (DA), (DS))
 void CharacterType_AddCharacter(CharacterType *ct, int x, int y, int default_animation, int default_sprite);
 /* Returns the count of instances of a character type */
@@ -63,9 +64,6 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y, int default_ani
 
 /* Kill a character - play it's death animation and destroy the instance */
 void CharacterType_KillCharacter(CharacterType *ct, int instance_index);
-
-/* Move a character with the keyboard - temporary */
-void CharacterType_MoveCharacter(CharacterType *ct, int instance_index, const uint8_t *KeyboardState);
 
 /* Update a character - temporary */
 void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, int frame);
