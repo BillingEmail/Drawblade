@@ -6,13 +6,14 @@
 #include <SDL2/SDL.h>
 #include "../include/object.h"
 
+int main(void) {
+	return TOP_HITBOX;
+}
+
+
 
 /* Create a new Object, with a spritesheet already created */
-ObjectType * New_ObjectType(
-	Spritesheet *spritesheet,
-	bool collision,
-	int w,
-	int h) {
+ObjectType * New_ObjectType(Spritesheet *spritesheet, int w, int h) {
 
 	ObjectType *ret = malloc(sizeof(ObjectType));
 	if (!ret) {
@@ -61,8 +62,37 @@ void ObjectType_AddObject(ObjectType *ot, int x, int y, int default_animation, i
 	dstrect->y = y;
 	dstrect->w = ot->size.w;
 	dstrect->h = ot->size.h;
-
+	
+	//Shortcut to hitboxes used in update function
 	SDL_Rect *hitboxes = ot->instances[ot->instance_count].hitboxes;
+	
+	//In the following code, the new pointer is a shortcut to each hitbox
+	//It then sets the hitboxes to that space
+
+	SDL_Rect *temprect = &hitboxes[TOP_HITBOX];
+	temprect->x = x;
+	temprect->y = y;
+	temprect->w = ot->size.w;
+	temprect->h = 8;
+
+	temprect = &hitboxes[LEFT_HITBOX];
+	temprect->x = x;
+	temprect->y = y + 8;
+	temprect->w = 8;
+	temprect->h = ot->size.h - 16;
+
+	temprect = &hitboxes[RIGHT_HITBOX];
+	temprect->x = x + ot->size.w - 8;
+	temprect->y = y + 8;
+	temprect->w = 8;
+	temprect->h = ot->size.h - 16;
+
+	temprect = &hitboxes[BOTTOM_HITBOX];
+	temprect->x = x;
+	temprect->y = y + ot->size.h - 8;
+	temprect->w = ot->size.w;
+	temprect->h = 8;
+
 
 
 	/* Copy the passed initial animation and initial sprite */
@@ -70,11 +100,6 @@ void ObjectType_AddObject(ObjectType *ot, int x, int y, int default_animation, i
 	ot->instances[ot->instance_count].sprite_index = default_sprite;
 	ot->instance_count++;
 }
-
-/* Returns the omount of objects in an object type */
-//int ObjectType_Count(ObjectType *ot) {
-//	return ot->instance_count;
-//}
 
 /* Set the animation for an object */
 void ObjectType_SetObjectAnimation(ObjectType *ot, int instance_index, int animation) {
@@ -93,17 +118,17 @@ void ObjectType_ObjectNextSprite(ObjectType *o, int instance_index) {
 }
 
 /* Render an instance of ObjectType */
-void ObjectType_RenderObject(ObjectType *ot, SDL_Renderer *renderer, int instance_index, SDL_Rect *Camera) {
+void ObjectType_RenderObject(ObjectType *ot, int instance_index, SDL_Wrapper *wrapper) {
 	SDL_Rect *objectrefrect = &ot->instances[instance_index].dstrect;
 	SDL_Rect dstrect = {
-		objectrefrect->x - Camera->x,
-		objectrefrect->y - Camera->y,
+		objectrefrect->x - wrapper->camera->x,
+		objectrefrect->y - wrapper->camera->y,
 		objectrefrect->w,
 		objectrefrect->h
 	};
 	
 	SDL_RenderCopy(
-		renderer,
+		wrapper->renderer,
 		ot->spritesheet->texture->texture,
 		&ot->animations[ot->instances[instance_index].animation][ot->instances[instance_index].sprite_index],
 		&dstrect
@@ -123,27 +148,3 @@ void Destroy_ObjectType(ObjectType *ot) {
 	free(ot);
 	ot = NULL;
 }
-
-/* Check collision between two objects */
-int * ObjectType_CheckCollision(ObjectType *ot1, ObjectType *ot2,
-		int ii1, int ii2) {
-	/* Holds the first and second hitbox indicators
-	 * (could be {TOP_HITBOX, BOTTOM_HITBOX} if object1's top hits object2's
-	 * bottom. heh.
-	 */
-	int *ret = malloc(2 * sizeof(int));
-
-	/* Check every single combination of hitbox rectangles... efficiently... */
-	for (int i = 0; i < 4; i++) {
-		for (int k = 0; k < 4; k++) {
-			if (SDL_IntersectRect(&ot1->instances[ii1].hitboxes[k],
-					&ot2->instances[ii2].hitboxes[i], NULL)) {
-				*ret = k;
-				ret[1] = i;
-				return ret;
-			}
-		}
-	}
-
-	return NULL;
-}	

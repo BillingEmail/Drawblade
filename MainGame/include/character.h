@@ -40,23 +40,23 @@ typedef struct _charactertype {
 
 	int character_traits_size; /* size of traits array */
 
-	void (*behavior)(struct _charactertype *self, int, struct _charactertype, int);
+	void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int);
 
 } CharacterType;
 
 typedef void (*Behavior)(CharacterType *s, int, CharacterType, int);
 
 /* Create a new character type from an ObjectType and whether or not it falls */
-CharacterType * New_CharacterType(ObjectType *ot, Behavior behavior);
+CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int));
 
 /* Destroy a charactertype, including it's objecttype etc */
 void Destroy_CharacterType(CharacterType *t);
 
 /* Render a specific instance of a CharacterType */
-#define CharacterType_RenderCharacter(CT, R, II, C) ObjectType_RenderObject((CT)->object_type, (R), (II), (C))
+#define CharacterType_RenderCharacter(CT, II, W) ObjectType_RenderObject((CT)->object_type, (II), (W))
 
 /* Add another instance of the CharacterType to the list of instances */
-#define CharacterType_AddCharacter(CT, X, Y, DA, DS) 
+ 
 //	ObjectType_AddObject((CT)->object_type, (X), (Y), (DA), (DS))
 void CharacterType_AddCharacter(CharacterType *ct, int x, int y, int default_animation, int default_sprite);
 /* Returns the count of instances of a character type */
@@ -67,5 +67,9 @@ void CharacterType_KillCharacter(CharacterType *ct, int instance_index);
 
 /* Update a character - temporary */
 void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, int frame);
+
+/* Update the hitboxes to where the dstrect is */
+
+void CharacterType_AdjustHitboxes(CharacterType *ct, int instance_index);
 
 #endif

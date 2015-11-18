@@ -12,7 +12,7 @@
 #include "../include/behavior.h"
 
 /* Create a new CharacterType */
-CharacterType * New_CharacterType(ObjectType *ot, Behavior behavior) {
+CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int)) {
 	CharacterType *ret = malloc(sizeof(CharacterType));
 	if (!ret) {
 		fprintf(stderr, "Error creating CharacterType\n");
@@ -47,7 +47,7 @@ void Destroy_CharacterType(CharacterType *ct) {
 
 /* testing */
 void CharacterType_AddCharacter(CharacterType *ct, int x, int y,
-		int default_animation, int default_sprite) {
+	int default_animation, int default_sprite) {
 	ObjectType_AddObject(ct->object_type, x, y, default_animation, default_sprite);
 
 	/* losing my patience with commenting rn tbh */
@@ -119,4 +119,25 @@ void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, int fr
 	/* Apply velocities to the position */
 	ch_object->dstrect.x += ch_traits->velocity.x;
 	ch_object->dstrect.y += ch_traits->velocity.y;
+
+	CharacterType_AdjustHitboxes(ct, instance_index);
+
+
+}
+
+void CharacterType_AdjustHitboxes(CharacterType *ct, int instance_index) {
+	SDL_Rect * hitboxes = ct->object_type->instances[instance_index].hitboxes;
+	SDL_Rect * dstrect = &ct->object_type->instances[instance_index].dstrect;
+
+	hitboxes[TOP_HITBOX].x = dstrect->x;
+	hitboxes[TOP_HITBOX].y = dstrect->y;
+
+	hitboxes[BOTTOM_HITBOX].x = dstrect->x;
+	hitboxes[BOTTOM_HITBOX].y = dstrect->y + ct->object_type->size.h - 8;
+
+	hitboxes[LEFT_HITBOX].x = dstrect->x;
+	hitboxes[LEFT_HITBOX].y = dstrect->y + 8;
+
+	hitboxes[RIGHT_HITBOX].x = dstrect->x + ct->object_type->size.w - 8;
+	hitboxes[RIGHT_HITBOX].y = dstrect->y + 8;
 }
