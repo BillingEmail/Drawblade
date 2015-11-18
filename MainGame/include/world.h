@@ -6,16 +6,6 @@
 
 #include "character.h"
 
-typedef enum _co {CHARACTER, OBJECT} character_or_object;
-
-/* Tagged union of either a character type or object type */
-typedef struct _c_o_o {
-	character_or_object type;
-	union {
-		CharacterType *ct;
-		ObjectType *ot;
-	};
-} CharacterType_Or_ObjectType;
 
 /* List of characters and objects -- remember that each type also has a list
  * instances of that type
@@ -25,8 +15,11 @@ typedef struct _world {
 		int w;
 		int h;
 	} size; /* The size of the world in pixels */
-	CharacterType_Or_ObjectType *typelist; /* List of characters/objects */
-	int count; /* Count of how many ^ */
+	CharacterType* Playertype; /* The Playertype */
+	CharacterType* Enemytypes;
+	ObjectType* Objecttypes;
+	int Enemycount; /* Count of how many ^ */
+	int Objectcount;
 	Texture *background; /* Texture used for the background for the world */
 } World;
 
