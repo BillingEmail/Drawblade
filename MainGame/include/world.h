@@ -3,7 +3,8 @@
  * A world is just a list of objects/characters
  * for now.
  */
-
+#ifndef world_h
+#define world_h
 #include "character.h"
 
 
@@ -15,7 +16,7 @@ typedef struct _world {
 		int w;
 		int h;
 	} size; /* The size of the world in pixels */
-	CharacterType* Playertype; /* The Playertype */
+	PlayerType* Playertype; /* The Playertype */
 	CharacterType* Enemytypes;
 	ObjectType* Objecttypes;
 	int Enemycount; /* Count of how many ^ */
@@ -33,7 +34,8 @@ World * NewWorld_FromFile(char *path);
 void Destroy_World(World *w);
 
 /* Update all of the facets in a world */
-void World_Update(World *w, int frame);
+void World_Update(World *w);
 
 /* Render all of the facets of the world */
-void World_Render(World *w, SDL_Renderer, *r SDL_Rect *Camera);
+void World_Render(World *w, int frame, SDL_Renderer, *r SDL_Rect *Camera);
+#endif

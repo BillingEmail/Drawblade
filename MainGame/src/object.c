@@ -63,28 +63,6 @@ void ObjectType_AddObject(ObjectType *ot, int x, int y, int default_animation, i
 	dstrect->h = ot->size.h;
 
 	SDL_Rect *hitboxes = ot->instances[ot->instance_count].hitboxes;
-	/* Create the 4 (top, left, right, bottom) hitboxes */
-	/* Make a crafty loop for this at some point */
-	hitboxes[TOP_HITBOX].x = x;
-	hitboxes[TOP_HITBOX].y = y;
-	hitboxes[TOP_HITBOX].w = ot->size.w;
-	hitboxes[TOP_HITBOX].h = 2;
-
-	hitboxes[LEFT_HITBOX].x = x;
-	hitboxes[LEFT_HITBOX].y = y;
-	hitboxes[LEFT_HITBOX].w = 2;
-	hitboxes[LEFT_HITBOX].h = ot->size.h;
-
-	hitboxes[RIGHT_HITBOX].x = x + ot->size.w - 2;
-	hitboxes[RIGHT_HITBOX].y = y;
-	hitboxes[RIGHT_HITBOX].w = 2;
-	hitboxes[RIGHT_HITBOX].h = ot->size.h;
-
-	hitboxes[BOTTOM_HITBOX].x = x;
-	hitboxes[BOTTOM_HITBOX].y = y + ot->size.h - 2;
-	hitboxes[BOTTOM_HITBOX].w = ot->size.w;
-	hitboxes[BOTTOM_HITBOX].h = 2;	
-
 
 
 	/* Copy the passed initial animation and initial sprite */
