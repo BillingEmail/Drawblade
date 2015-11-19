@@ -8,6 +8,8 @@ typedef struct _hud {
 		Texture *bow;
 		Texture *heart;
 	} textures;
+	SDL_Rect heartdst;
+	SDL_Rect weapondst;
 
 } HUD;
 

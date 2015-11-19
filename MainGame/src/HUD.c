@@ -3,62 +3,60 @@
 #include <SDL_image.h>
 #include <stdio.h>
 #include "../include/HUD.h"
+#include "../../shared/include/texture.h"
+#include "../../shared/include/container.h"
 
-HUD * Create_HUD(void) {
-	//Load PNG textures
-	swordHUDTexture = loadTexture(".png");
-	staffHUDTexture = loadTexture(".png");
-	bowHUDTexture = loadTexture(".png");
-	heartHUDTexture = loadTexture(".png");
-	
+HUD * Create_HUD(Container *c) {
+	HUD *ret = malloc(sizeof(HUD));
+
+	ret->textures.sword = Load_Texture(container->renderer, "../../assets/img/swordHUD.png");
+	ret->textures.staff = Load_Texture(container->renderer, "../../assets/img/staffHUD.png");
+	ret->textures.bow = Load_Texture(container->renderer, "../../assets/img/bowHUD.png");
+	ret->textures.heart = Load_Texture(container->renderer, "../../assets/img/heartHUD.png");
+
+	ret->heartdst.x = 26;
+	ret->heartdst.y = 35;
+	ret->heartdst.w = 29;
+	ret->heartdst.h = 29;
+
+	ret->weapondst.x = 0;
+	ret->weapondst.y = 521;
+	ret->weapondst.w = 199;
+	ret->weapondst.h = 199;
+
+	return ret;
 }
 
-void renderHUD(void) {
+void HUD_Render(HUD *h, SDL_Renderer *r) {
 	//Will render a number of hearts 0-5
-	renderHeartsHUD();
+	renderHeartsHUD(h, r);
 
 	//Will render the weapon in bottom left
-	renderWeaponHUD();
+	renderWeaponHUD(h, r);
 }
 
-void renderHeartsHUD (void) {
-	SDL_Rect heartDest;//Location for 1st heart
-	heartDest.x = 26;
-	heartDest.y = 35;
-	heartDest.w = 29;
-	heartDest.h = 29;
-
-	int i;
-	for(i = 0; i < (game->player->health); i++){
-		SDL_RenderCopy(gRenderer, heartHUDTexture, NULL, heartDest);
-		
-		heartDest.x += 33;//So that next heart is moved over
-	}//end for	
+void HUD_RenderHearts(HUD *h, SDL_Renderer *r) {
+	for (int i = 0; i < (game->player->health); i++){		
+		Texture_Render(h->textures.heart, r, h->heartdst.x + (i * 33), 35, NULL);
+	}
 }
 
-void renderWeaponHUD(void) {
-	//Bottom left HUD (weapon)
-	SDL_Rect weaponHUDDest;//Location for bottom HUD
-	weaponHUDDest.x = 0;
-	weaponHUDDest.y = 521;
-	weaponHUDDest.w = 199;
-	weaponHUDDest.h = 199;
-
-	switch(game->player->weapon){
+void HUD_RenderWeapon(HUD *h, SDL_Renderer *r) {
+	Texture *weapon;
+	switch (game->player->weapon){
 		case SWORD:
 			//Render texture to screen
-			SDL_RenderCopy(gRenderer, swordHUDTexture, NULL, weaponHUDDest);
+			weapon = h->textures.sword;
 		break;
-
 		case STAFF:
 			//Render texture to screen
-			SDL_RenderCopy(gRenderer, staffHUDTexture, NULL, weaponHUDDest);
+			weapon = h->textures.staff;
 		break;
-
 		case BOW:
-			//Render texture to screen
-			SDL_RenderCopy(gRenderer, bowHUDTexture, NULL, weaponHUDDest);
+			weapon = h->textures.bow;
 		break;
 	}
+
+	Texture_Render(r, weapon, NULL, &h->weapondst, NULL);
 }
 
