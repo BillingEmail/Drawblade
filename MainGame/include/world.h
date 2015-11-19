@@ -16,11 +16,10 @@ typedef struct _world {
 		int w;
 		int h;
 	} size; /* The size of the world in pixels */
-	PlayerType* Playertype; /* The Playertype */
 	CharacterType* Enemytypes;
 	ObjectType* Objecttypes;
-	int Enemycount; /* Count of how many ^ */
-	int Objectcount;
+	int EnemyTypecount; /* Count of how many types of enemies */
+	int ObjectTypetcount; /* "                    " of Objects */
 	Texture *background; /* Texture used for the background for the world */
 } World;
 
