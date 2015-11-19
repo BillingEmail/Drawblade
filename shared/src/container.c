@@ -4,37 +4,37 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-SDLWrapper * New_Wrapper(int width, int height) {
-	SDLWrapper * wrapper = malloc(sizeof(SDLWrapper));
-	wrapper->window = MakeWindow(width, height);
-	wrapper->camera = malloc(sizeof(SDL_Rect));
-	wrapper->camera->w = width;
-	wrapper->camera->h = height;
-	wrapper->camera->x = 0;
-	wrapper->camera->y = 0;
-	wrapper->renderer = MakeRenderer(wrapper->window);
-	wrapper->keyboardstate = SDL_GetKeyboardState(NULL);
+SDLContainer * New_Container(int width, int height) {
+	Container * container = malloc(sizeof(Container));
+	container->window = MakeWindow(width, height);
+	container->camera = malloc(sizeof(SDL_Rect));
+	container->camera->w = width;
+	container->camera->h = height;
+	container->camera->x = 0;
+	container->camera->y = 0;
+	container->renderer = MakeRenderer(container->window);
+	container->keyboardstate = SDL_GetKeyboardState(NULL);
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
-	return wrapper;
+	return container;
 }
 
-void SDLWrapper_Destroy(SDLWrapper * wrapper) {
-	SDL_DestroyWindow(wrapper->window);
-	SDL_DestroyRenderer(wrapper->renderer);
-	free(wrapper->camera);
-	free(wrapper);
+void Container_Destroy(Container * container) {
+	SDL_DestroyWindow(container->window);
+	SDL_DestroyRenderer(container->renderer);
+	free(container->camera);
+	free(container);
 	SDL_Quit();
 	IMG_Quit();
 }
 
 
-void SDLWrapper_Refresh(SDLWrapper * wrapper) {
-	SDL_RenderPresent(wrapper->renderer);
+void Container_Refresh(Container * container) {
+	SDL_RenderPresent(container->renderer);
 	SDL_Delay(16);
 	SDL_PumpEvents();
-	SDL_SetRenderDrawColor(wrapper->renderer, 255, 255, 255, 255);
-	SDL_RenderClear(wrapper->renderer);
+	SDL_SetRenderDrawColor(container->renderer, 255, 255, 255, 255);
+	SDL_RenderClear(container->renderer);
 }
 
 /* Makes the screen and checks if it is made correctly */

@@ -1,27 +1,26 @@
 #ifndef HUD_H
 #define HUD_H
 
+typedef struct _hud {
+	struct {
+		Texture *sword;
+		Texture *staff;
+		Texture *bow;
+		Texture *heart;
+	} textures;
 
-//Starts up SDL and creates window
-void init(void);
+} HUD;
 
-//Loads media
-bool loadHUDMedia(void);
-
-//Frees media and shuts down SDL
-void close(void);
-
-//Loads individual image as texture
-SDL_Texture* loadTexture( std::string path );
+/* Load the media for the HUD */
+HUD * Create_HUD(void);
 
 //Calls the individual render functions
-void renderHUD(void);
+void HUD_Render(HUD *h, SDL_Renderer *r);
 
 //Renders the hearts based on player health
-void renderHeartsHUD(void);
+void HUD_RenderHearts(HUD *h, SDL_Renderer *r);
 
 //Renders the weapon box based on player weapon
-void renderWeaponHUD(void);
-
+void HUD_RenderWeapon(HUD *h, SDL_Renderer *r);
 
 #endif
