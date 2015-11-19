@@ -25,6 +25,7 @@
 #include <SDL2/SDL.h>
 #include "../../shared/include/texture.h"
 #include "../../shared/include/spritesheet.h"
+#include "../../shared/include/SDLhelpers.h"
 
 enum {
 	TOP_HITBOX,
@@ -75,12 +76,6 @@ typedef struct _objecttype {
 	                        * animation.
 	                        */
 
-	bool collision;        /* collision can either be true or false. If true,
-	                        * the entire area encapsulated by the object is
-	                        * impermeable. This will only be used for objects
-	                        * such as level blocks, walls, etc.
-	                        */
-	
 	Object *instances;     /* This is a list of the instances of the ObjectType.
 	                        * Each holds the location (x,y) and size (width,
 	                        * height), the current sprite of the object, and
@@ -109,8 +104,7 @@ typedef struct _objecttype {
  * full collision.
  */
 ObjectType * New_ObjectType(
-	Spritesheet *spritesheet, /* The spritesheet to be used for all instances     */
-	bool collision,           /* Whether or not all instances have full collision */
+	Spritesheet *spritesheet, /* The spritesheet to be used for all instances */
 	int w,                    /* Width of object */
 	int h                     /* Height of object */
 );
@@ -138,10 +132,7 @@ void ObjectType_AddObject(
 void ObjectType_RemoveObject(int instance_index);
 
 /* Render a specific instance of an ObjectType */
-void ObjectType_RenderObject(ObjectType *ot, SDL_Renderer *r, int instance_index, SDL_Rect *Camera);
-
-/* Destroy an object */
-void Destroy_Object(Object *o);
+void ObjectType_RenderObject(ObjectType *ot, int instance_index, SDL_Wrapper *wrapper);
 
 /* Set the animation of an object. Typically, an enum for an animation specific
  * to the object type will be used.
@@ -153,4 +144,10 @@ void ObjectType_SetObjectAnimation(ObjectType *ot, int instance_index, int anima
  * sprite passes the final sprite of the animation.
  */
 void ObjectType_ObjectNextSprite(ObjectType *ot, int instance_index);
+
+/* Destroy an object */
+void Destroy_Object(Object *o);
+
+void Update_ObjectType(Object *o, int x, int y);
+
 #endif
