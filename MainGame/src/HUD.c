@@ -167,7 +167,7 @@ void renderHeartsHUD(){
 	}//end for	
 }
 
-void renderWeaponHUD(){
+void renderWeaponHUD() {
 	//Bottom left HUD (weapon)
 	SDL_Rect weaponHUDDest;//Location for bottom HUD
 	weaponHUDDest.x = 0;
