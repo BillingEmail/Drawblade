@@ -93,9 +93,11 @@ Level * New_Level(void) {
 	//For opening a new level
 	if (mode == NEW) {
 		//defaults
-		level->height = 15;
-		level->width = 50;
-		level->theme = LAVA;
+		printf("\nWhat is the height you want for your level?\n");
+		scanf("%d", &level->height);
+		printf("What is the width you want for your level?\n");
+		scanf("%d", &level->width);
+		level->theme = JUNGLE;
 		CreateTiles(level);
 	}
 	//For opening an old level
