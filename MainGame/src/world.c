@@ -7,8 +7,9 @@
 #include <stdlib.h>
 #include "../include/world.h"
 #include "../../shared/include/level.h"
+#include "../include/player.h"
 
-World * World_LoadWorldFromLevel (Level * level) {
+World * World_LoadWorldFromLevel(Level * level) {
 	
 
 
@@ -17,10 +18,8 @@ World * World_LoadWorldFromLevel (Level * level) {
 
 
 
-void World_Update(World *w) {
-	
-	testObjectCollision(w->Playertype, w->Objecttypes);
-	
+void World_Update(World *w, Player *p) {	
+	testObjectCollision(p->ctype, w->Objecttypes);
 }
 
 void World_Render(World *w, int frame, SDL_Renderer *r, SDL_Rect *Camera) {

@@ -3,35 +3,33 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "object.h"
-
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 
 #include "world.h"
-#include "character.h"
-
+#include "player.h"
+#include "../../shared/container.h"
 
 typedef struct __game_overhead {
-	struct {
-		CharacterType *type;
-		int index; /* definitely 0 */
-	} player;
+	Player *player; /* the player */
+	World *world; /* the current world */
 
-	/* load them all on start and switch between or load them as we go?
-	 * load them from the file that is, not loading the characters
-	 * and objects etc -- this would really just be a 2d array of enums
-	 * and not much else so it's not that big of a memory issue */
-	 /* if we do load them all at once, then we must also have the index
-	  * for the current level in the level array and not a pointer just
-	  * to one
-	  */
-	Level *currentLevel;
+	int current_level; /* ok */
 
-	bool running;
-	bool paused;
+	bool running; /* idk */
+	bool paused; /* ok */
 
 } Game;
+
+/* I don't know */
+Game * New_Game(Container *container);
+
+/* run the god damn fucking game */
+void Game_Run(Game *game);
+
+/* done */
+void Game_Close(Game *game);
+
+/* Load level 1, 2, 3, w/e */
+void LoadWorld(int worldnum);
 
 #endif
