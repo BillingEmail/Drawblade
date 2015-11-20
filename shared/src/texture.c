@@ -51,6 +51,9 @@ void Destroy_Texture(Texture *T) {
 		return;
 	}
 
+	/* destroy the sdl texture */
+	SDL_DestroyTexture(T->texture);
+
 	free(T);
 	T = NULL;
 }

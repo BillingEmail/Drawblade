@@ -25,7 +25,7 @@
 #include <SDL2/SDL.h>
 #include "../../shared/include/texture.h"
 #include "../../shared/include/spritesheet.h"
-#include "../../shared/include/SDLhelpers.h"
+#include "../../shared/include/container.h"
 
 enum {
 	TOP_HITBOX,
@@ -132,7 +132,7 @@ void ObjectType_AddObject(
 void ObjectType_RemoveObject(int instance_index);
 
 /* Render a specific instance of an ObjectType */
-void ObjectType_RenderObject(ObjectType *ot, int instance_index, SDL_Wrapper *wrapper);
+void ObjectType_RenderObject(ObjectType *ot, int instance_index, Container *c);
 
 /* Set the animation of an object. Typically, an enum for an animation specific
  * to the object type will be used.

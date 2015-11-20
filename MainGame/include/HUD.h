@@ -1,5 +1,7 @@
 #ifndef HUD_H
 #define HUD_H
+#include "../../shared/include/container.h"
+
 
 typedef struct _hud {
 	struct {
@@ -14,7 +16,7 @@ typedef struct _hud {
 } HUD;
 
 /* Load the media for the HUD */
-HUD * Create_HUD(void);
+HUD * Create_HUD(Container *c);
 
 //Calls the individual render functions
 void HUD_Render(HUD *h, SDL_Renderer *r);

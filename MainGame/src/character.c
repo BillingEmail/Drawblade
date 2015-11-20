@@ -10,6 +10,7 @@
 #include "../include/character.h"
 #include "../include/object.h"
 #include "../include/behavior.h"
+#include "../../shared/include/container.h"
 
 /* Create a new CharacterType */
 CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int)) {

@@ -1,7 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "../../shared/include/SDLhelpers.h" 
+#include "../../shared/include/container.h" 
+#include "../include/character.h"
+#include "../include/object.h"
 
 typedef enum {
 	SWORD, BOW, STAFF
@@ -33,10 +35,10 @@ Player * New_Player(ObjectType *ot, int x, int y);
 void Destroy_Player(Player *p);
 
 /* going to be a different function that renders the weapon as well lol */
-#define Player_Render(P, SDLW) CharacterType_RenderCharacter((P)->ctype, 0, (SDLW))
+#define Player_Render(P, C) CharacterType_RenderCharacter((P)->ctype, 0, C)
 
 /* update player using keyboard */
-void Player_Update(Player *p, SDLWrapper *w);
+void Player_Update(Player *p, Container *c);
 
 /* Call CharacterType_KillCharacter() and end the game :^) */
 void Player_Die(Player *p);

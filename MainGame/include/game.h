@@ -8,10 +8,12 @@
 #include "world.h"
 #include "player.h"
 #include "../../shared/container.h"
+#include "HUD.h"
 
 typedef struct __game_overhead {
 	Player *player; /* the player */
 	World *world; /* the current world */
+	HUD *hud;
 
 	int current_level; /* ok */
 

@@ -1,5 +1,5 @@
-#include "../include/SDLhelpers.h"
-#include "../../MainGame/include/character.h"
+#include "../include/container.h"
+#include "../../MainGame/include/player.h"
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -91,7 +91,7 @@ SDL_Renderer * New_Renderer(SDL_Window *window) {
 }
 
 /* Updates camera depending on arrow keys */
-void KeyBoardUpdateCamera(Container *container) {
+void Container_KeyBoardUpdateCamera(Container *container) {
 	if (container->keyboardstate[SDL_SCANCODE_UP]) {
 		container->camera->y -= 5;
 	}
@@ -108,9 +108,9 @@ void KeyBoardUpdateCamera(Container *container) {
 }
 
 /* Updates camera depending on player's coordinates */
-void PlayerUpdateCamera(Container *container, CharacterType *ct, int instance_index) {
-	container->camera->x = ct->object_type->instances[instance_index].dstrect.x - Camera->w / 2;
-	container->camera->y = ct->object_type->instances[instance_index].dstrect.y - Camera->h / 2;
+void Container_PlayerUpdateCamera(Container *container, Player *p) {
+	container->camera->x = p->object->dstrect.x - Camera->w / 2;
+	container->camera->y = p->object->dstrect.y - Camera->h / 2;
 }
 
 

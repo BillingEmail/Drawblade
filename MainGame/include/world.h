@@ -6,7 +6,17 @@
 #ifndef world_h
 #define world_h
 #include "character.h"
+#include "../../shared/include/level.h"
 
+enum {
+	OBJECT_BRICK = 0,
+}
+
+enum {
+	ENEMY_1 = 0,
+	ENEMY_2 = 1,
+	ENEMY_3 = 2
+}
 
 /* List of characters and objects -- remember that each type also has a list
  * instances of that type
@@ -17,17 +27,19 @@ typedef struct _world {
 		int h;
 	} size; /* The size of the world in pixels */
 
-	CharacterType* Enemytypes;
+	CharacterType **EnemyTypes;
 
-	ObjectType* Objecttypes;
+	ObjectType **ObjectTypes;
 
-	int EnemyTypecount; /* Count of how many types of enemies */
+	int EnemyTypeCount; /* Count of how many types of enemies */
 
-	int ObjectTypetcount; /* "                    " of Objects */
+	int ObjectTypeCount; /* "                    " of Objects */
 
 	Texture *background; /* Texture used for the background for the world */
 
 	bool is_complete; /* player -> goalpost :^) */
+
+	LevelType theme; /* theme of level */
 
 } World;
 
@@ -41,6 +53,6 @@ World * NewWorld_FromFile(char *path);
 void Destroy_World(World *w);
 
 /* Render all of the facets of the world */
-void World_Render(World *w, int frame, SDL_Renderer, *r SDL_Rect *Camera);
+void World_Render(World *w, int frame, Container *c);
 
 #endif

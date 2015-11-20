@@ -1,4 +1,4 @@
-#include "../include/startscreen.h"
+//#include "../include/startscreen.h"
 #include "../include/game.h"
 #include "../../shared/include/container.h"
 
@@ -11,7 +11,7 @@ int main(void) {
 
 	container = New_Container(SCREEN_WIDTH, SCREEN_HEIGHT);
 	game = New_Game(container);
-	ShowStartScreen(container);
+//	ShowStartScreen(container);
 	Game_Run(game);
 
 	Game_Close(game);	

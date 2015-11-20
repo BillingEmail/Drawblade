@@ -30,6 +30,9 @@ Game * New_Game(Containter *container) {
 	ret->running = false;
 	ret->paused = false;
 
+	ret->hud = Create_HUD(container);
+
+
 	return ret;
 }
 
@@ -46,6 +49,7 @@ void Game_Run(Game *game, Container *container) {
 		World_Update(game->world, game->player);
 		/* Render the world */
 		World_Render(game->world, frame, container->renderer, container->camera);
+		Hud_Render(game->hud, container->renderer);
 
 		/* If the world has been completed */
 		if (game->world->is_complete) {
@@ -62,6 +66,9 @@ void Game_Run(Game *game, Container *container) {
 			World_Destroy(game->world);
 			game->world = LoadWorld(game->current_level);
 		}
+
+		Container_Refresh(container);
+		Container_PlayerUpdateCamera(container, game->player);
 	}
 }
 
@@ -75,7 +82,7 @@ void Game_Close(Game *game) {
 World * LoadWorld(int worldnum) {
 	World *ret;
 	char path[64];
-	ret = NewWorld_FromFile
+	ret = NewWorldFromFile
 
 
 }

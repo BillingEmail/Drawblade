@@ -26,7 +26,7 @@ void Destroy_Player(Player *p) {
 }
 
 /* Take input from wrapper and apply to the player */
-void Player_Update(Plyaer *p, SDLWrapper *w) {
+void Player_Update(Player *p, SDLWrapper *w) {
 	/* Jump */
 	if (w->KeyboardState[SDL_SCANCODE_SPACE]) {
 		p->traits->velocity.y -= 5;
