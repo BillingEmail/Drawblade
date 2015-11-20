@@ -2,7 +2,7 @@
 #define SDLhelpers_h
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
+#include <stdbool.h>
 
 /* Wraps all of the SDL objects into one struct */
 typedef struct _SDL_container {
@@ -10,6 +10,12 @@ typedef struct _SDL_container {
 	SDL_Renderer * renderer;
 	SDL_Rect * camera;
 	uint8_t * keyboardstate;
+	struct {
+		int x;
+		int y;
+		bool rightClick;
+		bool leftClick;
+	} mouse;
 } Container;
 
 

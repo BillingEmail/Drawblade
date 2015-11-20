@@ -49,9 +49,23 @@ void Container_Destroy(Container * container) {
    every frame.  These include delaying each frame, getting keyboard input, etc.
 */
 void Container_Refresh(Container * container) {
+	uint32_t mouse_state;
 	SDL_RenderPresent(container->renderer);
 	SDL_Delay(16);
 	SDL_PumpEvents();
+
+	mouse_state = SDL_GetMouseState(&container->mouse,x, &container->mouse.y);
+	if (mouse_state & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+		container->mouse.leftClick = true;
+	} else {
+		container->mouse.leftClick = false;
+	}
+	if (mouse_state & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
+		container->mouse.rightClick = true;
+	} else {
+		container->mouse.rightClick = false;
+	}
+
 	SDL_SetRenderDrawColor(container->renderer, 255, 255, 255, 255);
 	SDL_RenderClear(container->renderer);
 }
