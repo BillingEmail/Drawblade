@@ -1,4 +1,4 @@
-#include "../include/loadsave.h"
+#include "../include/level.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,7 +9,7 @@ returns true or false depending on whether you are creating a
 new file or opening an old one respectively.
 */
 Mode getMode(void) {
-	char createBool[5];		
+	char createBool[5];
 
 	//prompt the user
 	printf("Do you want to create a new file or open an old file?\n" 
@@ -52,7 +52,7 @@ char * GetFileName(void) {
 	char *FileName = malloc(sizeof(char) * 64);	
 	char Buffer[16];;
 	printf("\nEnter the name of the File: ");
-	strcpy(FileName, "../../assets/levels/");
+	strcpy(FileName, "../assets/levels/");
 	scanf("%s", Buffer);
 	strcat(FileName, Buffer);;
 	strcat(FileName, ".lvl");
@@ -84,7 +84,7 @@ this also opens the file using getMode() to either open an old level or create a
 
 when it is done, it will return the level it has creaeted
 */
-Level * LoadLevel(void) {
+Level * New_Level(void) {
 	//malloc's a single level
 	Level *level = malloc(sizeof(Level));
 	Mode mode = getMode();
@@ -95,7 +95,8 @@ Level * LoadLevel(void) {
 		//defaults
 		level->height = 15;
 		level->width = 50;
-		MallocTiles(level);
+		level->theme = LAVA;
+		CreateTiles(level);
 	}
 	//For opening an old level
 	else {
@@ -115,12 +116,14 @@ fread is for reading binary files basically
 void LoadLevelFromFile(Level *level, FILE *fp) {
 	fread(&level->width, sizeof(int), 1, fp);
 	fread(&level->height, sizeof(int), 1, fp);
-		
-	MallocTiles(level);
+	fread(&level->theme, sizeof(int), 1, fp);	
+	CreateTiles(level);
 	
 	for (int i = 0; i < level->height; i++) {
 		fread((level->tileArray[i]), sizeof(Tile), level->width, fp);
 	}
+
+	
 }
 
 /*
@@ -132,16 +135,16 @@ it also frees the level and tilearray in the level
 void SaveLevel(Level *level) {
 	char *FileName;
 	FILE *fp;
-	
+
 	fp = fopen((FileName = GetFileName()), "wb");
 	free(FileName);
 
 	fwrite(&level->width, sizeof(int), 1, fp);
 	fwrite(&level->height, sizeof(int), 1, fp);
+	fwrite(&level->theme, sizeof(int), 1, fp);
 	for (int i = 0; i < level->height; i++) {
 		fwrite((level->tileArray[i]), sizeof(Tile), level->width, fp);
 	}
-
 	DestroyLevel(level);
 
 	fclose(fp);
@@ -162,7 +165,7 @@ void DestroyLevel(Level *level) {
 Mallocs the giant tile array you have
 It then callocs it so that every value in the array is 0
 */
-void MallocTiles(Level *level) {
+void CreateTiles(Level *level) {
 	level->tileArray = malloc(level->height * sizeof(Tile *));
 	for (int i = 0; i < level->height; i++) {
 		level->tileArray[i] = calloc(level->width, sizeof(Tile));

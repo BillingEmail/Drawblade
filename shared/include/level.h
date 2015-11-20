@@ -1,6 +1,6 @@
 #ifndef level_h
 #define level_h
-
+#include <stdio.h>
 // This is for what type of enemy is in what tile
 typedef enum _EntityTypes {
 	BLANK, BRICK, PLAYER, ENEMY
@@ -19,6 +19,16 @@ typedef enum  _LevelType {
 typedef struct _Level {
 	int height;
 	int width;
+	LevelType theme;
 	Tile **tileArray;
 } Level;
+
+Mode getMode(void);
+char * getFileName(void);
+FILE * GetFile(void);
+Level * New_Level(void);
+void LoadLevelFromFile(Level *level, FILE *fp);
+void SaveLevel(Level *level);
+void DestroyLevel(Level *level);
+void CreateTiles(Level *level);
 #endif
