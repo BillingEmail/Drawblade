@@ -6,13 +6,13 @@
 #include "../../shared/include/texture.h"
 #include "../../shared/include/container.h"
 
-HUD * Create_HUD(Container *c) {
+HUD * Create_HUD(Container *container) {
 	HUD *ret = malloc(sizeof(HUD));
 
-	ret->textures.sword = Load_Texture(container->renderer, "../../assets/img/swordHUD.png");
-	ret->textures.staff = Load_Texture(container->renderer, "../../assets/img/staffHUD.png");
-	ret->textures.bow = Load_Texture(container->renderer, "../../assets/img/bowHUD.png");
-	ret->textures.heart = Load_Texture(container->renderer, "../../assets/img/heartHUD.png");
+	ret->textures.sword = New_Texture(container->renderer, "../../assets/img/swordHUD.png");
+	ret->textures.staff = New_Texture(container->renderer, "../../assets/img/staffHUD.png");
+	ret->textures.bow = New_Texture(container->renderer, "../../assets/img/bowHUD.png");
+	ret->textures.heart = New_Texture(container->renderer, "../../assets/img/heartHUD.png");
 
 	ret->heartdst.x = 26;
 	ret->heartdst.y = 35;
@@ -36,6 +36,7 @@ void HUD_Render(HUD *h, SDL_Renderer *r) {
 }
 
 void HUD_RenderHearts(HUD *h, SDL_Renderer *r) {
+	//Based on player health, will render hearts
 	for (int i = 0; i < (game->player->health); i++){		
 		Texture_Render(h->textures.heart, r, h->heartdst.x + (i * 33), 35, NULL);
 	}
@@ -61,11 +62,9 @@ void renderWeaponHUD(void) {
 	switch(game->player->weapon){
 >>>>>>> e421613e16c110de941849ad51eee9e731c0bda2
 		case SWORD:
-			//Render texture to screen
 			weapon = h->textures.sword;
 		break;
 		case STAFF:
-			//Render texture to screen
 			weapon = h->textures.staff;
 		break;
 		case BOW:
