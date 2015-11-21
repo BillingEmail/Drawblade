@@ -6,7 +6,7 @@
 #include "../../shared/include/container.h"
 
 void Show_Start_Screen(Container *container) {
-    Texture *StartScreen = Load_Texture(container->renderer, "../../assets/img/startScreen.png");
+    Texture *StartScreen = New_Texture(container->renderer, "../../assets/img/startScreen.png");
 	/* Until the user clicks */
     while (1) {
         Container_Refresh(container);
@@ -14,7 +14,7 @@ void Show_Start_Screen(Container *container) {
         if(container->mouse.leftClick) {
             break;
         }
-        Texture_Render(container->renderer, StartScreen, 0, 0);
+        Texture_Render(StartScreen, container->renderer, 0, 0);
     }
 	Destroy_Texture(StartScreen);
 }
