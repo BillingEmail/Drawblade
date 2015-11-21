@@ -8,7 +8,6 @@
 #ifndef TEXTURE_H_
 #define TEXTURE_H_
 
-#include <stdio.h>
 #include <SDL2/SDL.h>
 
 /* Type: Texture */

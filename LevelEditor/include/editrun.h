@@ -2,13 +2,16 @@
 #define editrun_h
 
 #include "../../shared/include/level.h"
+#include "../../shared/include/texture.h"
+#include <stdbool.h>
 
 typedef struct _LevelEditor {
 	Container *container;
 	Level *level;
-	Texture textureArray[4][16];
-	Texture backgroundArray[4];
+	Texture *textureArray[4][16];
+	Texture *backgroundArray[4];
 	Tile currentItem;
+
 } LevelEditor;
 
 /*
@@ -28,6 +31,8 @@ void LevelEditor_Render(LevelEditor *editor);
 void LevelEditor_Update(LevelEditor *editor);
 
 /* This is a component of Update that will set the current tile type */
+bool LevelEditor_checkEditTile(LevelEditor *editor);
+void LevelEditor_getCurrentTheme(LevelEditor *editor);
 void LevelEditor_getCurrentItemType(LevelEditor *editor);
 
 #endif

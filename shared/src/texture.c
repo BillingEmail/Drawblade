@@ -60,6 +60,10 @@ void Destroy_Texture(Texture *T) {
 
 /* Render a texture by itself */
 void Texture_Render(Texture *t, SDL_Renderer *r, int x, int y, SDL_Rect *Camera) {
+	if (t == NULL) {
+		return;
+	}
+	
 	/* Destination relative to window to render texture */
 	SDL_Rect renderRect;
 	/* Not fixed to the window - does not move with Camera */

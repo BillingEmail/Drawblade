@@ -1,6 +1,10 @@
-#include "../include/editrun.h"
+#include "include/editrun.h"
 #include <SDL2/SDL.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include "../shared/include/level.h"
+#include "../shared/include/texture.h"
+
 #define SCREEN_WIDTH 1280;
 #define SCREEN_HEIGHT 720;
 
@@ -25,13 +29,14 @@ LevelEditor * New_LevelEditor(Level *level) {
 	editor->container = New_Container(SCREEN_WIDTH, SCREEN_HEIGHT);
 	editor->level = level;
 	editor->currentItem = BLANK;
+	editor->textureArray[LAVA][BLANK] = NULL;
 	editor->textureArray[LAVA][BRICK] = Load_Texture(editor->container->renderer,
-	 "lavabrick.png");
+	 "../assets/img/LevelEditor/blue64x64.png");
 	editor->textureArray[LAVA][PLAYER] = Load_Texture(editor->container->renderer,
-	 "lavaplayer.png");
+	 "../assets/img/LevelEditor/green128x128.png");
 
 	editor->backgroundArray[LAVA] = Load_Texture(editor->container->renderer,
-	 "lavabackground.png");
+	 "../assets/img/LevelEditor/bg1280x720.png");
 }
 
 /* Destroys the LevelEditor */
@@ -55,7 +60,31 @@ void LevelEditor_Run(LevelEditor *editor) {
 
 
 void LevelEditor_Render(LevelEditor *editor) {
-
+	LevelType currentTheme = editor->level->theme;
+	Texture_Render(editor->backgroundArray[theme], editor->container->renderer, 0, 0, NULL);
+		
+	for (int i = 0; i < editor->level.height; i++) {
+		for (int j = 0; j < editor->level.width; j++) {
+			Texture_Render(
+			editor->textureArray[theme][editor->level->tileArray[i][j]]
+			editor->renderer, j * 64, i * 64, editor->camera	
+			);
+		}
+	}
+	
+	for (int i = 0; i <= editor->level.height; i++) {
+		SDL_RenderDrawLine(editor->renderer,
+		0 + editor->camera.x, i * 64 + editor->camera.y,
+		editor->level.width * 64 + editor->camera.x, i * 64 + editor->camera.y);
+	}
+	for (int j = 0; j <= editor->level.width; i++) {
+		SDL_RenderDrawLine(editor->renderer,
+		i * 64 + editor->camera.x, 0 + editor->camera.y,
+		i * 64 + editor->camera.x, editor->level.height * 64 + editor->camera.y);
+	}
+	
+	Texture_Render(editor->textureArray[theme][editor->currentItem], editor->container->renderer,
+	editor->container->mouse.x - 32, editor->container->mouse.y - 32, editor->camera);
 }
 
 void LevelEditor_Update(LevelEditor *editor) {
@@ -65,15 +94,27 @@ void LevelEditor_Update(LevelEditor *editor) {
 	
 	LevelEditor_getCurrentTheme(editor);	
 	LevelEditor_getCurrentItemType(editor);
-
-	if (editor->container->mouse.leftClick) {
-		editor->level->tileArray
+	
+	if (LevelEditor_checkEditTile(LevelEditor *editor)) {
+			editor->level->tileArray
 			[(editor->container->mouse.y + editor->container->camera.y) / 64]
 			[(editor->container->mouse.x + editor->container->camera.x) / 64] =
  	        editor->currentItem;
-	}	
+	}
+
 }
 
+bool LevelEditor_checkEditTile(LevelEditor *editor) {
+	int yclick = (editor->container->mouse.y + editor->container->camera.y) / 64;
+	int xclick = (editor->container->mouse.x + editor->container->mouse.x) / 64;
+	if (editor->container->mouse.leftClick) {
+		if (yclick < editor->level.height && yclick >= 0 && xclick < editor->level.width && xclick >= 0) {
+			return true;
+		}
+				
+	}
+	return false;
+}
 void LevelEditor_getCurrentItemType(LevelEditor *editor) {
 	if (editor->container->keyboardstate[SDL_SCANCODE_1]) editor->currentItem = BLANK;
 	if (editor->container->keyboardstate[SDL_SCANCODE_2]) editor->currentItem = BRICK;
@@ -81,6 +122,7 @@ void LevelEditor_getCurrentItemType(LevelEditor *editor) {
 }
 
 void LevelEditor_getCurrentTheme(LevelEditor *editor) {
-	if (editor->container->keyboardstate[SDL_SCANCODE_U]) editor->level->theme = JUNGLE;
-	if (editor->container->keyboardstate[SDL_SCANCODE_I]) editor->level->theme = LAVA;
+	if (editor->container->keyboardstate[SDL_SCANCODE_I]) editor->level->theme = MEDIEVAL;
+	if (editor->container->keyboardstate[SDL_SCANCODE_O]) editor->level->theme = ICE;
+	if (editor->container->keyboardstate[SDL_SCANCODE_P]) editor->level->theme = LAVA;
 }
