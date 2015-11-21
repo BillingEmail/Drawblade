@@ -22,7 +22,7 @@ typedef struct _LevelEditor {
 */
 void Level_Edit(Level *level);
 
-void LevelEditor *New_LevelEditor(Level *level);
+LevelEditor *New_LevelEditor(Level *level);
 void LevelEditor_End(LevelEditor *editor);
 
 /* This has functions for rendering and updating a level */

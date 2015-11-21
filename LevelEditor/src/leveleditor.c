@@ -1,9 +1,9 @@
-#include "../include/editrun.h"
+#include "../include/leveleditor.h"
 #include <SDL2/SDL.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "../shared/include/level.h"
-#include "../shared/include/texture.h"
+#include "../../shared/include/level.h"
+#include "../../shared/include/texture.h"
 
 #define SCREEN_WIDTH 1280;
 #define SCREEN_HEIGHT 720;

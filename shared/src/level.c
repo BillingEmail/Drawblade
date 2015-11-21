@@ -97,7 +97,7 @@ Level * New_Level(void) {
 		scanf("%d", &level->height);
 		printf("What is the width you want for your level?\n");
 		scanf("%d", &level->width);
-		level->theme = JUNGLE;
+		level->theme = LAVA;
 		CreateTiles(level);
 	}
 	//For opening an old level

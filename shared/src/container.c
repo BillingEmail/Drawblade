@@ -1,5 +1,9 @@
 #include "../include/container.h"
+
+#ifdef GAME_H
 #include "../../MainGame/include/player.h"
+#endif
+
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -11,7 +15,7 @@
    It needs the width and height the screen should be so it can make a window
    of that size
 */
-SDLContainer * New_Container(int SCREEN_WIDTH, int SCREEN_HEIGHT) {
+Container * New_Container(int SCREEN_WIDTH, int SCREEN_HEIGHT) {
 	Container * container = malloc(sizeof(Container));
 	
 	/* Initialize SDL */
@@ -126,10 +130,10 @@ void Container_KeyBoardUpdateCamera(Container *container) {
 
 }
 
+#ifdef GAME_H
 /* Updates camera depending on player's position */
 void Container_PlayerUpdateCamera(Container *container, Player *p) {
 	container->camera->x = p->object->dstrect.x - Camera->w / 2;
 	container->camera->y = p->object->dstrect.y - Camera->h / 2;
 }
-
-
+#endif
