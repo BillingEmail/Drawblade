@@ -16,4 +16,5 @@ void Show_Start_Screen(Container *container) {
         }
         Texture_Render(container->renderer, StartScreen, 0, 0);
     }
+	Destroy_Texture(StartScreen);
 }
