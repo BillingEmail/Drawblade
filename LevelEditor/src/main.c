@@ -1,4 +1,5 @@
 #include "../../shared/include/level.h"
+#include "../include/leveleditor.h"
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,19 +8,7 @@
 
 int main (void) {
 	Level * level = New_Level();
-	
-	level->tileArray[13][1] = BRICK;
-	level->tileArray[12][1] = BRICK;
-	level->tileArray[11][1] = BRICK;
-	
-
-	for (int i = 0; i < 15; i++) {
-		for (int j = 0; j < 50; j++) {
-			printf("%d ", level->tileArray[i][j]);
-		}
-		printf("\n");
-	}
-
+	Level_Edit(level);
 	SaveLevel(level);
 
 	return 0;
