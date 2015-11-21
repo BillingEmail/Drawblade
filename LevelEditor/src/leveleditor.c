@@ -5,8 +5,8 @@
 #include "../../shared/include/level.h"
 #include "../../shared/include/texture.h"
 
-#define SCREEN_WIDTH 1280;
-#define SCREEN_HEIGHT 720;
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
 
 
 /* 
@@ -30,17 +30,18 @@ LevelEditor * New_LevelEditor(Level *level) {
 	editor->level = level;
 	editor->currentItem = BLANK;
 	editor->textureArray[LAVA][BLANK] = NULL;
-	editor->textureArray[LAVA][BRICK] = Load_Texture(editor->container->renderer,
+	editor->textureArray[LAVA][BRICK] = New_Texture(editor->container->renderer,
 	 "../assets/img/LevelEditor/blue64x64.png");
-	editor->textureArray[LAVA][PLAYER] = Load_Texture(editor->container->renderer,
+	editor->textureArray[LAVA][PLAYER] = New_Texture(editor->container->renderer,
 	 "../assets/img/LevelEditor/green128x128.png");
 
-	editor->backgroundArray[LAVA] = Load_Texture(editor->container->renderer,
+	editor->backgroundArray[LAVA] = New_Texture(editor->container->renderer,
 	 "../assets/img/LevelEditor/bg1280x720.png");
+	return editor;
 }
 
 /* Destroys the LevelEditor */
-void LevelEditor_End(Leveleditor *editor) {
+void LevelEditor_End(LevelEditor *editor) {
 	Container_Destroy(editor->container);
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 16; j++) {
@@ -53,6 +54,8 @@ void LevelEditor_End(Leveleditor *editor) {
 /* A loop that Renders and Updates the LevelEditor */
 void LevelEditor_Run(LevelEditor *editor) {
 	while(1) {
+		if (editor->container->keyboardstate[SDL_SCANCODE_Q] &&
+		    editor->container->keyboardstate[SDL_SCANCODE_LSHIFT]) break;
 		LevelEditor_Render(editor);
 		LevelEditor_Update(editor);
 	}
@@ -60,55 +63,53 @@ void LevelEditor_Run(LevelEditor *editor) {
 
 
 void LevelEditor_Render(LevelEditor *editor) {
-	LevelType currentTheme = editor->level->theme;
+	LevelType theme = editor->level->theme;
 	Texture_Render(editor->backgroundArray[theme], editor->container->renderer, 0, 0, NULL);
 		
-	for (int i = 0; i < editor->level.height; i++) {
-		for (int j = 0; j < editor->level.width; j++) {
+	for (int i = 0; i < editor->level->height; i++) {
+		for (int j = 0; j < editor->level->width; j++) {
 			Texture_Render(
-			editor->textureArray[theme][editor->level->tileArray[i][j]]
-			editor->renderer, j * 64, i * 64, editor->camera	
+			editor->textureArray[theme][editor->level->tileArray[i][j]],
+			editor->container->renderer, j * 64, i * 64, editor->container->camera	
 			);
 		}
 	}
 	
-	for (int i = 0; i <= editor->level.height; i++) {
-		SDL_RenderDrawLine(editor->renderer,
-		0 + editor->camera.x, i * 64 + editor->camera.y,
-		editor->level.width * 64 + editor->camera.x, i * 64 + editor->camera.y);
+	for (int i = 0; i <= editor->level->height; i++) {
+		SDL_RenderDrawLine(editor->container->renderer,
+		0 + editor->container->camera->x, i * 64 + editor->container->camera->y,
+		editor->level->width * 64 + editor->container->camera->x, i * 64 + editor->container->camera->y);
 	}
-	for (int j = 0; j <= editor->level.width; i++) {
-		SDL_RenderDrawLine(editor->renderer,
-		i * 64 + editor->camera.x, 0 + editor->camera.y,
-		i * 64 + editor->camera.x, editor->level.height * 64 + editor->camera.y);
+	for (int i = 0; i <= editor->level->width; i++) {
+		SDL_RenderDrawLine(editor->container->renderer,
+		i * 64 + editor->container->camera->x, 0 + editor->container->camera->y,
+		i * 64 + editor->container->camera->x, editor->level->height * 64 + editor->container->camera->y);
 	}
 	
 	Texture_Render(editor->textureArray[theme][editor->currentItem], editor->container->renderer,
-	editor->container->mouse.x - 32, editor->container->mouse.y - 32, editor->camera);
+	editor->container->mouse.x - 32, editor->container->mouse.y - 32, editor->container->camera);
 }
 
 void LevelEditor_Update(LevelEditor *editor) {
-	Container_Refresh(editor->container);
-	
-	if (editor->container->keyboardstate[SDL_SCANCODE_Q]) break;
+	Container_Refresh(editor->container);	
 	
 	LevelEditor_getCurrentTheme(editor);	
 	LevelEditor_getCurrentItemType(editor);
 	
-	if (LevelEditor_checkEditTile(LevelEditor *editor)) {
+	if (LevelEditor_checkEditTile(editor)) {
 			editor->level->tileArray
-			[(editor->container->mouse.y + editor->container->camera.y) / 64]
-			[(editor->container->mouse.x + editor->container->camera.x) / 64] =
+			[(editor->container->mouse.y + editor->container->camera->y) / 64]
+			[(editor->container->mouse.x + editor->container->camera->x) / 64] =
  	        editor->currentItem;
 	}
 
 }
 
 bool LevelEditor_checkEditTile(LevelEditor *editor) {
-	int yclick = (editor->container->mouse.y + editor->container->camera.y) / 64;
-	int xclick = (editor->container->mouse.x + editor->container->mouse.x) / 64;
+	int yclick = (editor->container->mouse.y + editor->container->camera->y) / 64;
+	int xclick = (editor->container->mouse.x + editor->container->camera->x) / 64;
 	if (editor->container->mouse.leftClick) {
-		if (yclick < editor->level.height && yclick >= 0 && xclick < editor->level.width && xclick >= 0) {
+		if (yclick < editor->level->height && yclick >= 0 && xclick < editor->level->width && xclick >= 0) {
 			return true;
 		}
 				

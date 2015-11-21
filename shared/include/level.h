@@ -12,7 +12,7 @@ typedef enum _Mode {
 
 // This is for what the type of the level is
 typedef enum  _LevelType {
-	LAVA, WATER, MEDEIVAL, CITY
+	MEDIEVAL, ICE, LAVA, SPOOKY
 } LevelType;
 
 //Definition of a level

@@ -20,7 +20,7 @@ typedef struct _SDL_container {
 	SDL_Rect *camera;         /* The camera - used for rendering images       */
 	                          /* relative to some perspective                 */
 
-	uint8_t *keyboardstate;   /* The keyboardstate - a list of all of the     */
+	const uint8_t *keyboardstate;   /* The keyboardstate - a list of all of the     */
 	                          /* keys and whether or not they are pressed.    */
 
 	struct {                  /* The mouse:                                   */

@@ -121,7 +121,7 @@ void Container_KeyBoardUpdateCamera(Container *container) {
 	if (container->keyboardstate[SDL_SCANCODE_DOWN]) {
 		container->camera->y += 5;
 	}
-	if (container->keyboardState[SDL_SCANCODE_RIGHT]) {
+	if (container->keyboardstate[SDL_SCANCODE_RIGHT]) {
 		container->camera->x += 5;
 	}
 	if (container->keyboardstate[SDL_SCANCODE_LEFT]) {
