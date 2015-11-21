@@ -1,4 +1,4 @@
-#include "include/editrun.h"
+#include "../include/editrun.h"
 #include <SDL2/SDL.h>
 #include <stdlib.h>
 #include <stdbool.h>

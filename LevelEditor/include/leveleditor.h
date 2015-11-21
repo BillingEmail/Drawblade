@@ -1,8 +1,9 @@
-#ifndef editrun_h
-#define editrun_h
+#ifndef LEVELEDITOR_H
+#define LEVELEDITOR_H
 
 #include "../../shared/include/level.h"
 #include "../../shared/include/texture.h"
+#include "../../shared/include/container.h"
 #include <stdbool.h>
 
 typedef struct _LevelEditor {
