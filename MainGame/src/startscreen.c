@@ -5,7 +5,7 @@
 #include "../../shared/include/texture.h"
 #include "../../shared/include/container.h"
 
-void Show_Start_Screen(Container *container) {
+void ShowStartScreen(Container *container) {
     Texture *StartScreen = Load_Texture(container->renderer, "../../assets/img/startScreen.png");
 	/* Until the user clicks */
     while (1) {
