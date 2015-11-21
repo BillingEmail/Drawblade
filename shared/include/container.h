@@ -1,41 +1,49 @@
-#ifndef SDLhelpers_h
-#define SDLhelpers_h
+/* container.h - A container to hold commonly-used interfacing objects, 
+ * such as the window, renderer, and input such as the keyboard and mouse.
+ */
+
+#ifndef CONTAINER_h
+#define CONTAINER_h
+
+#include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-
 #include "../../MainGame/include/player.h"
 
-#include <stdbool.h>
-
-/* Wraps all of the SDL objects into one struct */
+/* Contains commonly-used interfacing objects */
 typedef struct _SDL_container {
-	SDL_Window *  window;
-	SDL_Renderer * renderer;
-	SDL_Rect * camera;
-	uint8_t * keyboardstate;
-	struct {
-		int x;
-		int y;
-		bool rightClick;
-		bool leftClick;
+	SDL_Window *window;       /* The window                                   */
+	SDL_Renderer *renderer;   /* Rendering context for the window             */
+	SDL_Rect *camera;         /* The camera - used for rendering images       */
+	                          /* relative to some perspective                 */
+
+	uint8_t *keyboardstate;   /* The keyboardstate - a list of all of the     */
+	                          /* keys and whether or not they are pressed.    */
+
+	struct {                  /* The mouse:                                   */
+		int x;                /* The coordinates of the mouse, relative to    */
+		int y;                /* the top-left (0,0) corner of the window      */
+		bool rightClick;      /* Whether the right mouse button is pressed    */
+		bool leftClick;       /* Whether the left mouse button is pressed     */
 	} mouse;
+
 } Container;
 
-
-
-/* Create a new container */
+/* Create a new container (Creating a new window, rendering context, etc */
 Container * New_Container(int SCREEN_WIDTH, int SCREEN_HEIGHT);
 
+/* Safely close the window -- destroys rendering context but NOT any textures */
 void Container_Destroy(Container *container);
 
+/* Refresh the renderer, keyboardstate, and mouse */
 void Container_Refresh(Container *container);
 
-/*  Functions for making parts of the wrapper */
+/* Create a window using a width and height */
 SDL_Window * New_Window(int width, int height);
-SDL_Renderer * New_Renderer(SDL_Window *window);
 
-/*  Functions for updating the camera depending on the situation */
+/* Create the rendering context for the window */
+SDL_Renderer * New_Renderer(SDL_Window *window);
 
 /* Update the camera with the arrow keys -- used in level editor*/
 void Container_KeyBoardUpdateCamera(Container *c);

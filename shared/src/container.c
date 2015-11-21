@@ -14,32 +14,36 @@
 SDLContainer * New_Container(int SCREEN_WIDTH, int SCREEN_HEIGHT) {
 	Container * container = malloc(sizeof(Container));
 	
-	//Uses the New_Window function to make the screen
-	container->window = New_Window(SCREEN_WIDTH, SCREEN_HEIGHT);
+	/* Initialize SDL */
+	SDL_Init(SDL_INIT_VIDEO);
+	IMG_Init(IMG_INIT_PNG);
 	
-	//Adjusts the position of the camera
+	/* Create the window */
+	container->window = New_Window(SCREEN_WIDTH, SCREEN_HEIGHT);	
+	/* Create the renderer for the window */
+	container->renderer = New_Renderer(container->window);
+
+	/* Create the camera */
 	container->camera = malloc(sizeof(SDL_Rect));
 	container->camera->w = SCREEN_WIDTH;
 	container->camera->h = SCREEN_HEIGHT;
 	container->camera->x = 0;
 	container->camera->y = 0;
 
-	//Uses the New_Renderer function to make the renderer
-	container->renderer = New_Renderer(container->window);
-	//Sets up the keyboard
+	/* Sets up the keyboard */
 	container->keyboardstate = SDL_GetKeyboardState(NULL);
 	
-	//Initializes important SDL functions
-	SDL_Init(SDL_INIT_VIDEO);
-	IMG_Init(IMG_INIT_PNG);
 	return container;
 }
-/* Destroys the components of the container and frees the pointers */
+
+/* Destroys the container and quits SDL */
 void Container_Destroy(Container * container) {
 	SDL_DestroyWindow(container->window);
 	SDL_DestroyRenderer(container->renderer);
 	free(container->camera);
 	free(container);
+	container = NULL;
+
 	SDL_Quit();
 	IMG_Quit();
 }
@@ -49,36 +53,35 @@ void Container_Destroy(Container * container) {
    every frame.  These include delaying each frame, getting keyboard input, etc.
 */
 void Container_Refresh(Container * container) {
+	/* Holds the return of SDL_GetMouseState() */
 	uint32_t mouse_state;
+	/* Refresh the screen */
 	SDL_RenderPresent(container->renderer);
 	SDL_Delay(16);
+	/* Update they keyboardstate of the container */
 	SDL_PumpEvents();
 
-	mouse_state = SDL_GetMouseState(&container->mouse,x, &container->mouse.y);
-	if (mouse_state & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-		container->mouse.leftClick = true;
-	} else {
-		container->mouse.leftClick = false;
-	}
-	if (mouse_state & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
-		container->mouse.rightClick = true;
-	} else {
-		container->mouse.rightClick = false;
-	}
+	/* Retrieve the mouse state -- X, Y, leftClick, rightClick */
+	mouse_state = SDL_GetMouseState(&container->mouse.x, &container->mouse.y);
+	/* true if left mouse button is clicked, otherwise false */
+	container->mouse.leftClick = mouse_state & SDL_BUTTON(SDL_BUTTON_LEFT);
+	/* "       right "                                       */
+	container->mouse.rightClick = mouse_state & SDL_BUTTON(SDL_BUTTON_RIGHT);
 
+	/* Clear the screen before rendering the next frame */
 	SDL_SetRenderDrawColor(container->renderer, 255, 255, 255, 255);
 	SDL_RenderClear(container->renderer);
 }
 
-/* Makes the screen and checks if it is made correctly */
+/* Create a window of size <width, height> */
 SDL_Window * New_Window(int width, int height) {
 	SDL_Window *ret = SDL_CreateWindow(
-	"The Window", 
-	SDL_WINDOWPOS_CENTERED, 
-	SDL_WINDOWPOS_CENTERED, 
-	width, 
-	height, 
-	SDL_WINDOW_SHOWN
+		"Drawblade", 
+		SDL_WINDOWPOS_CENTERED, 
+		SDL_WINDOWPOS_CENTERED, 
+		width, 
+		height, 
+		SDL_WINDOW_SHOWN
 	);
 
 	if(!ret) {
@@ -89,12 +92,14 @@ SDL_Window * New_Window(int width, int height) {
 	return ret;
 }
 
-/* Makes a renderer */
+/* Makes the renderer for the window, allowing textures to be displayed */
 SDL_Renderer * New_Renderer(SDL_Window *window) {
 	SDL_Renderer *ret = SDL_CreateRenderer(
-	window,
-	-1,
-	SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC
+		window,
+		/* Default to first available graphics driver */
+		-1,
+		/* Use hardware acceleration and render in sync with refresh rate */
+		SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC
 	);
 	
 	if (!ret) {
@@ -121,7 +126,7 @@ void Container_KeyBoardUpdateCamera(Container *container) {
 
 }
 
-/* Updates camera depending on player's coordinates */
+/* Updates camera depending on player's position */
 void Container_PlayerUpdateCamera(Container *container, Player *p) {
 	container->camera->x = p->object->dstrect.x - Camera->w / 2;
 	container->camera->y = p->object->dstrect.y - Camera->h / 2;

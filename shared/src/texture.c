@@ -58,13 +58,22 @@ void Destroy_Texture(Texture *T) {
 	T = NULL;
 }
 
-/* Render a texture by itself - probably won't ever be used */
+/* Render a texture by itself */
 void Texture_Render(Texture *t, SDL_Renderer *r, int x, int y, SDL_Rect *Camera) {
-	SDL_Rect renderQuad = {
-		x,
-		y,
-		t->w,
-		t->h
-	};
-	SDL_RenderCopy(r, t->texture, NULL, &renderQuad);
+	/* Destination relative to window to render texture */
+	SDL_Rect renderRect;
+	/* Not fixed to the window - does not move with Camera */
+	if (Camera) {
+		renderRect.x = x - Camera->x;
+		renderRect.y = y - Camera->y;
+	/* Fixed to the window - such as the HUD, etc */
+	} else {
+		renderRect.x = x;
+		renderRect.y = y;
+	}
+	/* Use width and height of texture */
+	renderRect.w = t->w;
+	renderRect.h = t->h;
+	/* Add it to the renderer */
+	SDL_RenderCopy(r, t->texture, NULL, &renderRect);
 }
