@@ -41,16 +41,9 @@ void HUD_RenderHearts(HUD *h, SDL_Renderer *r) {
 	}
 }
 
-<<<<<<< HEAD
+
 void HUD_RenderWeapon(HUD *h, SDL_Renderer *r) {
 	Texture *weapon;
-	switch (game->player->weapon){
-=======
-<<<<<<< HEAD
-void renderWeaponHUD() {
-=======
-void renderWeaponHUD(void) {
->>>>>>> b6a124f4ac98a3401aa05e7526753bfd743b872a
 	//Bottom left HUD (weapon)
 	SDL_Rect weaponHUDDest;//Location for bottom HUD
 	weaponHUDDest.x = 0;
@@ -59,7 +52,6 @@ void renderWeaponHUD(void) {
 	weaponHUDDest.h = 199;
 
 	switch(game->player->weapon){
->>>>>>> e421613e16c110de941849ad51eee9e731c0bda2
 		case SWORD:
 			//Render texture to screen
 			weapon = h->textures.sword;
