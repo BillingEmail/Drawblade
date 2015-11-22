@@ -49,7 +49,7 @@ void Game_Run(Game *game, Container *container) {
 		World_Update(game->world, game->player);
 		/* Render the world */
 		World_Render(game->world, frame, container->renderer, container->camera);
-		Hud_Render(game->hud, container->renderer);
+		HUD_Render(game->hud, container->renderer);
 
 		/* If the world has been completed */
 		if (game->world->is_complete) {
@@ -74,6 +74,7 @@ void Game_Run(Game *game, Container *container) {
 
 /* Close and destroy everything */
 void Game_Close(Game *game) {
+	Hud_Destroy(game->hud);
 	World_Destroy(game->world);
 	Destroy_Player(game->player);
 	free(game);
@@ -82,7 +83,11 @@ void Game_Close(Game *game) {
 World * LoadWorld(int worldnum) {
 	World *ret;
 	char path[64];
-	ret = NewWorldFromFile
 
+	strcpy(path, "../assets/levels/level"
+	sprintf(path, "%d", worldnum);
+	strcat(path, ".lvl");
+	ret = NewWorld_FromFile(path);
 
+	return ret;
 }

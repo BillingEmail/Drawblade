@@ -7,7 +7,7 @@
 
 #include "world.h"
 #include "player.h"
-#include "../../shared/container.h"
+#include "../../shared/include/container.h"
 #include "HUD.h"
 
 typedef struct __game_overhead {
