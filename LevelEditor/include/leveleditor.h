@@ -31,6 +31,7 @@ void LevelEditor_Render(LevelEditor *editor);
 void LevelEditor_Update(LevelEditor *editor);
 
 /* This is a component of Update that will set the current tile type */
+void LevelEditor_AssertCameraBounds(LevelEditor *editor);
 bool LevelEditor_checkEditTile(LevelEditor *editor);
 void LevelEditor_getCurrentTheme(LevelEditor *editor);
 void LevelEditor_getCurrentItemType(LevelEditor *editor);
