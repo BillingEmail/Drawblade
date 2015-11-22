@@ -2,18 +2,8 @@
 #define PLAYER_H
 
 #include "../../shared/include/container.h" 
-#include "../include/character.h"
-#include "../include/object.h"
-
-typedef enum {
-	SWORD, BOW, STAFF
-} Weapontype;
-
-typedef struct _weapon {
-	CharacterType *projectile; /* null if sword */
-	CharacterType *weapon; /* the weapon, always index 0 */
-	WeaponType type;
-} Weapon;
+#include "character.h"
+#include "object.h"
 
 /* we'll make a player type later with weapon etc */
 typedef struct _player {
@@ -24,8 +14,6 @@ typedef struct _player {
 	Object *object; /* shortcut to physical object */
 	CharacterTraits *traits; /* shortcut to the traits */
 
-	Weapon *weapon; /* Array of 3 weapons */
-	WeaponType currentWeapon; /* current weapon :^) so like player->weapon[currentWeapon] etc */
 } Player;
 
 /* Basically call New_CharacterType and do some things */
