@@ -1,19 +1,21 @@
+#include <stdlib.h>
+#define MAINGAME
 #include "../include/player.h"
 #include "../include/behavior.h"
+#include "../include/character.h"
+#include "../../shared/include/container.h"
 
 /* Create the player */
-Player * New_Player(ObjectType *ot, int x, int y, Weapon weapon) {
+Player * New_Player(ObjectType *ot, int x, int y) {
 	Player *ret = malloc(sizeof(Player));
 
-	ret->ctype = New_CharacterType(ot, PlayerBehavior);
+	ret->ctype = New_CharacterType(ot, NULL);
 	/* Add the player character */
 	CharacterType_AddCharacter(ret->ctype, x, y, 0, 0);
 	/* shortcut to the objecttype, not sure why */
 	ret->otype = ret->ctype->object_type;
 	/* shortcut to the physical object */
 	ret->object = ret->otype->instances;
-	/* the weapon - determined by the level/theme */
-	ret->weapon = weapon;
 
 	return ret;
 }
@@ -26,21 +28,23 @@ void Destroy_Player(Player *p) {
 }
 
 /* Take input from wrapper and apply to the player */
-void Player_Update(Player *p, SDLWrapper *w) {
+void Player_Update(Player *p, Container *container) {
 	/* Jump */
-	if (w->KeyboardState[SDL_SCANCODE_SPACE]) {
-		p->traits->velocity.y -= 5;
+	if (container->keyboardstate[SDL_SCANCODE_SPACE]) {
+		if (p->traits->velocity.y == 0) {
+			p->traits->velocity.y = -5;
+		}
 	}
 	/* fastfall */
-	if (!p->traits->is_on_floor && w->KeyboardState[SDL_SCANCODE_S]) {
+	if (!p->traits->is_on_floor && container->keyboardstate[SDL_SCANCODE_S]) {
 		p->traits->velocity.y += 2;
 	}
 	/* left */
-	if (w->KeyboardState[SDL_SCANCODE_A]) {
+	if (container->keyboardstate[SDL_SCANCODE_A]) {
 		p->traits->velocity.x -= 2;
 	}
 	/* right */
-	if (w->KeyboardState[SDL_SCANCODE_D]) {
+	if (container->keyboardstate[SDL_SCANCODE_D]) {
 		p->traits->velocity.y += 2;
 	}
 	
