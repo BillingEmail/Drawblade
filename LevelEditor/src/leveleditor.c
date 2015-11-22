@@ -31,9 +31,16 @@ LevelEditor * New_LevelEditor(Level *level) {
 	editor->currentItem = BRICK;
 	editor->container->camera->y = editor->level->height * TILE_SCALE - SCREEN_HEIGHT;
 	editor->textureArray[LAVA][BLANK] = NULL;
-	editor->textureArray[LAVA][BRICK] = New_Texture(editor->container->renderer,
-	 "../assets/img/LevelEditor/blue64x64.png");
 	
+	editor->textureArray[LAVA][BRICK] = New_Texture(editor->container->renderer,
+	 "../assets/img/LevelEditor/Lava/brick.png");
+	editor->textureArray[ICE][BRICK] = New_Texture(editor->container->renderer,
+	 "../assets/img/LevelEditor/Ice/brick.png");
+	editor->textureArray[MEDIEVAL][BRICK] = New_Texture(editor->container->renderer,
+	 "../assets/img/LevelEditor/Medieval/brick.png");
+	editor->textureArray[SPOOKY][BRICK] = New_Texture(editor->container->renderer,
+	 "../assets/img/LevelEditor/Spooky/brick.png");
+
 	editor->textureArray[LAVA][PLAYER] = New_Texture(editor->container->renderer,
 	"../assets/img/LevelEditor/Lava/player.png");
 	editor->textureArray[ICE][PLAYER] = New_Texture(editor->container->renderer,
@@ -44,8 +51,14 @@ LevelEditor * New_LevelEditor(Level *level) {
 	"../assets/img/LevelEditor/Spooky/player.png");
 	
 	editor->backgroundArray[LAVA] = New_Texture(editor->container->renderer,
-	 "../assets/img/LevelEditor/bg1280x720.png");
-	
+	 "../assets/img/LevelEditor/Lava/background.png");
+	editor->backgroundArray[ICE] = New_Texture(editor->container->renderer,
+	 "../assets/img/LevelEditor/Ice/background.png");
+	editor->backgroundArray[MEDIEVAL] = New_Texture(editor->container->renderer,
+	 "../assets/img/LevelEditor/Medieval/background.png");
+	editor->backgroundArray[SPOOKY] = New_Texture(editor->container->renderer,
+	 "../assets/img/LevelEditor/Spooky/background.png");
+
 	return editor;
 }
 
