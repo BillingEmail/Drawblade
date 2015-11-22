@@ -1,55 +1,70 @@
 #include <SDL2/SDL.h>
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include "../include/mainmenu.h"
 #include "../../shared/include/texture.h"
 #include "../../shared/include/container.h"
 
-int Show_Main_Menu(Container *container) {
-    Texture *MainMenuBG = New_Texture(container->renderer, "../../assets/img/mainMenuBG.png");
-    Texture *MainMenuStart = New_Texture(container->renderer, "../../assets/img/mainMenuStart.png");
-    Texture *MainMenuQuit = New_Texture(container->renderer, "../../assets/img/mainMenuQuit.png");
+bool Container_MouseClickedButton(Container *container, Button button) {
+    /* Test if mouse's coords are within the texture's coords, split up x and y for readability */
+    return (container->mouse.leftClick &&
+	        container->mouse.x >= button.renderRect.x &&
+		    container->mouse.x <= (button.renderRect.x + button.renderRect.w) &&
+	        container->mouse.y >= button.renderRect.y &&
+		    container->mouse.y <= (button.renderRect.y + button.renderRect.h));
+}
 
-    /* The where and size of the textures */
-    SDL_Rect MainMenuStartDest;
-    MainMenuStartDest.x = 435;
-    MainMenuStartDest.y = 200;
-    MainMenuStartDest.w = 357;
-    MainMenuStartDest.h = 132;
+MainMenu * New_MainMenu(Container *container) {
+	MainMenu *ret = malloc(sizeof(MainMenu));
+    ret->background = New_Texture(container->renderer, "../../assets/img/mainMenuBG.png");
+    ret->buttons.start.texture = New_Texture(container->renderer, "../../assets/img/mainMenuStart.png");
+    ret->buttons.start.texture = New_Texture(container->renderer, "../../assets/img/mainMenuQuit.png");
+	ret->buttons.start.action = START;
 
-    SDL_Rect MainMenuQuitDest;
-    MainMenuQuitDest.x = 435;
-    MainMenuQuitDest.y = 400;
-    MainMenuQuitDest.w = 357;
-    MainMenuQuitDest.h = 132;
+    /* The where and size of the textures */ 
+    ret->buttons.start.renderRect.x = 435;
+    ret->buttons.start.renderRect.y = 200;
+    ret->buttons.start.renderRect.w = 357;
+    ret->buttons.start.renderRect.h = 132;
 
+    ret->buttons.quit.renderRect.x = 435;
+    ret->buttons.quit.renderRect.y = 400;
+    ret->buttons.quit.renderRect.w = 357;
+    ret->buttons.quit.renderRect.h = 132;
 
+	return ret;
+}
+
+Action MainMenu_Show(MainMenu *m, Container *container) {
+	Action ret;
     while (1) {
         Container_Refresh(container);
-	/* Check if mouse clicked and if over a menu texture */
-        if(container->mouse.leftClick && Check_Mouse_Over_Button(container, MainMenuStartDest)) {
-            return PLAY;
+		/* Check if mouse clicked and if over a menu texture */
+        if (Container_MouseClickedButton(container, m->buttons.start)) {
+        	/* Mouse clicked start button */
+		    ret = START;
+			break;
         }
-	if(container->mouse.leftClick && Check_Mouse_Over_Button(container, MainMenuQuitDest)) {
-            return QUIT;
+		if (Container_MouseClickedButton(container, m->buttons.quit)) {
+        	/* Mouse clicked quit button */
+		    ret = QUIT;
+			break;
         }
-        Texture_Render(MainMenuBG, container->renderer, 0, 0);
-	Texture_Render(MainMenuStart, container->renderer, MainMenuStartDest.x, MainMenuStartDest.y);
-	Texture_Render(MainMenuQuit, container->renderer, MainMenuQuitDest.x, MainMenuQuitDest.y);
+        Texture_Render(m->background, container->renderer, 0, 0, NULL);
+		Texture_Render(m->buttons.start.texture, container->renderer,
+	               m->buttons.start.renderRect.x, m->buttons.start.renderRect.y, NULL);
+		Texture_Render(m->buttons.quit.texture, container->renderer,
+	               m->buttons.quit.renderRect.x, m->buttons.quit.renderRect.y, NULL);
     }
-	Destroy_Texture(MainMenuBG);
-	Destroy_Texture(MainMenuStart);
-	Destroy_Texture(MainMenuQuit);
+
+	return ret;
 }
 
-
-bool Check_Mouse_Over_Button(Container *container, SDL_Rect *testingRect){
-    bool ret = false;
-    /* Test if mouse's coords are within the texture's coords, split up x and y for readability */
-    if(container->mouse.x >= testingRect.x && container->mouse.x <= (testingRect.x + testingRect.w)){
-	if(container->mouse.y >= testingRect.y && container->mouse.y <= (testingRect.y + testingRect.h)){
-	    ret = true;
-	}
-    }
-    return ret;
+/* Destroy the main menu */
+void MainMenu_Destroy(MainMenu *m) {
+	Destroy_Texture(m->buttons.start.texture);
+	Destroy_Texture(m->buttons.quit.texture);
+	Destroy_Texture(m->background);
+	free(m);
 }
+
