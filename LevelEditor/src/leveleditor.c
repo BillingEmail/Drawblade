@@ -43,9 +43,10 @@ LevelEditor * New_LevelEditor(Level *level) {
 /* Destroys the LevelEditor */
 void LevelEditor_End(LevelEditor *editor) {
 	Container_Destroy(editor->container);
-	for (int i = 0; i < editor->numThemes; i++) {
-		for (int j = 0; j < editor->textureArrayLength; j++) {
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 16; j++) {
 			Destroy_Texture(editor->textureArray[i][j]);
+	
 		}
 		Destroy_Texture(editor->backgroundArray[i]);
 	}

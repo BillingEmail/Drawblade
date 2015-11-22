@@ -11,8 +11,7 @@ typedef struct _LevelEditor {
 	Level *level;
 	Texture *textureArray[4][16];
 	Texture *backgroundArray[4];
-	Tile currentItem;
-
+	int currentItem;
 } LevelEditor;
 
 /*
