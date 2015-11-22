@@ -1,15 +1,12 @@
 #ifndef HUD_H
 #define HUD_H
 #include "../../shared/include/container.h"
-
+#include "../../shared/include/texture.h"
 
 typedef struct _hud {
-	struct {
-		Texture *sword;
-		Texture *staff;
-		Texture *bow;
-		Texture *heart;
-	} textures;
+	Texture **weaponTextures;
+	Texture *heartTexture;
+
 	SDL_Rect heartdst;
 	SDL_Rect weapondst;
 
@@ -26,5 +23,8 @@ void HUD_RenderHearts(HUD *h, SDL_Renderer *r);
 
 //Renders the weapon box based on player weapon
 void HUD_RenderWeapon(HUD *h, SDL_Renderer *r);
+
+/* Destroy the HUD and it's textures */
+void HUD_Destroy(HUD *h);
 
 #endif
