@@ -12,18 +12,15 @@
 
 #include "object.h"
 
+typedef struct {
+	float x;
+	float y;
+} vector;
+
 /* Traits unique to characters */
 typedef struct _character_traits {
-	struct {
-		float x;
-		float y;
-	} velocity;
-	
-	struct {
-		float x;
-		float y;
-	} acceleration;
-	
+	vector velocity;
+	vector acceleration;
 	int hitpoints;
 	bool is_dead;
 	bool is_on_floor;
