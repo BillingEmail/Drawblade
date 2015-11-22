@@ -141,6 +141,13 @@ void LevelEditor_AssertCameraBounds(LevelEditor *editor) {
 
 	if (editor->container->camera->x > editor->level->width * TILE_SCALE - SCREEN_WIDTH + TILE_SCALE / 2)
 		editor->container->camera->x = editor->level->width * TILE_SCALE - SCREEN_WIDTH + TILE_SCALE / 2;
+	
+	if (SCREEN_WIDTH > editor->level->width * TILE_SCALE) {
+		editor->container->camera->x = (SCREEN_WIDTH - editor->level->width * TILE_SCALE) / 2;
+	}
+	if (SCREEN_HEIGHT > editor->level->height * TILE_SCALE) {
+		editor->container->camera->y = (SCREEN_HEIGHT - editor->level->height * TILE_SCALE) / 2;
+	}
 }
 
 bool LevelEditor_checkEditTile(LevelEditor *editor) {
