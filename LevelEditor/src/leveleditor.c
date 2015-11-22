@@ -30,6 +30,7 @@ LevelEditor * New_LevelEditor(Level *level) {
 	editor->level = level;
 	editor->currentItem = BRICK;
 	editor->container->camera->y = editor->level->height * TILE_SCALE - SCREEN_HEIGHT;
+	editor->container->camera->x = 0;
 	editor->textureArray[LAVA][BLANK] = NULL;
 	
 	editor->textureArray[LAVA][BRICK] = New_Texture(editor->container->renderer,
@@ -115,6 +116,7 @@ void LevelEditor_Render(LevelEditor *editor) {
 
 void LevelEditor_Update(LevelEditor *editor) {
 	Container_Refresh(editor->container);	
+	Container_KeyBoardUpdateCamera(editor->container);
 	LevelEditor_AssertCameraBounds(editor);
 	LevelEditor_getCurrentTheme(editor);	
 	LevelEditor_getCurrentItemType(editor);
@@ -125,21 +127,20 @@ void LevelEditor_Update(LevelEditor *editor) {
 			[(editor->container->mouse.x + editor->container->camera->x) / TILE_SCALE] =
  	        editor->currentItem;
 	}
-	Container_KeyBoardUpdateCamera(editor->container);
 }
 
 void LevelEditor_AssertCameraBounds(LevelEditor *editor) {
-	if (editor->container->camera->y < 0)
-	    editor->container->camera->y = 0;
+	if (editor->container->camera->y < 0 - TILE_SCALE / 2)
+	    editor->container->camera->y = 0 - TILE_SCALE / 2;
 	
-	if (editor->container->camera->y > editor->level->height * TILE_SCALE - SCREEN_HEIGHT)
-	    editor->container->camera->y = editor->level->height * TILE_SCALE - SCREEN_HEIGHT;
+	if (editor->container->camera->y > editor->level->height * TILE_SCALE - SCREEN_HEIGHT + TILE_SCALE / 2)
+	    editor->container->camera->y = editor->level->height * TILE_SCALE - SCREEN_HEIGHT + TILE_SCALE / 2;
 	
-	if (editor->container->camera->x < 0)
-		editor->container->camera->x = 0;
+	if (editor->container->camera->x < 0 - TILE_SCALE / 2) 
+		editor->container->camera->x = 0 - TILE_SCALE / 2;
 
-	if (editor->container->camera->x > editor->level->width * TILE_SCALE - SCREEN_WIDTH)
-		editor->container->camera->x = editor->level->width * TILE_SCALE - SCREEN_WIDTH;
+	if (editor->container->camera->x > editor->level->width * TILE_SCALE - SCREEN_WIDTH - TILE_SCALE / 2)
+		editor->container->camera->x = editor->level->width * TILE_SCALE - SCREEN_WIDTH - TILE_SCALE / 2;
 }
 
 bool LevelEditor_checkEditTile(LevelEditor *editor) {
