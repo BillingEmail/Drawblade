@@ -12,15 +12,15 @@ Mode getMode(void) {
 	char mode[5];
 
 	//prompt the user
-	printf("Do you want to create a new file or open an old file?\n" 
-			"Type New or Load:\n");
+	printf("Do you want to create a new level or open an old level?\n" 
+			"Enter New or Load: ");
 	scanf("%s", mode);
 
 	//check if they want "New" or "Load"
-	if(strcmp("New", mode) || strcmp("new", mode)) {
+	if(strcmp("New", mode) == 0 || strcmp("new", mode) == 0) {
 		return NEW;
 	}
-	if(strcmp("Load", mode) || strcmp("load", mode)) {
+	if(strcmp("Load", mode) == 0 || strcmp("load", mode) == 0) {
 		return LOAD;
 	}
 	//if not "New" or "Load"
@@ -35,7 +35,7 @@ It does this by using fgets, and then removing
 char * GetFileName(void) {
 	char *FileName = malloc(sizeof(char) * 64);	
 	char Buffer[16];
-	printf("\nEnter the name of the File: ");
+	printf("\nEnter the name of the level: ");
 	strcpy(FileName, "../assets/levels/");
 	scanf("%s", Buffer);
 	strcat(FileName, Buffer);
@@ -81,9 +81,9 @@ Level * New_Level(void) {
 	//For opening a new level
 	if (mode == NEW) {
 		//defaults
-		printf("\nWhat is the height you want for your level?\n");
+		printf("\nEnter the height of the level: ");
 		scanf("%d", &level->height);
-		printf("What is the width you want for your level?\n");
+		printf("Enter the width of the level: ");
 		scanf("%d", &level->width);
 		level->theme = LAVA;
 		CreateTiles(level);
@@ -113,7 +113,6 @@ void LoadLevelFromFile(Level *level, FILE *fp) {
 		fread((level->tileArray[i]), sizeof(Tile), level->width, fp);
 	}
 
-	
 }
 
 /*
