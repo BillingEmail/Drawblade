@@ -17,28 +17,15 @@ Mode getMode(void) {
 	fgets(createBool, 5, stdin);
 
 	//check if they want "New" or "Load"
-	if(strncmp("New", createBool, 3)) {
+	if(strncmpi("New", createBool, 3)) {
 		return true;
 	}
-	if(strncmp("Load", createBool, 4)) {
+	if(strncmpi("Load", createBool, 4)) {
 		return false;
 	}
 	
 
-	//loops until they have a valid input
-	while (1) {
-		printf("\nInvalid Input\n");
-		printf("Type New or Load:\n");
-		fgets(createBool, 5, stdin);
-	
-		if(strncmp("New", createBool, 3)) {
-			return NEW;
-		}
-		if(strncmp("Load", createBool, 4)) {
-			return LOAD;
-		}
-	}
-	
+
 	//it never should, but in case it does
 	return FAIL;
 }
@@ -88,6 +75,10 @@ Level * New_Level(void) {
 	//malloc's a single level
 	Level *level = malloc(sizeof(Level));
 	Mode mode = getMode();
+	while (mode == FAIL) {
+		printf("Invalid input\n");
+		mode = getMode();	
+	}
 	FILE *fp;
 
 	//For opening a new level
