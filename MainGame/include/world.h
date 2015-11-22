@@ -3,20 +3,22 @@
  * A world is just a list of objects/characters
  * for now.
  */
-#ifndef world_h
-#define world_h
+#ifndef WORLD_H
+#define WORLD_H
+
+#include "player.h"
 #include "character.h"
 #include "../../shared/include/level.h"
 
 enum {
 	OBJECT_BRICK = 0,
-}
+};
 
 enum {
 	ENEMY_1 = 0,
 	ENEMY_2 = 1,
 	ENEMY_3 = 2
-}
+};;
 
 /* List of characters and objects -- remember that each type also has a list
  * instances of that type
@@ -43,8 +45,11 @@ typedef struct _world {
 
 } World;
 
+/* Create an actual world from a already-loaded level */
+World * World_LoadWorldFromLevel(Level *level, Player *p, Container *container);
+
 /* Update the world */
-void World_Update(World *w, Player *p);
+void World_Update(World *w, Player *p, int frame);
 
 /* Load a world from a file */
 World * NewWorld_FromFile(char *path);
