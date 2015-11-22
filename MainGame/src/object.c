@@ -118,17 +118,17 @@ void ObjectType_ObjectNextSprite(ObjectType *o, int instance_index) {
 }
 
 /* Render an instance of ObjectType */
-void ObjectType_RenderObject(ObjectType *ot, int instance_index, SDL_Wrapper *wrapper) {
+void ObjectType_RenderObject(ObjectType *ot, int instance_index, Container *container) {
 	SDL_Rect *objectrefrect = &ot->instances[instance_index].dstrect;
 	SDL_Rect dstrect = {
-		objectrefrect->x - wrapper->camera->x,
-		objectrefrect->y - wrapper->camera->y,
+		objectrefrect->x - container->camera->x,
+		objectrefrect->y - container->camera->y,
 		objectrefrect->w,
 		objectrefrect->h
 	};
 	
 	SDL_RenderCopy(
-		wrapper->renderer,
+		container->renderer,
 		ot->spritesheet->texture->texture,
 		&ot->animations[ot->instances[instance_index].animation][ot->instances[instance_index].sprite_index],
 		&dstrect
