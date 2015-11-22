@@ -43,11 +43,11 @@ LevelEditor * New_LevelEditor(Level *level) {
 /* Destroys the LevelEditor */
 void LevelEditor_End(LevelEditor *editor) {
 	Container_Destroy(editor->container);
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 16; j++) {
+	for (int i = 0; i < editor->numThemes; i++) {
+		for (int j = 0; j < editor->textureArrayLength; j++) {
 			Destroy_Texture(editor->textureArray[i][j]);
 		}
-		Destroy_Texture(editor->backgroundArray[4]);
+		Destroy_Texture(editor->backgroundArray[i]);
 	}
 	free(editor);
 }
@@ -77,17 +77,17 @@ void LevelEditor_Render(LevelEditor *editor) {
 	
 	for (int i = 0; i <= editor->level->height; i++) {
 		SDL_RenderDrawLine(editor->container->renderer,
-		0 + editor->container->camera->x, i * 64 + editor->container->camera->y,
-		editor->level->width * 64 + editor->container->camera->x, i * 64 + editor->container->camera->y);
+		0 - editor->container->camera->x, i * 64 - editor->container->camera->y,
+		editor->level->width * 64 - editor->container->camera->x, i * 64 - editor->container->camera->y);
 	}
 	for (int i = 0; i <= editor->level->width; i++) {
 		SDL_RenderDrawLine(editor->container->renderer,
-		i * 64 + editor->container->camera->x, 0 + editor->container->camera->y,
-		i * 64 + editor->container->camera->x, editor->level->height * 64 + editor->container->camera->y);
+		i * 64 - editor->container->camera->x, 0 - editor->container->camera->y,
+		i * 64 - editor->container->camera->x, editor->level->height * 64 - editor->container->camera->y);
 	}
 	
 	Texture_Render(editor->textureArray[theme][editor->currentItem], editor->container->renderer,
-	editor->container->mouse.x - 32, editor->container->mouse.y - 32, editor->container->camera);
+	editor->container->mouse.x - 32, editor->container->mouse.y - 32, NULL);
 }
 
 void LevelEditor_Update(LevelEditor *editor) {
@@ -102,7 +102,7 @@ void LevelEditor_Update(LevelEditor *editor) {
 			[(editor->container->mouse.x + editor->container->camera->x) / 64] =
  	        editor->currentItem;
 	}
-
+	Container_KeyBoardUpdateCamera(editor->container);
 }
 
 bool LevelEditor_checkEditTile(LevelEditor *editor) {
