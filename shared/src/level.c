@@ -9,24 +9,21 @@ returns true or false depending on whether you are creating a
 new file or opening an old one respectively.
 */
 Mode getMode(void) {
-	char createBool[5];
+	char mode[5];
 
 	//prompt the user
 	printf("Do you want to create a new file or open an old file?\n" 
 			"Type New or Load:\n");
-	fgets(createBool, 5, stdin);
+	scanf("%s", mode);
 
 	//check if they want "New" or "Load"
-	if(strncmpi("New", createBool, 3)) {
-		return true;
+	if(strcmp("New", mode) || strcmp("new", mode)) {
+		return NEW;
 	}
-	if(strncmpi("Load", createBool, 4)) {
-		return false;
+	if(strcmp("Load", mode) || strcmp("load", mode)) {
+		return LOAD;
 	}
-	
-
-
-	//it never should, but in case it does
+	//if not "New" or "Load"
 	return FAIL;
 }
 
@@ -37,11 +34,11 @@ It does this by using fgets, and then removing
 */
 char * GetFileName(void) {
 	char *FileName = malloc(sizeof(char) * 64);	
-	char Buffer[16];;
+	char Buffer[16];
 	printf("\nEnter the name of the File: ");
 	strcpy(FileName, "../assets/levels/");
 	scanf("%s", Buffer);
-	strcat(FileName, Buffer);;
+	strcat(FileName, Buffer);
 	strcat(FileName, ".lvl");
 	return FileName;
 }
