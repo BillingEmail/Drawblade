@@ -7,7 +7,7 @@
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
-
+#define TILE_SCALE 64
 
 /* 
    All of the functions for editing the level are broken down this way
@@ -28,15 +28,24 @@ LevelEditor * New_LevelEditor(Level *level) {
 	LevelEditor *editor = malloc(sizeof(LevelEditor));
 	editor->container = New_Container(SCREEN_WIDTH, SCREEN_HEIGHT);
 	editor->level = level;
-	editor->currentItem = BLANK;
+	editor->currentItem = BRICK;
+	editor->container->camera->y = editor->level->height * TILE_SCALE - SCREEN_HEIGHT;
 	editor->textureArray[LAVA][BLANK] = NULL;
 	editor->textureArray[LAVA][BRICK] = New_Texture(editor->container->renderer,
 	 "../assets/img/LevelEditor/blue64x64.png");
+	
 	editor->textureArray[LAVA][PLAYER] = New_Texture(editor->container->renderer,
-	 "../assets/img/LevelEditor/green128x128.png");
-
+	"../assets/img/LevelEditor/Lava/player.png");
+	editor->textureArray[ICE][PLAYER] = New_Texture(editor->container->renderer,
+	"../assets/img/LevelEditor/Ice/player.png");
+	editor->textureArray[MEDIEVAL][PLAYER] = New_Texture(editor->container->renderer,
+	"../assets/img/LevelEditor/Medieval/player.png");
+	editor->textureArray[SPOOKY][PLAYER] = New_Texture(editor->container->renderer,
+	"../assets/img/LevelEditor/Spooky/player.png");
+	
 	editor->backgroundArray[LAVA] = New_Texture(editor->container->renderer,
 	 "../assets/img/LevelEditor/bg1280x720.png");
+	
 	return editor;
 }
 
@@ -71,20 +80,20 @@ void LevelEditor_Render(LevelEditor *editor) {
 		for (int j = 0; j < editor->level->width; j++) {
 			Texture_Render(
 			editor->textureArray[theme][editor->level->tileArray[i][j]],
-			editor->container->renderer, j * 64, i * 64, editor->container->camera	
+			editor->container->renderer, j * TILE_SCALE, i * TILE_SCALE, editor->container->camera	
 			);
 		}
 	}
 	
 	for (int i = 0; i <= editor->level->height; i++) {
 		SDL_RenderDrawLine(editor->container->renderer,
-		0 - editor->container->camera->x, i * 64 - editor->container->camera->y,
-		editor->level->width * 64 - editor->container->camera->x, i * 64 - editor->container->camera->y);
+		0 - editor->container->camera->x, i * TILE_SCALE - editor->container->camera->y,
+		editor->level->width * TILE_SCALE - editor->container->camera->x, i * TILE_SCALE - editor->container->camera->y);
 	}
 	for (int i = 0; i <= editor->level->width; i++) {
 		SDL_RenderDrawLine(editor->container->renderer,
-		i * 64 - editor->container->camera->x, 0 - editor->container->camera->y,
-		i * 64 - editor->container->camera->x, editor->level->height * 64 - editor->container->camera->y);
+		i * TILE_SCALE - editor->container->camera->x, 0 - editor->container->camera->y,
+		i * TILE_SCALE - editor->container->camera->x, editor->level->height * TILE_SCALE - editor->container->camera->y);
 	}
 	
 	Texture_Render(editor->textureArray[theme][editor->currentItem], editor->container->renderer,
@@ -93,22 +102,36 @@ void LevelEditor_Render(LevelEditor *editor) {
 
 void LevelEditor_Update(LevelEditor *editor) {
 	Container_Refresh(editor->container);	
-	
+	LevelEditor_AssertCameraBounds(editor);
 	LevelEditor_getCurrentTheme(editor);	
 	LevelEditor_getCurrentItemType(editor);
 	
 	if (LevelEditor_checkEditTile(editor)) {
 			editor->level->tileArray
-			[(editor->container->mouse.y + editor->container->camera->y) / 64]
-			[(editor->container->mouse.x + editor->container->camera->x) / 64] =
+			[(editor->container->mouse.y + editor->container->camera->y) / TILE_SCALE]
+			[(editor->container->mouse.x + editor->container->camera->x) / TILE_SCALE] =
  	        editor->currentItem;
 	}
 	Container_KeyBoardUpdateCamera(editor->container);
 }
 
+void LevelEditor_AssertCameraBounds(LevelEditor *editor) {
+	if (editor->container->camera->y < 0)
+	    editor->container->camera->y = 0;
+	
+	if (editor->container->camera->y > editor->level->height * TILE_SCALE - SCREEN_HEIGHT)
+	    editor->container->camera->y = editor->level->height * TILE_SCALE - SCREEN_HEIGHT;
+	
+	if (editor->container->camera->x < 0)
+		editor->container->camera->x = 0;
+
+	if (editor->container->camera->x > editor->level->width * TILE_SCALE - SCREEN_WIDTH)
+		editor->container->camera->x = editor->level->width * TILE_SCALE - SCREEN_WIDTH;
+}
+
 bool LevelEditor_checkEditTile(LevelEditor *editor) {
-	int yclick = (editor->container->mouse.y + editor->container->camera->y) / 64;
-	int xclick = (editor->container->mouse.x + editor->container->camera->x) / 64;
+	int yclick = (editor->container->mouse.y + editor->container->camera->y) / TILE_SCALE;
+	int xclick = (editor->container->mouse.x + editor->container->camera->x) / TILE_SCALE;
 	if (editor->container->mouse.leftClick) {
 		if (yclick < editor->level->height && yclick >= 0 && xclick < editor->level->width && xclick >= 0) {
 			return true;
@@ -124,7 +147,8 @@ void LevelEditor_getCurrentItemType(LevelEditor *editor) {
 }
 
 void LevelEditor_getCurrentTheme(LevelEditor *editor) {
-	if (editor->container->keyboardstate[SDL_SCANCODE_I]) editor->level->theme = MEDIEVAL;
-	if (editor->container->keyboardstate[SDL_SCANCODE_O]) editor->level->theme = ICE;
-	if (editor->container->keyboardstate[SDL_SCANCODE_P]) editor->level->theme = LAVA;
+	if (editor->container->keyboardstate[SDL_SCANCODE_U]) editor->level->theme = MEDIEVAL;
+	if (editor->container->keyboardstate[SDL_SCANCODE_I]) editor->level->theme = ICE;
+	if (editor->container->keyboardstate[SDL_SCANCODE_O]) editor->level->theme = LAVA;
+	if (editor->container->keyboardstate[SDL_SCANCODE_P]) editor->level->theme = SPOOKY;
 }
