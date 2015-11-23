@@ -8,12 +8,12 @@
 #include "world.h"
 #include "player.h"
 #include "../../shared/include/container.h"
-#include "HUD.h"
+//#include "HUD.h"
 
 typedef struct __game_overhead {
 	Player *player; /* the player */
 	World *world; /* the current world */
-	HUD *hud;
+//	HUD *hud;
 
 	int current_level; /* ok */
 
@@ -22,16 +22,16 @@ typedef struct __game_overhead {
 
 } Game;
 
-/* I don't know */
+/* Make game */
 Game * New_Game(Container *container);
 
-/* run the god damn fucking game */
-void Game_Run(Game *game);
+/* run game */
+void Game_Run(Game *game, Container *container);
 
 /* done */
 void Game_Close(Game *game);
 
 /* Load level 1, 2, 3, w/e */
-void LoadWorld(int worldnum);
+World * LoadWorld(int worldnum, Player *p, Container *c);
 
 #endif

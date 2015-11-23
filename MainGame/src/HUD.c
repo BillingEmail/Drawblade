@@ -1,10 +1,11 @@
 //Using SDL, SDL_image, standard IO, and strings
 #include <SDL2/SDL.h>
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include "../include/HUD.h"
 #include "../../shared/include/texture.h"
 #include "../../shared/include/container.h"
+#include "../include/player.h"
 
 HUD * Create_HUD(Container *container) {
 	HUD *ret = malloc(sizeof(HUD));
@@ -27,23 +28,23 @@ HUD * Create_HUD(Container *container) {
 	return ret;
 }
 
-void HUD_Render(HUD *h, SDL_Renderer *r) {
+void HUD_Render(HUD *h, Player *p, LevelType theme, SDL_Renderer *r) {
 	//Will render a number of hearts 0-5
-	HUD_RenderHearts(h, r);
+	HUD_RenderHearts(h, r, p);
 
 	//Will render the weapon in bottom left
-	HUD_RenderWeapon(h, r);
+	HUD_RenderWeapon(h, r, theme);
 }
 
-void HUD_RenderHearts(HUD *h, SDL_Renderer *r) {
+void HUD_RenderHearts(HUD *h, Player *player, SDL_Renderer *r) {
 	//Based on player health, will render hearts
-	for (int i = 0; i < (game->player->health); i++){		
+	for (int i = 0; i < (player->health); i++){		
 		Texture_Render(h->heart, r, h->heartdst.x + (i * 33), 35, NULL);
 	}
 }
 
 void HUD_RenderWeapon(HUD *h, SDL_Renderer *r) {
-	Texture_Render(r, h->weaponTextures[game->player->weapon], NULL, &h->weapondst, NULL);
+	Texture_Render(h->weaponTextures[theme], r, h->weapondst.x, h->weapondst.y, NULL);
 }
 
 /* Destroy the HUD and it's textures */

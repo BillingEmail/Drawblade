@@ -16,7 +16,7 @@ int main(void) {
 
 	if (MainMenu_Show(StartScreen, container) == START) {
 		game = New_Game(container);
-		Game_Run(game);
+		Game_Run(game, container);
 		Game_Close(game);
 	}
 

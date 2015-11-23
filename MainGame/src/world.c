@@ -11,6 +11,20 @@
 #include "../include/player.h"
 #include "../../shared/include/container.h"
 
+World * NewWorld_FromFile(char *path, Player *p, Container *container) {
+	World *ret;
+	Level *level = malloc(sizeof(Level));
+	FILE *why_satya = fopen(path, "rb");
+	Level_LoadFromFile(level, why_satya);
+	fclose(why_satya);
+
+	ret = World_LoadWorldFromLevel(level, p, container);
+
+	Level_Destroy(level);
+
+	return ret;
+}
+
 World * World_LoadWorldFromLevel(Level * level, Player *p, Container *container) {
 	World *ret = malloc(sizeof(World));
 	
@@ -85,4 +99,16 @@ void World_Render(World *w, int frame, Container *container) {
 			CharacterType_RenderCharacter(w->EnemyTypes[i], e, container);
 		}
 	}
+}
+
+void World_Destroy(World *w) {
+	for (int i = 0; i < w->EnemyTypeCount; i++) {
+		Destroy_CharacterType(w->EnemyTypes[i]);
+	}
+	for (int i = 0; i < w->ObjectTypeCount; i++) {
+		Destroy_ObjectType(w->ObjectTypes[i]);
+	}
+
+	Destroy_Texture(w->background);
+	free(w);
 }

@@ -16,13 +16,13 @@ typedef struct _hud {
 HUD * Create_HUD(Container *c);
 
 //Calls the individual render functions
-void HUD_Render(HUD *h, SDL_Renderer *r);
+void HUD_Render(HUD *h, Player *player, SDL_Renderer *r);
 
 //Renders the hearts based on player health
-void HUD_RenderHearts(HUD *h, SDL_Renderer *r);
+void HUD_RenderHearts(HUD *h, Player *player, SDL_Renderer *r);
 
 //Renders the weapon box based on player weapon
-void HUD_RenderWeapon(HUD *h, SDL_Renderer *r);
+void HUD_RenderWeapon(HUD *h, LevelType theme, SDL_Renderer *r);
 
 /* Destroy the HUD and it's textures */
 void HUD_Destroy(HUD *h);

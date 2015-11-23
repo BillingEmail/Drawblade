@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #define MAINGAME
 #include "../include/player.h"
+
 #include "../include/behavior.h"
 #include "../include/character.h"
 #include "../../shared/include/container.h"
@@ -61,4 +62,9 @@ void Player_Update(Player *p, Container *container) {
 	if (p->traits->velocity.y < -5) {
 		p->traits->velocity.y = 5;
 	}		
+}
+
+void Container_PlayerUpdateCamera(Container *container, Player *p) {
+	container->camera->x = p->object->dstrect.x - container->camera->w / 2;
+	container->camera->y = p->object->dstrect.y - container->camera->h / 2;
 }

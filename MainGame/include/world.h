@@ -52,12 +52,14 @@ World * World_LoadWorldFromLevel(Level *level, Player *p, Container *container);
 void World_Update(World *w, Player *p, int frame);
 
 /* Load a world from a file */
-World * NewWorld_FromFile(char *path);
+World * NewWorld_FromFile(char *path, Player *p, Container *c);
 
 /* Destroy a world */
 void Destroy_World(World *w);
 
 /* Render all of the facets of the world */
 void World_Render(World *w, int frame, Container *c);
+
+void World_Destroy(World *w);
 
 #endif

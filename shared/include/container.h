@@ -9,9 +9,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#ifdef GAME_H
-#include "../../MainGame/include/player.h"
-#endif
+
 
 /* Contains commonly-used interfacing objects */
 typedef struct _SDL_container {
@@ -49,10 +47,5 @@ SDL_Renderer * New_Renderer(SDL_Window *window);
 
 /* Update the camera with the arrow keys -- used in level editor*/
 void Container_KeyBoardUpdateCamera(Container *c);
-
-#ifdef GAME_H
-/* Update the camera using player position -- used in game */
-void Container_PlayerUpdateCamera(Container *c, Player *p);
-#endif
 
 #endif

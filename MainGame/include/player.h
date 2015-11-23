@@ -5,6 +5,7 @@
 #include "character.h"
 #include "object.h"
 
+
 /* we'll make a player type later with weapon etc */
 typedef struct _player {
 	CharacterType *ctype; /* the actual type */
@@ -15,6 +16,19 @@ typedef struct _player {
 	CharacterTraits *traits; /* shortcut to the traits */
 
 } Player;
+
+
+
+/* we'll make a player type later with weapon etc */
+//typedef struct _player {
+//	CharacterType *ctype; /* the actual type */
+
+	/* just shortcuts */
+//	ObjectType *otype; /* may be handy */
+//	Object *object; /* shortcut to physical object */
+//	CharacterTraits *traits; /* shortcut to the traits */
+
+//} Player;
 
 /* Basically call New_CharacterType and do some things */
 Player * New_Player(ObjectType *ot, int x, int y);
@@ -30,5 +44,7 @@ void Player_Update(Player *p, Container *c);
 
 /* Call CharacterType_KillCharacter() and end the game :^) */
 void Player_Die(Player *p);
+
+void Container_PlayerUpdateCamera(Container *c, Player *p);
 
 #endif

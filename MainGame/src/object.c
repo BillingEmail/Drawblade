@@ -6,12 +6,6 @@
 #include <SDL2/SDL.h>
 #include "../include/object.h"
 
-int main(void) {
-	return TOP_HITBOX;
-}
-
-
-
 /* Create a new Object, with a spritesheet already created */
 ObjectType * New_ObjectType(Spritesheet *spritesheet, int w, int h) {
 

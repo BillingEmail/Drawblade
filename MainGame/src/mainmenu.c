@@ -16,11 +16,11 @@ bool Container_MouseClickedButton(Container *container, Button button) {
 
 MainMenu * New_MainMenu(Container *container) {
 	MainMenu *ret = malloc(sizeof(MainMenu));
-    ret->background = New_Texture(container->renderer, "../../assets/img/mainMenuBG.png");
-    ret->buttons.start.texture = New_Texture(container->renderer, "../../assets/img/mainMenuStart.png");
-    ret->buttons.start.texture = New_Texture(container->renderer, "../../assets/img/mainMenuQuit.png");
+    ret->background = New_Texture(container->renderer, "../assets/img/mainMenuBG.png");
+    ret->buttons.start.texture = New_Texture(container->renderer, "../assets/img/mainMenuStart.png");
+    ret->buttons.quit.texture = New_Texture(container->renderer, "../assets/img/mainMenuQuit.png");
 	ret->buttons.start.action = START;
-
+	ret->buttons.quit.action = QUIT;
     /* The where and size of the textures */ 
     ret->buttons.start.renderRect.x = 435;
     ret->buttons.start.renderRect.y = 200;
