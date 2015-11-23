@@ -33,13 +33,20 @@ This collects a string input from the user
 It does this by using fgets, and then removing 
 */
 char * GetFileName(void) {
+	//the name of the file
 	char *FileName = malloc(sizeof(char) * 64);	
+	//buffer for the name
 	char Buffer[16];
+
+	//prompt the user for the name
 	printf("\nEnter the name of the level: ");
-	strcpy(FileName, "../assets/levels/");
 	scanf("%s", Buffer);
+
+	//concatenates the path to the name the user inputs
+	strcpy(FileName, "../assets/levels/");
 	strcat(FileName, Buffer);
 	strcat(FileName, ".lvl");
+	
 	return FileName;
 }
 
@@ -71,6 +78,8 @@ when it is done, it will return the level it has creaeted
 Level * New_Level(void) {
 	//malloc's a single level
 	Level *level = malloc(sizeof(Level));
+	
+	//saves the mode and checks if it failed or not
 	Mode mode = getMode();
 	while (mode == FAIL) {
 		printf("Invalid input\n");
@@ -80,18 +89,21 @@ Level * New_Level(void) {
 
 	//For opening a new level
 	if (mode == NEW) {
-		//defaults
+		//prompts the user for a width and a height
 		printf("\nEnter the height of the level: ");
 		scanf("%d", &level->height);
 		printf("Enter the width of the level: ");
 		scanf("%d", &level->width);
-		level->theme = LAVA;
-		CreateTiles(level);
+		//sets default theme
+		level->theme = MEDIEVAL;
+		//callocs all of the tiles so they can be used later
+		Level_CreateTiles(level);
 	}
 	//For opening an old level
 	else {
+		//gets the file name
 		fp = GetFile();
-		LoadLevelFromFile(level, fp);
+		Level_LoadFromFile(level, fp);
 		fclose(fp);
 	}
 
@@ -103,12 +115,14 @@ This reads in the binary file that was previously written
 It stores it too into a level
 fread is for reading binary files basically
 */
-void LoadLevelFromFile(Level *level, FILE *fp) {
+void Level_LoadFromFile(Level *level, FILE *fp) {
+	//each line reads in the number of bits in an int and stores it to each value
 	fread(&level->width, sizeof(int), 1, fp);
 	fread(&level->height, sizeof(int), 1, fp);
 	fread(&level->theme, sizeof(int), 1, fp);	
-	CreateTiles(level);
-	
+	//callocs the tiles
+	Level_CreateTiles(level);
+	//reads a line of tiles of size width into tileArray per iteration 
 	for (int i = 0; i < level->height; i++) {
 		fread((level->tileArray[i]), sizeof(Tile), level->width, fp);
 	}
@@ -121,20 +135,21 @@ it first opens the file with the desired file name of the user
 it then fwrites it to the file with that file name
 it also frees the level and tilearray in the level
 */
-void SaveLevel(Level *level) {
+void Level_Save(Level *level) {
 	char *FileName;
 	FILE *fp;
-
+	//opens the file
 	fp = fopen((FileName = GetFileName()), "wb");
 	free(FileName);
-
+	//writes to a file just as it was read to a file
 	fwrite(&level->width, sizeof(int), 1, fp);
 	fwrite(&level->height, sizeof(int), 1, fp);
 	fwrite(&level->theme, sizeof(int), 1, fp);
 	for (int i = 0; i < level->height; i++) {
 		fwrite((level->tileArray[i]), sizeof(Tile), level->width, fp);
 	}
-	DestroyLevel(level);
+	//destroys the level
+	Level_Destroy(level);
 
 	fclose(fp);
 }
@@ -143,7 +158,7 @@ void SaveLevel(Level *level) {
 Goes through the array and frees everything
 It then frees the actual level
 */
-void DestroyLevel(Level *level) {
+void Level_Destroy(Level *level) {
 	for (int i = 0; i < level->height; i++) {
 		free(level->tileArray[i]);
 	}
@@ -154,7 +169,7 @@ void DestroyLevel(Level *level) {
 Mallocs the giant tile array you have
 It then callocs it so that every value in the array is 0
 */
-void CreateTiles(Level *level) {
+void Level_CreateTiles(Level *level) {
 	level->tileArray = malloc(level->height * sizeof(Tile *));
 	for (int i = 0; i < level->height; i++) {
 		level->tileArray[i] = calloc(level->width, sizeof(Tile));

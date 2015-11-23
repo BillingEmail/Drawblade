@@ -23,12 +23,15 @@ typedef struct _Level {
 	Tile **tileArray;
 } Level;
 
+
 Mode getMode(void);
+//functions for getting the file
 char * getFileName(void);
 FILE * GetFile(void);
+//functions for level struct
 Level * New_Level(void);
-void LoadLevelFromFile(Level *level, FILE *fp);
-void SaveLevel(Level *level);
-void DestroyLevel(Level *level);
-void CreateTiles(Level *level);
+void Level_LoadFromFile(Level *level, FILE *fp);
+void Level_Save(Level *level);
+void Level_Destroy(Level *level);
+void Level_CreateTiles(Level *level);
 #endif

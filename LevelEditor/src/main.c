@@ -6,10 +6,15 @@
 #include <stdbool.h>
 #include <string.h>
 
+/* 
+The main for the Level Editor
+It calls the functions for Creating a level,
+Saving a level, and Editing a level
+ */
 int main (void) {
 	Level * level = New_Level();
 	Level_Edit(level);
-	SaveLevel(level);
+	Level_Save(level);
 
 	return 0;
 }
