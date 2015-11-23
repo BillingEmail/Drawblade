@@ -9,8 +9,9 @@
 typedef struct _LevelEditor {
 	Container *container;
 	Level *level;
-	Texture *textureArray[4][16];
+	Texture *textureArray[4][7];
 	Texture *backgroundArray[4];
+	Texture *blankIcon;
 	int currentItem;
 } LevelEditor;
 
@@ -21,16 +22,21 @@ typedef struct _LevelEditor {
 */
 void Level_Edit(Level *level);
 
+
+/* Creates a new LevelEditor struct and fills it */
 LevelEditor *New_LevelEditor(Level *level);
+
+/* Destroys a LevelEditor struct */
 void LevelEditor_End(LevelEditor *editor);
 
 /* This has functions for rendering and updating a level */
 void LevelEditor_Run(LevelEditor *editor);
 
+/* Components of Run */
 void LevelEditor_Render(LevelEditor *editor);
 void LevelEditor_Update(LevelEditor *editor);
 
-/* This is a component of Update that will set the current tile type */
+/* Components of Update  */
 void LevelEditor_AssertCameraBounds(LevelEditor *editor);
 bool LevelEditor_checkEditTile(LevelEditor *editor);
 void LevelEditor_getCurrentTheme(LevelEditor *editor);
