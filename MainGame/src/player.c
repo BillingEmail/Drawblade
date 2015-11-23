@@ -17,6 +17,7 @@ Player * New_Player(ObjectType *ot, int x, int y) {
 	ret->otype = ret->ctype->object_type;
 	/* shortcut to the physical object */
 	ret->object = ret->otype->instances;
+	ret->traits = ret->ctype->character_traits;
 
 	return ret;
 }

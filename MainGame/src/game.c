@@ -50,6 +50,7 @@ void Game_Run(Game *game, Container *container) {
 		World_Update(game->world, game->player, frame);
 		/* Render the world */
 		World_Render(game->world, frame, container);
+		Player_Render(game->player, container);
 //		HUD_Render(game->hud, container->renderer);
 
 		/* If the world has been completed */
@@ -67,7 +68,7 @@ void Game_Run(Game *game, Container *container) {
 			World_Destroy(game->world);
 			game->world = LoadWorld(game->current_level, game->player, container);
 		}
-
+		if (container->keyboardstate[SDL_SCANCODE_Q]) break;
 		Container_Refresh(container);
 		Container_PlayerUpdateCamera(container, game->player);
 	}
@@ -85,9 +86,10 @@ World * LoadWorld(int worldnum, Player *p, Container *c) {
 	World *ret;
 	char path[64];
 
-	strcpy(path, "../assets/levels/level");
-	sprintf(path, "%d", worldnum);
+	strcpy(path, "../assets/levels/level1");
+//	sprintf(path, "%d", worldnum);
 	strcat(path, ".lvl");
+	printf("LOADING LEVEL FROM: \"%s\"\n", path);
 	ret = NewWorld_FromFile(path, p, c);
 
 	return ret;

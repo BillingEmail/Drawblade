@@ -31,6 +31,21 @@ World * World_LoadWorldFromLevel(Level * level, Player *p, Container *container)
 	ret->size.h = level->height * 64;
 	ret->size.w = level->width * 64;
 	
+	switch (level->theme) {
+		case LAVA:
+			ret->background = New_Texture(container->renderer, "../assets/img/Lava/background.png");
+		break;
+		case MEDIEVAL:
+			ret->background = New_Texture(container->renderer, "../assets/img/Medieval/background.png");
+		break;
+		case ICE:
+			ret->background = New_Texture(container->renderer, "../assets/img/Medieval/backround.png");
+		break;
+		case SPOOKY:
+			ret->background = New_Texture(container->renderer, "../assets/img/Medieval/background.png");
+		break;
+	}
+
 	ret->EnemyTypeCount = 0;
 	ret->EnemyTypes = malloc(ret->EnemyTypeCount * sizeof(CharacterType *));	
 	
@@ -88,7 +103,9 @@ void World_Render(World *w, int frame, Container *container) {
 		for (int o = 0; o < w->ObjectTypes[i]->instance_count; o++) {
 			/* TODO Check if the object is within view, only render it if so */
 			/* Render the object */
-			ObjectType_RenderObject(w->ObjectTypes[i], o, container);
+//			ObjectType_RenderObject(w->ObjectTypes[i], o, container);
+			SDL_SetRenderDrawColor(container->renderer, 255, 0, 0, 128);
+			SDL_RenderFillRect(container->renderer, &w->ObjectTypes[i]->instances[o].dstrect);
 		}
 	}
 	/* Render all of the characters/enemies */
@@ -96,7 +113,7 @@ void World_Render(World *w, int frame, Container *container) {
 		for (int e = 0; e < w->EnemyTypes[i]->object_type->instance_count; e++) {
 			/* TODO Check if the enemy is within view, only render it if so */
 			/* Render the enemy */
-			CharacterType_RenderCharacter(w->EnemyTypes[i], e, container);
+//			CharacterType_RenderCharacter(w->EnemyTypes[i], e, container);
 		}
 	}
 }
