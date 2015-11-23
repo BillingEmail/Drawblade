@@ -258,12 +258,20 @@ void LevelEditor_AssertCameraBounds(LevelEditor *editor) {
 
 	//bounds the x axis
 	if (SCREEN_WIDTH > editor->level->width * TILE_SCALE) {
+<<<<<<< HEAD
 		editor->container->camera->x = (SCREEN_WIDTH - (editor->level->width * TILE_SCALE)) / 2;
+=======
+		editor->container->camera->x = - (SCREEN_WIDTH / 2) + TILE_SCALE * editor->level->width / 2;
+>>>>>>> 8d6c37432a06b3fad5a170fc568c993db188e27d
 	}
 
 	//bounds the y axis
 	if (SCREEN_HEIGHT > editor->level->height * TILE_SCALE) {
+<<<<<<< HEAD
 		editor->container->camera->y = (SCREEN_HEIGHT - (editor->level->height * TILE_SCALE)) / 2;
+=======
+		editor->container->camera->y = - (SCREEN_HEIGHT / 2) + TILE_SCALE * editor->level->height / 2;
+>>>>>>> 8d6c37432a06b3fad5a170fc568c993db188e27d
 	}
 }
 
