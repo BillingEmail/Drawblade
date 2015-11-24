@@ -7,7 +7,7 @@
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
-#define TILE_SCALE 64
+
 
 /* 
    All of the functions for editing the level are broken down this way
