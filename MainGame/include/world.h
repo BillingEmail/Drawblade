@@ -29,6 +29,8 @@ typedef struct _world {
 		int h;
 	} size; /* The size of the world in pixels */
 
+	Player *player;
+
 	CharacterType **EnemyTypes;
 
 	ObjectType **ObjectTypes;
@@ -46,19 +48,19 @@ typedef struct _world {
 } World;
 
 /* Create an actual world from a already-loaded level */
-World * World_LoadWorldFromLevel(Level *level, Player *p, Container *container);
+World * World_LoadWorldFromLevel(Level *level, Container *container);
 
 /* Update the world */
-void World_Update(World *w, Player *p, int frame);
+void World_Update(World *w, unsigned int dt, Container *container);
 
 /* Load a world from a file */
-World * NewWorld_FromFile(char *path, Player *p, Container *c);
+World * NewWorld_FromFile(char *path, Container *c);
 
 /* Destroy a world */
 void Destroy_World(World *w);
 
 /* Render all of the facets of the world */
-void World_Render(World *w, int frame, Container *c);
+void World_Render(World *w, unsigned int dt, Container *c);
 
 void World_Destroy(World *w);
 

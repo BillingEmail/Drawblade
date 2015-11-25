@@ -28,9 +28,9 @@
 #include "../../shared/include/container.h"
 
 enum {
-	TOP_HITBOX,
 	LEFT_HITBOX,
 	RIGHT_HITBOX,
+	TOP_HITBOX,
 	BOTTOM_HITBOX
 };
 
@@ -45,7 +45,7 @@ typedef struct _object {
 
 	SDL_Rect hitboxes[4];  /* Top, left, right, and bottom hitboxes */ 
 
-	int sprite_index;      /* The index of the current sprite in the Object's
+	int *sprite_index;      /* The index of the current sprite in the Object's
 	                        * ObjectType's animations[animation] */
 
 
@@ -56,6 +56,7 @@ typedef struct _object {
 	                        * Object's ObjectType will be played.
 	                        */
 
+	int lastAnimation;
 
 } Object;
 
@@ -118,9 +119,7 @@ void Destroy_ObjectType(ObjectType *ot);
 void ObjectType_AddObject(
 	ObjectType *ot,        /* The ObjectType                                    */
 	int x,                 /* The original x-position of the object             */ 
-	int y,                 /* The original y-position of the object             */
-	int default_animation, /* The default animation of the object               */
-	int default_sprite     /* The default sprite of the animation of the object */
+	int y                 /* The original y-position of the object             */
 );
 
 /* Return the count of object in an ObjectType */
@@ -128,11 +127,9 @@ void ObjectType_AddObject(
 
 #define ObjectType_Count(OT) (OT)->instance_count
 
-/* Remove an object from the list of instances */
-void ObjectType_RemoveObject(int instance_index);
 
 /* Render a specific instance of an ObjectType */
-void ObjectType_RenderObject(ObjectType *ot, int instance_index, Container *c);
+void ObjectType_RenderObject(ObjectType *ot, int instance_index, unsigned int dt, Container *c);
 
 /* Set the animation of an object. Typically, an enum for an animation specific
  * to the object type will be used.
@@ -148,6 +145,6 @@ void ObjectType_ObjectNextSprite(ObjectType *ot, int instance_index);
 /* Destroy an object */
 void Destroy_Object(Object *o);
 
-void Update_ObjectType(Object *o, int x, int y);
+void Object_ResetSpriteIndexes(Object *o, int index);
 
 #endif

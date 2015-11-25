@@ -69,4 +69,6 @@ void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, int fr
 
 void CharacterType_AdjustHitboxes(CharacterType *ct, int instance_index);
 
+void CharacterType_SetCharacterAnimation(CharacterType *c, int ii, int animation, unsigned int delay);
+
 #endif

@@ -6,12 +6,10 @@
 #include <stdbool.h>
 
 #include "world.h"
-#include "player.h"
 #include "../../shared/include/container.h"
 //#include "HUD.h"
 
 typedef struct __game_overhead {
-	Player *player; /* the player */
 	World *world; /* the current world */
 //	HUD *hud;
 
@@ -32,6 +30,6 @@ void Game_Run(Game *game, Container *container);
 void Game_Close(Game *game);
 
 /* Load level 1, 2, 3, w/e */
-World * LoadWorld(int worldnum, Player *p, Container *c);
+World * LoadWorld(int worldnum, Container *c);
 
 #endif

@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 /* Length of a side of a tile in pixels */
-#define TILE_SCALE 64
+#define TILE_SCALE 32
 
 // This is for what type of enemy is in what tile
 typedef enum _EntityTypes {

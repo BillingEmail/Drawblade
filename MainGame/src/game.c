@@ -5,26 +5,13 @@
 #include "../include/world.h"
 #include "../../shared/include/container.h"
 #include "../include/player.h"
+#include <SDL2/SDL.h>
 
 Game * New_Game(Container *container) {
 	Game *ret;
 
 	ret = malloc(sizeof(Game));
 
-	/* load the player stuff */
-	ret->player = New_Player(
-		New_ObjectType(
-			New_Spritesheet(
-				New_Texture(
-					container->renderer, "../assets/img/Medieval/player.png"
-				),
-				4, /* Number of animations */
-				4, 4, 4, 4 /* Number of sprites in each animation */
-			),
-			16, 32 /* width and height of player */
-		),
-		0, 0 /* initial x and y of player, to be changed when the world is loaded */
-	);
 
 	/* assign some stuff */
 	ret->current_level = 1;
@@ -39,38 +26,56 @@ Game * New_Game(Container *container) {
 
 /* Main game loop */
 void Game_Run(Game *game, Container *container) {
-	long long frame = 1;
+	unsigned int dt;
+	unsigned int currentTime;
+	unsigned int lastTime = 0;
+
 	/* load the first level */
-	game->world = LoadWorld(game->current_level, game->player, container);
+	game->world = LoadWorld(game->current_level, container);
+	Container_PlayerUpdateCamera(container, game->world->player);
 
 	game->running = true;
-
+	/* **************** Main game loop ***************** */
 	while (game->running) {
+		currentTime = SDL_GetTicks();
+		dt = currentTime - lastTime;
+		lastTime = currentTime;
+		/* *************** Run the world *************** */
 		/* Update the world */
-		World_Update(game->world, game->player, frame);
+		World_Update(game->world, dt, container);
+
+
 		/* Render the world */
-		World_Render(game->world, frame, container);
-		Player_Render(game->player, container);
+		World_Render(game->world, dt, container);
 //		HUD_Render(game->hud, container->renderer);
 
+
+		/* ************** Switch to next level ********* */
 		/* If the world has been completed */
 		if (game->world->is_complete) {
-			/* switch to next world -- will be a function later */
+			/* switch to next world -- will later be a function with a transition */
 			game->current_level++;
-			game->world = LoadWorld(game->current_level, game->player, container);
+			World_Destroy(game->world);
+			game->world = LoadWorld(game->current_level, container);
 		}
 
-		/* end game upon death */
-		if (game->player->traits->hitpoints == 0) {
+		/* ************** Restart world on death ******* */
+		if (game->world->player->traits->hitpoints == 0) {
 			/* Do better */
 			//Game_RenderDeathScreen(game);
 			/* restart world */
 			World_Destroy(game->world);
-			game->world = LoadWorld(game->current_level, game->player, container);
+			game->world = LoadWorld(game->current_level, container);
 		}
-		if (container->keyboardstate[SDL_SCANCODE_Q]) break;
+
+		/* ************* Quit game on keypress Q ****** */
+		if (container->keyboardstate[SDL_SCANCODE_Q]) {
+			game->running = false;
+		}
+
+		/* ************ Update the screen and camera ** */
 		Container_Refresh(container);
-		Container_PlayerUpdateCamera(container, game->player);
+		Container_PlayerUpdateCamera(container, game->world->player);
 	}
 }
 
@@ -78,19 +83,18 @@ void Game_Run(Game *game, Container *container) {
 void Game_Close(Game *game) {
 //	Hud_Destroy(game->hud)
 	World_Destroy(game->world);
-	Destroy_Player(game->player);
 	free(game);
 }
 
-World * LoadWorld(int worldnum, Player *p, Container *c) {
+World * LoadWorld(int worldnum, Container *c) {
 	World *ret;
 	char path[64];
 
-	strcpy(path, "../assets/levels/level1");
-//	sprintf(path, "%d", worldnum);
-	strcat(path, ".lvl");
+	/* Path to level to be loaded */
+	sprintf(path, "../assets/levels/level%d.lvl", worldnum);
+
 	printf("LOADING LEVEL FROM: \"%s\"\n", path);
-	ret = NewWorld_FromFile(path, p, c);
+	ret = NewWorld_FromFile(path, c);
 
 	return ret;
 }

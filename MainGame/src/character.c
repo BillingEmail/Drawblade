@@ -49,7 +49,7 @@ void Destroy_CharacterType(CharacterType *ct) {
 /* testing */
 void CharacterType_AddCharacter(CharacterType *ct, int x, int y,
 	int default_animation, int default_sprite) {
-	ObjectType_AddObject(ct->object_type, x, y, default_animation, default_sprite);
+	ObjectType_AddObject(ct->object_type, x, y);
 
 	/* losing my patience with commenting rn tbh */
 	if (ct->character_traits_count >= ct->character_traits_size - 1) {
@@ -63,29 +63,8 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y,
 	ct->character_traits_count++;
 }
 
-/* temporary */
-void CharacterType_MoveCharacter(CharacterType *ct, int instance_index, const uint8_t *KeyboardState) {
-	CharacterTraits *ch = &ct->character_traits[instance_index];
 
-	if (KeyboardState[SDL_SCANCODE_SPACE]) {
-		ch->velocity.y -= 5; // jump is true, check bool isonfloor, etc etc (call a jump function)
-	}
-	if (!ct->character_traits[instance_index].is_on_floor) {
-		if (KeyboardState[SDL_SCANCODE_S]) {
-			ch->velocity.y += 2;
-		}
-	}
-	if (KeyboardState[SDL_SCANCODE_A]) {
-		ch->velocity.x -= 2;
-		ObjectType_SetObjectAnimation(ct->object_type, instance_index, 1);
-	}
-	if (KeyboardState[SDL_SCANCODE_D]) {
-		ch->velocity.x += 2;
-		ObjectType_SetObjectAnimation(ct->object_type, instance_index, 0);
-	}
-}
-
-void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, int frame) {
+void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, unsigned int dt) {
 	/* ch_object is the physical object of the character instance */
 	Object *ch_object = &ct->object_type->instances[instance_index];
 	/* ch_traits are the traits of the character instance */
@@ -108,22 +87,13 @@ void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, int fr
 		ch_traits->velocity.y = -5;
 	}
 
-	if (frame % 3 == 0) {
-		if (ch_traits->velocity.x != 0) {
-			/* Update sprite */
-			ObjectType_ObjectNextSprite(ct->object_type, instance_index);
-		} else {
-			ct->object_type->instances[instance_index].sprite_index = 0;
-		}
-	}
+
 
 	/* Apply velocities to the position */
 	ch_object->dstrect.x += ch_traits->velocity.x;
 	ch_object->dstrect.y += ch_traits->velocity.y;
 
 	CharacterType_AdjustHitboxes(ct, instance_index);
-
-
 }
 
 void CharacterType_AdjustHitboxes(CharacterType *ct, int instance_index) {
@@ -141,4 +111,19 @@ void CharacterType_AdjustHitboxes(CharacterType *ct, int instance_index) {
 
 	hitboxes[RIGHT_HITBOX].x = dstrect->x + ct->object_type->size.w - 8;
 	hitboxes[RIGHT_HITBOX].y = dstrect->y + 8;
+}
+
+void CharacterType_AnimateCharacter(CharacterType *ct, int ii, int animation, unsigned int &delay, unsigned int duration) {
+	bool odd = animation % 2 == 0;
+	Object *object = ct->object_type->instances + ii;
+	if (object->lastAnimation == animation) {
+		object->lastAnimation = animation;
+		*delay = 0;
+		ObjectType_ResetSpriteIndexes(ct->object_type, ii);
+	}
+	if (*delay > = duration) {
+		ObjectType_ObjectNextSprite(ct->object_type, ii);
+		*delay = 0;
+	}
+
 }
