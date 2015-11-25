@@ -5,6 +5,7 @@
 #include "../include/world.h"
 #include "../../shared/include/container.h"
 #include "../include/player.h"
+#include "../include/game.h"
 #include <SDL2/SDL.h>
 
 Game * New_Game(Container *container) {
@@ -18,7 +19,7 @@ Game * New_Game(Container *container) {
 	ret->running = false;
 	ret->paused = false;
 
-//	ret->hud = Create_HUD(container);
+	ret->hud = Create_HUD(container);
 
 
 	return ret;
@@ -47,7 +48,7 @@ void Game_Run(Game *game, Container *container) {
 
 		/* Render the world */
 		World_Render(game->world, dt, container);
-//		HUD_Render(game->hud, container->renderer);
+		HUD_Render(game->hud, game->world->player, game->world->theme, container);
 
 
 		/* ************** Switch to next level ********* */
@@ -58,6 +59,12 @@ void Game_Run(Game *game, Container *container) {
 			game->current_level = (game->current_level % 2) + 1;
 			World_Destroy(game->world);
 			game->world = LoadWorld(game->current_level, container);
+		}
+
+
+		/* HITPOINTS TEST ****************************************************/
+		if (container->keyboardstate[SDL_SCANCODE_H]) {
+			game->world->player->traits->hitpoints -= 0.5;
 		}
 
 		/* ************** Restart world on death ******* */

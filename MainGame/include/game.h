@@ -7,11 +7,11 @@
 
 #include "world.h"
 #include "../../shared/include/container.h"
-//#include "HUD.h"
+#include "HUD.h"
 
 typedef struct __game_overhead {
 	World *world; /* the current world */
-//	HUD *hud;
+	HUD *hud;
 
 	int current_level; /* ok */
 

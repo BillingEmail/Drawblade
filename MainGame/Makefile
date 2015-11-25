@@ -1,8 +1,7 @@
 CC=gcc
 LDFLAGS= -lm -lSDL2 -lSDL2_image
 CFLAGS= -g -Wall -std=c11
-SRC= ../shared/src/*.c src/game.c src/character.c src/collisions.c src/mainmenu.c src/object.c src/player.c src/world.c
-
+SRC= ../shared/src/*.c src/character.c src/collisions.c src/game.c src/HUD.c src/mainmenu.c src/object.c src/player.c src/world.c
 all:
 	$(CC) $(CFLAGS) src/main.c -o drawblade $(SRC) $(LDFLAGS)
 

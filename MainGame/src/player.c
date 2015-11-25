@@ -48,7 +48,7 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 		case RUN_RIGHT:
 			CharacterType_AnimateCharacter(p->ctype, 0, RUN_RIGHT, &delay, 100);
 			if (fabs(p->traits->velocity.x) < .5) {
-				p->object->sprite_index[RUN_LEFT] = 3;
+				p->object->sprite_index[RUN_RIGHT] = 3;
 			} else	if (p->object->sprite_index[RUN_RIGHT] > 7) {
 				p->object->sprite_index[RUN_RIGHT] = 0;
 			}

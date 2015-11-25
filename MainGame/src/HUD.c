@@ -6,16 +6,20 @@
 #include "../../shared/include/texture.h"
 #include "../../shared/include/container.h"
 #include "../include/player.h"
+#include "../../shared/include/level.h"
 
 HUD * Create_HUD(Container *container) {
 	HUD *ret = malloc(sizeof(HUD));
-	ret->weaponTextures[SWORD] = New_Texture(container->renderer, "../../assets/img/swordHUD.png");
-	ret->weaponTextures[STAFF] = New_Texture(container->renderer, "../../assets/img/staffHUD.png");
-	ret->weaponTextures[BOW]   = New_Texture(container->renderer, "../../assets/img/bowHUD.png");
+	ret->weaponTextures = malloc(4 * sizeof(Texture));
+	ret->weaponTextures[LAVA]     = New_Texture(container->renderer, "../assets/img/HUD/sword.png");
+	ret->weaponTextures[MEDIEVAL] = New_Texture(container->renderer, "../assets/img/HUD/staff.png");
+	ret->weaponTextures[SPOOKY]   = New_Texture(container->renderer, "../assets/img/HUD/bow.png");
+	ret->weaponTextures[ICE]      = New_Texture(container->renderer, "../assets/img/HUD/bow.png");
 
-	ret->heartTexture = New_Texture(container->renderer, "../../assets/img/heartHUD.png");
+	ret->heartFullTexture = New_Texture(container->renderer, "../assets/img/HUD/heartfull.png");
+	ret->heartEmptyTexture = New_Texture(container->renderer, "../assets/img/HUD/heartempty.png");
 
-	ret->heartdst.x = 26;
+	ret->heartdst.x = 1;
 	ret->heartdst.y = 35;
 	ret->heartdst.w = 29;
 	ret->heartdst.h = 29;
@@ -28,23 +32,27 @@ HUD * Create_HUD(Container *container) {
 	return ret;
 }
 
-void HUD_Render(HUD *h, Player *p, LevelType theme, SDL_Renderer *r) {
+void HUD_Render(HUD *h, Player *p, LevelType theme, Container *container) {
 	//Will render a number of hearts 0-5
-	HUD_RenderHearts(h, r, p);
+	HUD_RenderHearts(h, p, container); 
 
 	//Will render the weapon in bottom left
-	HUD_RenderWeapon(h, r, theme);
+	HUD_RenderWeapon(h, theme, container);
 }
 
-void HUD_RenderHearts(HUD *h, Player *player, SDL_Renderer *r) {
+void HUD_RenderHearts(HUD *h, Player *player, Container *container) {
 	//Based on player health, will render hearts
-	for (int i = 0; i < (player->health); i++){		
-		Texture_Render(h->heart, r, h->heartdst.x + (i * 33), 35, NULL);
+	int i;
+	for (i = 0; i < player->traits->hitpoints; i++){		
+		Texture_Render(h->heartFullTexture, container->renderer, h->heartdst.x + (i * 21) + 5, 5, NULL);
+	}
+	for (; i < 5; i++) {
+		Texture_Render(h->heartEmptyTexture, container->renderer, h->heartdst.x + (i * 21) + 5, 5, NULL);
 	}
 }
 
-void HUD_RenderWeapon(HUD *h, SDL_Renderer *r) {
-	Texture_Render(h->weaponTextures[theme], r, h->weapondst.x, h->weapondst.y, NULL);
+void HUD_RenderWeapon(HUD *h, LevelType theme, Container *container) {
+	Texture_Render(h->weaponTextures[theme], container->renderer, h->weapondst.x, h->weapondst.y, NULL);
 }
 
 /* Destroy the HUD and it's textures */
@@ -53,6 +61,10 @@ void HUD_Destroy(HUD *h) {
 	for (int i = 0; i < 3; i++) {
 		Destroy_Texture(h->weaponTextures[i]);
 	}
-	Destroy_Texture(h->heartTexture);
+	free(h->weaponTextures);
+
+	Destroy_Texture(h->heartFullTexture);
+	Destroy_Texture(h->heartEmptyTexture);
+
 	free(h);
 }
