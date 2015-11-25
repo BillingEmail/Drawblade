@@ -1,23 +1,25 @@
-//#include "../include/startscreen.h"
+#include "../include/menu.h"
+#include "../include/container.h"
 #include "../include/game.h"
-#include "../../shared/include/container.h"
-#include "../include/mainmenu.h"
 
-#define SCREEN_WIDTH 1280
+#define SCREEN_WIDTH  1280
 #define SCREEN_HEIGHT 720
 
 int main(void) {
 	Container *container;
+	Menu *MainMenu;
 	Game *game;
-	MainMenu *StartScreen;
 
 	container = New_Container(SCREEN_WIDTH, SCREEN_HEIGHT);
-	StartScreen = New_MainMenu(container);
+	MainMenu = New_MainMenu(container);
 
-	if (MainMenu_Show(StartScreen, container) == START) {
-		game = New_Game(container);
-		Game_Run(game, container);
-		Game_Close(game);
+	switch(Menu_Run(MainMenu, container)) {
+		case START:
+			game = New_Game(container);
+			Game_Run(game, container);
+			Game_Close(container);
+		break;
+		default;
 	}
 
 	Container_Destroy(container);

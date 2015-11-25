@@ -21,8 +21,8 @@ HUD * Create_HUD(Container *container) {
 
 	ret->heartdst.x = 1;
 	ret->heartdst.y = 35;
-	ret->heartdst.w = 29;
-	ret->heartdst.h = 29;
+	ret->heartdst.w = 21;
+	ret->heartdst.h = 19;
 
 	ret->weapondst.x = 0;
 	ret->weapondst.y = 521;
@@ -42,11 +42,10 @@ void HUD_Render(HUD *h, Player *p, LevelType theme, Container *container) {
 
 void HUD_RenderHearts(HUD *h, Player *player, Container *container) {
 	//Based on player health, will render hearts
-	int i;
-	for (i = 0; i < player->traits->hitpoints; i++){		
+	for (int i = 0; i < player->traits->hitpoints; i++){		
 		Texture_Render(h->heartFullTexture, container->renderer, h->heartdst.x + (i * 21) + 5, 5, NULL);
 	}
-	for (; i < 5; i++) {
+	for (int i = player->traits->hitpoints; i < 5; i++) {
 		Texture_Render(h->heartEmptyTexture, container->renderer, h->heartdst.x + (i * 21) + 5, 5, NULL);
 	}
 }
