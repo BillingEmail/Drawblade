@@ -113,17 +113,15 @@ void CharacterType_AdjustHitboxes(CharacterType *ct, int instance_index) {
 	hitboxes[RIGHT_HITBOX].y = dstrect->y + 8;
 }
 
-void CharacterType_AnimateCharacter(CharacterType *ct, int ii, int animation, unsigned int &delay, unsigned int duration) {
-	bool odd = animation % 2 == 0;
+void CharacterType_AnimateCharacter(CharacterType *ct, int ii, int animation, unsigned int *delay, unsigned int duration) {
 	Object *object = ct->object_type->instances + ii;
 	if (object->lastAnimation == animation) {
 		object->lastAnimation = animation;
 		*delay = 0;
-		ObjectType_ResetSpriteIndexes(ct->object_type, ii);
+		ObjectType_ResetSpriteIndexes(ct->object_type, ii, animation);
 	}
-	if (*delay > = duration) {
+	if (*delay >= duration) {
 		ObjectType_ObjectNextSprite(ct->object_type, ii);
 		*delay = 0;
 	}
-
 }

@@ -106,14 +106,14 @@ void ObjectType_SetObjectAnimation(ObjectType *ot, int instance_index, int anima
 
 /* Change the object's sprite to the following sprite in the animation */
 void ObjectType_ObjectNextSprite(ObjectType *o, int instance_index) {
-	bool odd = o->animation % 2 == 0;
+	bool odd = o->instances[instance_index].animation % 2 == 0;
 	/* Increment the instance's sprite index */
-	o->instances[instance_index].sprite_index[o->animation]++;
+	o->instances[instance_index].sprite_index[o->instances[instance_index].animation]++;
 	if (odd) {
-		o->instances[instance_index].sprite_index[o->animation + 1]++;
+		o->instances[instance_index].sprite_index[o->instances[instance_index].animation + 1]++;
 	}
 	else {
-		o->instances[instance_index].sprite_index[o->animation - 1]++;
+		o->instances[instance_index].sprite_index[o->instances[instance_index].animation - 1]++;
 	}
 }
 
@@ -140,19 +140,20 @@ void Destroy_ObjectType(ObjectType *ot) {
 	for (int i = 0; i < ot->spritesheet->animation_count; i++) {
 		free(ot->animations[i]);
 	}
+	for (int i = 0; i < ot->instance_count; i++) {
+		free(ot->instances[i].sprite_index);
+	}
 	free(ot->animations);
-	free(ot->sprite_index);
 	free(ot->instances);
-
 	Destroy_Spritesheet(ot->spritesheet);
 	free(ot);
 	ot = NULL;
 }
 
-void ObjectType_ResetSpriteIndexes(ObjectType *ot, int ii, int index) {
-	bool odd = index % 2 == 0;
-	for (int i = 0; i < ot->spritesheet->animation_count) {
-		if (i != index || (odd && i != index - 1) || (!odd && i != index + 1)) {
+void ObjectType_ResetSpriteIndexes(ObjectType *ot, int ii, int animation) {
+	bool odd = (animation % 2 == 0);
+	for (int i = 0; i < ot->spritesheet->animation_count; i++) {
+		if (i != animation || (odd && i != animation - 1) || (!odd && i != animation + 1)) {
 			ot->instances[ii].sprite_index[i] = 0;
 		}
 	}

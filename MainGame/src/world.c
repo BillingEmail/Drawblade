@@ -67,9 +67,6 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 	);
 	ret->player->traits->hitpoints = 5;
 
-
-	ret->currentTime = ret->lastTime = 0;
-
 	ret->EnemyTypeCount = 0;
 //	ret->EnemyTypes = malloc(ret->EnemyTypeCount * sizeof(CharacterType *));	
 	
@@ -95,7 +92,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			switch (level->tileArray[y][x]) {
 				case BRICK:
 					printf(" 1 ");
-					ObjectType_AddObject(ret->ObjectTypes[OBJECT_BRICK], x * TILE_SCALE, y * TILE_SCALE, 0, 0);
+					ObjectType_AddObject(ret->ObjectTypes[OBJECT_BRICK], x * TILE_SCALE, y * TILE_SCALE);
 				break;
 				case PLAYER:
 					printf(" 2 ");

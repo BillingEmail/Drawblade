@@ -51,7 +51,7 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 			p->object->sprite_index[RUN_LEFT] = p->object->sprite_index[RUN_RIGHT];
 		break;
 		case JUMP_LEFT:
-			CharacterType_AnimationCharacter(p->ctype, 0, JUMP_LEFT, &delay, 150);
+			CharacterType_AnimateCharacter(p->ctype, 0, JUMP_LEFT, &delay, 150);
 			if (p->object->sprite_index[JUMP_LEFT] != 4) {
 				p->object->sprite_index[JUMP_LEFT]++;
 			}
@@ -63,14 +63,14 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 			}
 			p->object->sprite_index[JUMP_LEFT] = p->object->sprite_index[JUMP_RIGHT];
 		break;
-		case ATTACK:
+//		case ATTACK:
 			/* attack lol TODO */
-		break;
-		case DEATH:
+//		break;
+//		case DEATH:
 			/* die lol TODO render smoke thing lol */
-		break;
+//		break;
 	}
-	CharacterType_RenderCharacter(p->ctype, 0, c);
+	CharacterType_RenderCharacter(p->ctype, 0, dt, c);
 }
 
 /* Take input from wrapper and apply to the player */
@@ -120,9 +120,9 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	if (container->keyboardstate[SDL_SCANCODE_A]) {
 		if (p->traits->is_on_floor) {
 			ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
-		} else {
-			
+		}	
 		p->traits->velocity.x -= 0.5;
+		
 	}
 	if (container->keyboardstate[SDL_SCANCODE_D]) {
 		ObjectType_SetObjectAnimation(p->otype, 0, RUN_RIGHT);

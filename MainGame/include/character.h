@@ -50,7 +50,7 @@ CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _chara
 void Destroy_CharacterType(CharacterType *t);
 
 /* Render a specific instance of a CharacterType */
-#define CharacterType_RenderCharacter(CT, II, W) ObjectType_RenderObject((CT)->object_type, (II), (W))
+#define CharacterType_RenderCharacter(CT, II, DT,  W) ObjectType_RenderObject((CT)->object_type, (II), (DT), (W))
 
 /* Add another instance of the CharacterType to the list of instances */
  
@@ -63,12 +63,15 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y, int default_ani
 void CharacterType_KillCharacter(CharacterType *ct, int instance_index);
 
 /* Update a character - temporary */
-void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, int frame);
+void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, unsigned int dt);
 
 /* Update the hitboxes to where the dstrect is */
 
 void CharacterType_AdjustHitboxes(CharacterType *ct, int instance_index);
 
 void CharacterType_SetCharacterAnimation(CharacterType *c, int ii, int animation, unsigned int delay);
+
+void CharacterType_AnimateCharacter(CharacterType *ct, int ii, int animation, unsigned int *delay, unsigned int duration);
+
 
 #endif

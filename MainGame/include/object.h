@@ -145,6 +145,6 @@ void ObjectType_ObjectNextSprite(ObjectType *ot, int instance_index);
 /* Destroy an object */
 void Destroy_Object(Object *o);
 
-void Object_ResetSpriteIndexes(Object *o, int index);
+void ObjectType_ResetSpriteIndexes(ObjectType *o, int ii, int animation);
 
 #endif
