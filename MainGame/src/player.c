@@ -51,15 +51,15 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 			p->object->sprite_index[RUN_LEFT] = p->object->sprite_index[RUN_RIGHT];
 		break;
 		case JUMP_LEFT:
-			CharacterType_AnimateCharacter(p->ctype, 0, JUMP_LEFT, &delay, 150);
-			if (p->object->sprite_index[JUMP_LEFT] != 4) {
-				p->object->sprite_index[JUMP_LEFT]++;
+			CharacterType_AnimateCharacter(p->ctype, 0, JUMP_LEFT, &delay, 50);
+			if (p->object->sprite_index[JUMP_LEFT] > 3) {
+				p->object->sprite_index[JUMP_LEFT] = 3;
 			}
 			p->object->sprite_index[JUMP_RIGHT] = p->object->sprite_index[JUMP_LEFT];
 		case JUMP_RIGHT:
-			CharacterType_AnimateCharacter(p->ctype, 0, JUMP_RIGHT, &delay, 150);
-			if (p->object->sprite_index[JUMP_RIGHT] != 4) {
-				p->object->sprite_index[JUMP_RIGHT]++;
+			CharacterType_AnimateCharacter(p->ctype, 0, JUMP_RIGHT, &delay, 50);
+			if (p->object->sprite_index[JUMP_RIGHT] > 3) {
+				p->object->sprite_index[JUMP_RIGHT] = 3;
 			}
 			p->object->sprite_index[JUMP_LEFT] = p->object->sprite_index[JUMP_RIGHT];
 		break;
@@ -75,57 +75,28 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 
 /* Take input from wrapper and apply to the player */
 void Player_Update(Player *p, unsigned int dt, Container *container) {
-	/* Jump */
-/*	if (container->keyboardstate[SDL_SCANCODE_SPACE]) {
-		if (p->traits->is_on_floor) {
-			if (p->object->animation == RUN_LEFT) {
-				p->object->animation = JUMP_LEFT;
-			}
-			if (p->object->animation == RUN_RIGHT) {
-				p->object->animation = JUMP_RIGHT;	
-			}
-			p->traits->velocity.y = -5;
-		}
-	} else if (p->traits->is_on_floor) {
-		if (p->object->animation == JUMP_LEFT) {
-			p->object->animation = RUN_LEFT;
-			p->object->sprite_index = 3;
-		} 
-		if (p->object->animation == JUMP_RIGHT) {
-			p->object->animation = RUN_RIGHT;
-			p->object->sprite_index = 3;
-		}
-	}
 
-	* fastfall *
-	if (!p->traits->is_on_floor && container->keyboardstate[SDL_SCANCODE_S]) {
-		p->traits->velocity.y += 2;
+	/* add default stand left/write */
+
+	if (p->traits->is_on_floor) {
+		ObjectType_SetObjectAnimation(p->otype, 0, p->object->animation % 2);
 	}
-	* left *
-	if (container->keyboardstate[SDL_SCANCODE_A]) {
-		p->traits->velocity.x -= 2;
-		if (p->object->animation != JUMP_LEFT && p->object->animation != JUMP_RIGHT) {
-			ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
-		}
-	}
-	* right *
-	if (container->keyboardstate[SDL_SCANCODE_D]) {
-		p->traits->velocity.x += 2;
-		if (p->object->animation != JUMP_LEFT && p->object->animation != JUMP_RIGHT) {
-			ObjectType_SetObjectAnimation(p->otype, 0, RUN_RIGHT);
-		}
-	}
-*/
 
 	if (container->keyboardstate[SDL_SCANCODE_A]) {
 		if (p->traits->is_on_floor) {
 			ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
-		}	
+		} else {
+			ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
+		}
 		p->traits->velocity.x -= 0.5;
 		
 	}
 	if (container->keyboardstate[SDL_SCANCODE_D]) {
-		ObjectType_SetObjectAnimation(p->otype, 0, RUN_RIGHT);
+		if (p->traits->is_on_floor) {
+			ObjectType_SetObjectAnimation(p->otype, 0, RUN_RIGHT);
+		} else {
+			ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);
+		}
 		p->traits->velocity.x += 0.5;
 	}
 	if (container->keyboardstate[SDL_SCANCODE_SPACE]) {

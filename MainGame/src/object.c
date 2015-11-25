@@ -91,29 +91,30 @@ void ObjectType_AddObject(ObjectType *ot, int x, int y) {
 
 	/* Copy the passed initial animation and initial sprite */
 	ot->instances[ot->instance_count].animation = 0;
-	ot->instances[ot->instance_count].animation = 0;
+
 	ot->instances[ot->instance_count].sprite_index = calloc(ot->spritesheet->animation_count, sizeof(int));
+	printf("%d\n", ot->instances[ot->instance_count].sprite_index[1]);
+
+	printf("animations: %d\n", ot->spritesheet->animation_count);
 	ot->instance_count++;
 }
 
 /* Set the animation for an object */
 void ObjectType_SetObjectAnimation(ObjectType *ot, int instance_index, int animation) {
-	if (ot->instances[instance_index].animation != animation) {
-		ot->instances[instance_index].sprite_index = 0;
-	}
 	ot->instances[instance_index].animation = animation;
 }
 
 /* Change the object's sprite to the following sprite in the animation */
-void ObjectType_ObjectNextSprite(ObjectType *o, int instance_index) {
-	bool odd = o->instances[instance_index].animation % 2 == 0;
+void ObjectType_ObjectNextSprite(ObjectType *ot, int instance_index) {
+	bool odd = ot->instances[instance_index].animation % 2 == 1;
 	/* Increment the instance's sprite index */
-	o->instances[instance_index].sprite_index[o->instances[instance_index].animation]++;
+	ot->instances[instance_index].sprite_index[ot->instances[instance_index].animation]++;
+
 	if (odd) {
-		o->instances[instance_index].sprite_index[o->instances[instance_index].animation + 1]++;
+		ot->instances[instance_index].sprite_index[ot->instances[instance_index].animation - 1]++;
 	}
 	else {
-		o->instances[instance_index].sprite_index[o->instances[instance_index].animation - 1]++;
+		ot->instances[instance_index].sprite_index[ot->instances[instance_index].animation + 1]++;
 	}
 }
 
@@ -127,6 +128,9 @@ void ObjectType_RenderObject(ObjectType *ot, int instance_index, unsigned int dt
 		objectrefrect->h
 	};
 	
+//	printf("s %d\n", ot->instances[instance_index].sprite_index[ot->instances[instance_index].animation]);
+//	printf("a %d\n", ot->instances[instance_index].animation);
+
 	SDL_RenderCopy(
 		container->renderer,
 		ot->spritesheet->texture->texture,
@@ -151,9 +155,9 @@ void Destroy_ObjectType(ObjectType *ot) {
 }
 
 void ObjectType_ResetSpriteIndexes(ObjectType *ot, int ii, int animation) {
-	bool odd = (animation % 2 == 0);
+	bool odd = (animation % 2 == 1);
 	for (int i = 0; i < ot->spritesheet->animation_count; i++) {
-		if (i != animation || (odd && i != animation - 1) || (!odd && i != animation + 1)) {
+		if (i != animation && ((odd && i != animation - 1) || (!odd && i != animation + 1))) {
 			ot->instances[ii].sprite_index[i] = 0;
 		}
 	}

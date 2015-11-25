@@ -67,6 +67,9 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 	);
 	ret->player->traits->hitpoints = 5;
 
+	for (int i = 0; i < 4; i++) {
+		printf("player %d\n", ret->player->object->sprite_index[i]);
+	}
 	ret->EnemyTypeCount = 0;
 //	ret->EnemyTypes = malloc(ret->EnemyTypeCount * sizeof(CharacterType *));	
 	
@@ -91,20 +94,17 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 		for (int x = 0; x < level->width; x++) {
 			switch (level->tileArray[y][x]) {
 				case BRICK:
-					printf(" 1 ");
 					ObjectType_AddObject(ret->ObjectTypes[OBJECT_BRICK], x * TILE_SCALE, y * TILE_SCALE);
 				break;
 				case PLAYER:
-					printf(" 2 ");
+
 					ret->player->object->dstrect.x = x * TILE_SCALE;
 					ret->player->object->dstrect.y = y * TILE_SCALE;
 				break;
 				default:
-					printf("   ");
 				break;
 			}
 		}
-		putchar('\n');
 	}
 
 	return ret;
@@ -117,8 +117,8 @@ void World_Update(World *w, unsigned int dt, Container *container) {
 			CharacterType_UpdateCharacter(w->EnemyTypes[i], dt, e);
 		}
 	}
-	Player_Update(w->player, dt, container);
 	World_RunCollisions(w);	
+	Player_Update(w->player, dt, container);
 }
 
 void World_Render(World *w, unsigned int dt, Container *container) {
