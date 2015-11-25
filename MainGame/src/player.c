@@ -82,24 +82,6 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 void Player_Update(Player *p, unsigned int dt, Container *container) {
 
 	/* add default stand left/write */
-	if (container->keyboardstate[SDL_SCANCODE_A]) {
-		if (p->traits->is_on_floor) {
-			ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
-		} else {
-			ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
-		}
-		p->traits->velocity.x -= 0.5;
-		
-	}
-	if (container->keyboardstate[SDL_SCANCODE_D]) {
-		if (p->traits->is_on_floor) {
-			ObjectType_SetObjectAnimation(p->otype, 0, RUN_RIGHT);
-		} else {
-			ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);
-		}
-		p->traits->velocity.x += 0.5;
-	}
-
 	if (p->traits->is_on_floor) {
 		ObjectType_SetObjectAnimation(p->otype, 0, p->object->animation % 2);
 	}
@@ -113,8 +95,30 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 			}
 			if (p->traits->is_on_floor) {
 				p->traits->velocity.y = -7;
+				p->traits->is_on_floor = false;
 			}
 	}
+
+	if (container->keyboardstate[SDL_SCANCODE_A]) {
+		if (p->traits->is_on_floor) {
+			ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
+		} else {
+			ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
+		}
+		p->traits->velocity.x -= 0.5;
+		
+	}
+
+	if (container->keyboardstate[SDL_SCANCODE_D]) {
+		if (p->traits->is_on_floor) {
+			ObjectType_SetObjectAnimation(p->otype, 0, RUN_RIGHT);
+		} else {
+			ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);
+		}
+		p->traits->velocity.x += 0.5;
+	}
+
+
 
 	p->traits->is_on_floor = false;
 	/* cap velocities at 5 */
