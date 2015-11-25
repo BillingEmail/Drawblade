@@ -43,7 +43,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			player_texture = "../assets/img/Medieval/player.png";
 		break;
 		case ICE:
-			ret->background = New_Texture(container->renderer, "../assets/img/Ice/backround.png");
+			ret->background = New_Texture(container->renderer, "../assets/img/Ice/background.png");
 			player_texture = "../assets/img/Ice/player.png";
 		break;
 		case SPOOKY:
@@ -117,8 +117,8 @@ void World_Update(World *w, unsigned int dt, Container *container) {
 			CharacterType_UpdateCharacter(w->EnemyTypes[i], dt, e);
 		}
 	}
-	World_RunCollisions(w);	
 	Player_Update(w->player, dt, container);
+	World_RunCollisions(w);	
 }
 
 void World_Render(World *w, unsigned int dt, Container *container) {

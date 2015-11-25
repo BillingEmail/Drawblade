@@ -52,9 +52,10 @@ void Game_Run(Game *game, Container *container) {
 
 		/* ************** Switch to next level ********* */
 		/* If the world has been completed */
-		if (game->world->is_complete) {
+		if (game->world->is_complete || container->keyboardstate[SDL_SCANCODE_N]) {
 			/* switch to next world -- will later be a function with a transition */
-			game->current_level++;
+//			game->current_level++;
+			game->current_level = (game->current_level % 2) + 1;
 			World_Destroy(game->world);
 			game->world = LoadWorld(game->current_level, container);
 		}

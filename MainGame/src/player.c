@@ -38,14 +38,18 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 	switch (p->object->animation) {
 		case RUN_LEFT:
 			CharacterType_AnimateCharacter(p->ctype, 0, RUN_LEFT, &delay, 100);
-			if (p->object->sprite_index[RUN_LEFT] > 7) {
+			if (fabs(p->traits->velocity.x) < .5) {
+				p->object->sprite_index[RUN_LEFT] = 3;
+			} else if (p->object->sprite_index[RUN_LEFT] > 7) {
 				p->object->sprite_index[RUN_LEFT] = 0;
 			}
 			p->object->sprite_index[RUN_RIGHT] = p->object->sprite_index[RUN_LEFT];
 		break;
 		case RUN_RIGHT:
 			CharacterType_AnimateCharacter(p->ctype, 0, RUN_RIGHT, &delay, 100);
-			if (p->object->sprite_index[RUN_RIGHT] > 7) {
+			if (fabs(p->traits->velocity.x) < .5) {
+				p->object->sprite_index[RUN_LEFT] = 3;
+			} else	if (p->object->sprite_index[RUN_RIGHT] > 7) {
 				p->object->sprite_index[RUN_RIGHT] = 0;
 			}
 			p->object->sprite_index[RUN_LEFT] = p->object->sprite_index[RUN_RIGHT];
@@ -63,6 +67,7 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 			}
 			p->object->sprite_index[JUMP_LEFT] = p->object->sprite_index[JUMP_RIGHT];
 		break;
+
 //		case ATTACK:
 			/* attack lol TODO */
 //		break;
@@ -77,11 +82,6 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 void Player_Update(Player *p, unsigned int dt, Container *container) {
 
 	/* add default stand left/write */
-
-	if (p->traits->is_on_floor) {
-		ObjectType_SetObjectAnimation(p->otype, 0, p->object->animation % 2);
-	}
-
 	if (container->keyboardstate[SDL_SCANCODE_A]) {
 		if (p->traits->is_on_floor) {
 			ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
@@ -99,16 +99,21 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		}
 		p->traits->velocity.x += 0.5;
 	}
+
+	if (p->traits->is_on_floor) {
+		ObjectType_SetObjectAnimation(p->otype, 0, p->object->animation % 2);
+	}
+
 	if (container->keyboardstate[SDL_SCANCODE_SPACE]) {
-		if (p->traits->is_on_floor) {
 			if (p->object->animation == RUN_LEFT) {
 				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
 			}
 			if (p->object->animation == RUN_RIGHT) {
 				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);	
 			}
-			p->traits->velocity.y = -5;
-		}
+			if (p->traits->is_on_floor) {
+				p->traits->velocity.y = -7;
+			}
 	}
 
 	p->traits->is_on_floor = false;
@@ -116,18 +121,18 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	if (p->traits->velocity.x > 5) {
 		p->traits->velocity.x = 5;
 	}
-	if (p->traits->velocity.y > 5) {
-		p->traits->velocity.y = 5;
+	if (p->traits->velocity.y > 7) {
+		p->traits->velocity.y = 7;
 	}
 	if (p->traits->velocity.x < -5) {
 		p->traits->velocity.x = -5;
 	}
-	if (p->traits->velocity.y < -5) {
-		p->traits->velocity.y = 5;
+	if (p->traits->velocity.y < -7) {
+		p->traits->velocity.y = -7;
 	}
 
 
-	p->traits->velocity.y += .1;
+	p->traits->velocity.y += .25;
 
 	p->traits->velocity.x *= 0.9;
 

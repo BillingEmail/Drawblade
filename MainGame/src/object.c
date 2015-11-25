@@ -134,6 +134,7 @@ void ObjectType_RenderObject(ObjectType *ot, int instance_index, unsigned int dt
 	SDL_RenderCopy(
 		container->renderer,
 		ot->spritesheet->texture->texture,
+		/* NOICE */
 		&ot->animations[ot->instances[instance_index].animation][ot->instances[instance_index].sprite_index[ot->instances[instance_index].animation]],
 		&dstrect
 	);
