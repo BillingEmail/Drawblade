@@ -81,29 +81,11 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 /* Take input from wrapper and apply to the player */
 void Player_Update(Player *p, unsigned int dt, Container *container) {
 
-	/* add default stand left/write */
-	if (p->traits->is_on_floor) {
-		ObjectType_SetObjectAnimation(p->otype, 0, p->object->animation % 2);
-	}
-
-	if (container->keyboardstate[SDL_SCANCODE_SPACE]) {
-			if (p->object->animation == RUN_LEFT) {
-				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
-			}
-			if (p->object->animation == RUN_RIGHT) {
-				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);	
-			}
-			if (p->traits->is_on_floor) {
-				p->traits->velocity.y = -7;
-				p->traits->is_on_floor = false;
-			}
-	}
+	/*TODO add default stand left/write */
 
 	if (container->keyboardstate[SDL_SCANCODE_A]) {
 		if (p->traits->is_on_floor) {
 			ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
-		} else {
-			ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
 		}
 		p->traits->velocity.x -= 0.5;
 		
@@ -112,12 +94,23 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	if (container->keyboardstate[SDL_SCANCODE_D]) {
 		if (p->traits->is_on_floor) {
 			ObjectType_SetObjectAnimation(p->otype, 0, RUN_RIGHT);
-		} else {
-			ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);
 		}
 		p->traits->velocity.x += 0.5;
 	}
 
+	if (container->keyboardstate[SDL_SCANCODE_SPACE]) {
+			if (p->object->animation == RUN_LEFT) {
+				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
+			}
+
+			if (p->object->animation == RUN_RIGHT) {
+				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);	
+			}
+		if (p->traits->is_on_floor) {
+				p->traits->velocity.y = -7;
+			p->traits->is_on_floor = false;
+		}
+	}
 
 
 	p->traits->is_on_floor = false;
@@ -142,7 +135,6 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 
 	
 	if (fabs(p->traits->velocity.x) < 0.1) p->traits->velocity.x = 0;
-//	if (fabs(p->traits->velocity.y) < 0.1) p->traits->velocity.y = 0;
 
 	p->object->dstrect.x += p->traits->velocity.x;
 	p->object->dstrect.y += p->traits->velocity.y;		
