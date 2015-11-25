@@ -53,7 +53,6 @@ MenuReturn Menu_Run(Menu *m, Container *container) {
 		/* SOMETHING WITH TEXT BOXES TODO TODO TODO use the buffer etc */
 		Texture_Render(m->background, container->renderer, 0, 0, NULL);
 		for (int i = 0; i < m->buttonCount; i++) {
-			printf("render button %d", i);
 			Button_Render(m->buttons[i], container);
 		}
 	}
