@@ -3,6 +3,7 @@
 
 #include "../../shared/include/container.h"
 #include "../include/button.h"
+#include "../include/textbox.h"
 
 /* A menu returns an action if a button was pressed, or text
  * if text was typed into a textbox and enter was pressed */
@@ -20,10 +21,9 @@ typedef struct _menu {
 	int buttonCount; /* Count of buttons */
 	int buttonsSize; /* Length of buttons array */
 	/* Textboxes on the menu */
-//	Textbox **textboxes;
-//	int textboxCount; /* Count of textboxes */
-//	int textboxesSize; /* Length of textboxes array */
-//	int currentTextbox; /* The textbox currently being typed in */
+	Textbox **textboxes;
+	int textboxCount; /* Count of textboxes */
+	int textboxesSize; /* Length of textboxes array */
 } Menu;
 
 /* Create a new menu with a background */

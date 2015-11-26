@@ -2,68 +2,98 @@
 #include <stdlib.h>
 #include "../include/game.h"
 #include "../include/button.h"
+#include "../include/textbox.h"
 #include "../include/menu.h"
 
+/* Create a new Menu with a background */
 Menu * New_Menu(Texture *background) {
 	Menu *ret;
 
 	ret = malloc(sizeof(Menu));
 	ret->background = background;
 
+	/* Create the list of buttons */
 	ret->buttons = malloc(sizeof(Button *));
 	ret->buttonCount = 0;
 	ret->buttonsSize = 1;
 	
-	/*
+	/* Create the list of textboxes */
 	ret->textboxes = malloc(sizeof(Textbox *));
 	ret->textboxCount = 0;
-	ret->textboxSize = 1;
-	ret->currentTextbox = 0;
-	*/
+	ret->textboxesSize = 1;
 
 	return ret;
 }
 
+/* Add a button to a menu */
 void Menu_AddButton(Menu *m, Button *b) {
+	/* Resize buttons array if cap is reached, increase cap accordingly */
 	if (m->buttonCount == m->buttonsSize) {
 		m->buttons = realloc(m->buttons, m->buttonsSize * 2 * sizeof(Button *));
 		m->buttonsSize *= 2;
 	}
+	/* Add the button */
 	m->buttons[m->buttonCount] = b;
 	m->buttonCount++;
 }
 
+/* Add a textbox to a menu */
+void Menu_AddTextbox(Menu *m, Textbox *t) {
+	/* Resize buttons array if cap is reached, increase cap accordingly */
+	if (m->textboxCount == m->textboxesSize) {
+		m->textboxes = realloc(m->textboxes, m->textboxesSize * 2 * sizeof(Textbox *));
+		m->textboxesSize *= 2;
+	}
+	/* Add the button */
+	m->textboxes[m->textboxCount] = t;
+	m->textboxCount++;
+}
+
+/* Destroy a menu from existence, all of its buttons and textboxes included */
 void Menu_Destroy(Menu *m) {
 	for (int i = 0; i < m->buttonCount; i++) {
 		Button_Destroy(m->buttons[i]);
+	}
+	for (int i = 0; i < m->textboxCount; i++) {
+		Textbox_Destroy(m->textboxes[i]);
 	}
 	Destroy_Texture(m->background);
 	free(m);
 }
 
+/* Run a menu until a button is pressed, return the action of the
+ * button and the text in a textbox, if any */
 MenuReturn Menu_Run(Menu *m, Container *container) {
 	MenuReturn ret;
 	bool running = true;
-//	int SelectedTextbox = 0; /* Focused textbox */
+	int SelectedTextbox = 0; /* Focused textbox */
 
 	while (running) {
 		Container_Refresh(container);
+		/* If a button is clicked, set the return and exit loop */
 		for (int i = 0; i < m->buttonCount; i++) {
 			if (Button_Clicked(m->buttons[i], container)) {
 				ret.action = m->buttons[i]->action;
-				ret.text = NULL;
-//				ret.text = m->textboxes[SelectedTextbox]->text;
+				ret.text = m->textboxes[SelectedTextbox]->text;
 				running = false;
 			}
 		}
-//		for (int i = 0; i < m->textboxCount; i++) {
-//			if (TextBox_Clicked(m->textboxes[i], container)) {
-//				SelectedTextbox = i;
-//			}
-//		}
+		/* If a textbox is clicked, set the focus to it */
+		for (int i = 0; i < m->textboxCount; i++) {
+			if (Textbox_Clicked(m->textboxes[i], container)) {
+				SelectedTextbox = i;
+			}
+		}
+		/* Listen for input in the focused textbox */
+		Textbox_ReadInput(m->textboxes[SelectedTextbox]);
+
+		/* Render the components */
 		Texture_Render(m->background, container->renderer, 0, 0, NULL);
 		for (int i = 0; i < m->buttonCount; i++) {
 			Button_Render(m->buttons[i], container);
+		}
+		for (int i = 0; i < m->textboxCount; i++) {
+			Textbox_Render(m->textboxes[i], container);
 		}
 	}
 
@@ -110,6 +140,15 @@ Menu * New_MainMenu(Container *container) {
 Menu * New_LoadLevelMenu(Container *container) {
 	/* Create menu with background texture */
 	Menu *ret = New_Menu(New_Texture(container->renderer, "../assets/img/Menus/LoadLevel/background.png"));
+
+	/* Add textbox for custom level path */
+	Menu_AddTextbox(
+		ret,
+		New_Textbox(
+			New_Texture(container->renderer, "../assets/img/Menus/textbox.png"),
+			350, 200, 64
+		)
+	);
 
 	/* Add back button */
 	Menu_AddButton(
@@ -205,6 +244,6 @@ void RunMenuManager(Menu *MainMenu, Menu *LoadLevelMenu, Container *container) {
 				break;
 			}
 		} /* It the user typed something but clicked Back button */
-		if (MenuInput.text) free(MenuInput.text);
+//		if (MenuInput.text) free(MenuInput.text);
 	}
 }
