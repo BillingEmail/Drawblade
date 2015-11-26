@@ -74,6 +74,8 @@ void Game_Run(Game *game, Container *container) {
 */
 			/* Temporary for switching between "level1" and "level2" */
 			game->current_level = (game->current_level % 2) + 1;
+			World_Destroy(game->world);
+			game->world = LoadWorld(game->current_level, container);
 		}
 
 
