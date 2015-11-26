@@ -54,7 +54,7 @@ World * World_LoadWorldFromLevel(Level *level, Container *container);
 void World_Update(World *w, unsigned int dt, Container *container);
 
 /* Load a world from a file */
-World * NewWorld_FromFile(char *path, Container *c);
+World * NewWorld_FromFile(const char *path, Container *c);
 
 /* Destroy a world */
 void Destroy_World(World *w);

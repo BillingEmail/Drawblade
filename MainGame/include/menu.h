@@ -32,6 +32,12 @@ Menu * New_Menu(Texture *background);
 /* Shortcut to creating the Main Menu, just calls New_Menu and Menu_AddButton etc etc */
 Menu * New_MainMenu(Container *container);
 
+/* Shortcut to creating the Load Custom Level menu, " */
+Menu * New_LoadLevelMenu(Container *container);
+
+/* Overhead manager for menus, basically runs the whole deal */
+void RunMenuManager(Menu *MainMenu, Menu *LoadLevelMenu, Container *container);
+
 /* Add a button to a menu */
 void Menu_AddButton(Menu *m, Button *b);
 

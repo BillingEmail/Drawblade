@@ -11,7 +11,7 @@
 #include "../include/player.h"
 #include "../../shared/include/container.h"
 
-World * NewWorld_FromFile(char *path, Container *container) {
+World * NewWorld_FromFile(const char *path, Container *container) {
 	World *ret;
 	Level *level = malloc(sizeof(Level));
 	FILE *why_satya = fopen(path, "rb");
@@ -28,6 +28,7 @@ World * NewWorld_FromFile(char *path, Container *container) {
 World * World_LoadWorldFromLevel(Level * level, Container *container) {
 	World *ret = malloc(sizeof(World));
 	char *player_texture;
+	char *brick_texture;
 	ret->size.h = level->height * TILE_SCALE;
 	ret->size.w = level->width * TILE_SCALE;
 
@@ -37,18 +38,22 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 		case LAVA:
 			ret->background = New_Texture(container->renderer, "../assets/img/Lava/background.png");
 			player_texture = "../assets/img/Lava/player.png";
+			brick_texture = "../assets/img/Lava/brick.png";
 		break;
 		case MEDIEVAL:
 			ret->background = New_Texture(container->renderer, "../assets/img/Medieval/background.png");
 			player_texture = "../assets/img/Medieval/player.png";
+			brick_texture = "../assets/img/Lava/brick.png";
 		break;
 		case ICE:
 			ret->background = New_Texture(container->renderer, "../assets/img/Ice/background.png");
 			player_texture = "../assets/img/Ice/player.png";
+			brick_texture = "../assets/img/Lava/brick.png";
 		break;
 		case SPOOKY:
 			ret->background = New_Texture(container->renderer, "../assets/img/Medieval/background.png");
 			player_texture = "../assets/img/Spooky/player.png";
+			brick_texture = "../assets/img/Lava/brick.png";					
 		break;
 	}
 
@@ -78,11 +83,8 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 
 	ret->ObjectTypes[OBJECT_BRICK] = New_ObjectType(
 		New_Spritesheet(
-			New_Texture(
-				container->renderer,
-				"../assets/img/brick.png"
-			),
-			1, 1
+			New_Texture(container->renderer, brick_texture),
+			1, 16
 		),
 		TILE_SCALE, TILE_SCALE /* width, height */
 	);

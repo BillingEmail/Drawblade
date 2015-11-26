@@ -8,7 +8,7 @@
 #include "../include/game.h"
 #include <SDL2/SDL.h>
 
-Game * New_Game(Container *container) {
+Game * New_Game(Container *container, GameMode mode, const char *custom_level_path) {
 	Game *ret;
 
 	ret = malloc(sizeof(Game));
@@ -21,7 +21,13 @@ Game * New_Game(Container *container) {
 
 	ret->hud = Create_HUD(container);
 
-
+	ret->mode = mode;
+	if (mode == CUSTOM_LEVEL) {
+		if (!custom_level_path) {
+			fprintf(stderr, "New_Game called with mode CUSTOM_LEVEL but no path provided\n");
+		}
+		ret->world = NewWorld_FromFile(custom_level_path, container);
+	}
 	return ret;
 }
 
@@ -55,10 +61,19 @@ void Game_Run(Game *game, Container *container) {
 		/* If the world has been completed */
 		if (game->world->is_complete || container->keyboardstate[SDL_SCANCODE_N]) {
 			/* switch to next world -- will later be a function with a transition */
-//			game->current_level++;
+			/* Increment world if ADVENTURE mode */			
+/*			if (game->mode == ADVENTURE) {
+				game->current_level++;
+				World_Destroy(game->world);
+				game->world = LoadWorld(game->current_level, container);
+//			* Restart world if CUSTOM_LEVEL mode * /
+			} else if (game->mode == CUSTOM_LEVEL) {
+				World_Destroy(game->world);
+				game->world = NewWorld_FromFile(game->custom_level_path, container);
+			}
+*/
+			/* Temporary for switching between "level1" and "level2" */
 			game->current_level = (game->current_level % 2) + 1;
-			World_Destroy(game->world);
-			game->world = LoadWorld(game->current_level, container);
 		}
 
 
