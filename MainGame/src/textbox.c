@@ -40,18 +40,18 @@ bool Textbox_Clicked(Textbox *textbox, Container *container) {
 }
 
 void Textbox_Render(Textbox *t, Container *container) {
-	SDL_Surface *TextSurface;
+/*	SDL_Surface *TextSurface;
 	SDL_Texture *TextTexture;
 	SDL_Color TextColor = {15, 15, 15};
 
-	TextSurface = TTF_RenderText_Solid(container->font, t->text);
-	TextTexture = SDL_LoadTextureFromSurface(container->renderer, TextSurface);
+	TextSurface = TTF_RenderText_Solid(container->font, t->text, TextColor);
+	TextTexture = SDL_CreateTextureFromSurface(container->renderer, TextSurface);
 
-	/* destroy surface etc * TODO */
+	/ * destroy surface etc * TODO * /
 
 	SDL_RenderCopy(container->renderer, t->texture->texture, NULL, &t->renderRect);
 
-	
+*/	
 }
 
 void Textbox_ReadInput(Textbox *t) {

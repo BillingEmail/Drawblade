@@ -28,6 +28,13 @@ typedef struct _Level {
 } Level;
 
 
+typedef enum _BrickChoice {
+	NUDE, TOP, RIGHT, BOTTOM, LEFT,
+	TOPRIGHT, RIGHTBOTTOM, BOTTOMLEFT, TOPLEFT,
+	TOPRIGHTLEFT, TOPRIGHTBOTTOM, RIGHTBOTTOMLEFT, TOPBOTTOMLEFT,
+	TOPBOTTOM, RIGHTLEFT, ALL
+} BrickChoice;
+
 Mode getMode(void);
 //functions for getting the file
 char * getFileName(void);
@@ -38,4 +45,6 @@ void Level_LoadFromFile(Level *level, FILE *fp);
 void Level_Save(Level *level);
 void Level_Destroy(Level *level);
 void Level_CreateTiles(Level *level);
+
+BrickChoice Level_GetBrickChoice(Level *level, int x, int y);
 #endif

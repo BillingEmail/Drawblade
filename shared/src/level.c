@@ -175,3 +175,31 @@ void Level_CreateTiles(Level *level) {
 		level->tileArray[i] = calloc(level->width, sizeof(Tile));
 	}
 }
+
+BrickChoice Level_GetBrickChoice(Level *level, int x, int y) {
+	bool top = !(level->tileArray[y - 1][x] == BRICK);
+	bool bottom = !(level->tileArray[y + 1][x] == BRICK);
+	bool left = !(level->tileArray[y][x - 1] == BRICK);
+	bool right = !(level->tileArray[y][x + 1] == BRICK);	
+
+	/* ayy thats my choice too */	
+	int renderChoice = NUDE;
+
+	if (top && !bottom && !left && !right) renderChoice = TOP;
+	if (!top && bottom && !left && !right) renderChoice = BOTTOM;
+	if (!top && !bottom && left && !right) renderChoice = LEFT;
+	if (!top && !bottom && !left && right) renderChoice = RIGHT;
+	if (top && !bottom && !left && right) renderChoice = TOPRIGHT;
+	if (!top && bottom && left && !right) renderChoice = BOTTOMLEFT;
+	if (!top && bottom && !left && right) renderChoice = RIGHTBOTTOM;
+	if (top && !bottom && left && !right) renderChoice = TOPLEFT;
+	if (top && !bottom && left && right) renderChoice = TOPRIGHTLEFT;
+	if (top && bottom && !left && right) renderChoice = TOPRIGHTBOTTOM;
+	if (!top && right && bottom && left) renderChoice = RIGHTBOTTOMLEFT;
+	if (top && bottom && left && !right) renderChoice = TOPBOTTOMLEFT;
+	if (top && bottom && !left && !right) renderChoice = TOPBOTTOM;
+	if (!top && !bottom && left && right) renderChoice = RIGHTLEFT;
+	if (top && bottom && left && right) renderChoice = ALL;
+
+	return renderChoice;
+}

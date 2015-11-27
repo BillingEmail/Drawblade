@@ -94,6 +94,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			switch (level->tileArray[y][x]) {
 				case BRICK:
 					ObjectType_AddObject(ret->ObjectTypes[OBJECT_BRICK], x * TILE_SCALE, y * TILE_SCALE);
+					ret->ObjectTypes[OBJECT_BRICK]->instances[ret->ObjectTypes[OBJECT_BRICK]->instance_count].sprite_index[0] =  Level_GetBrickChoice(level, x, y);
 				break;
 				case PLAYER:
 
@@ -106,13 +107,9 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 		}
 	}
 	
-	for (int i = 0; i < ret->ObjectTypes[OBJECT_BRICK]->instance_count; i++) {
-		World_SetBrickSprites(ret, i);
-	}
-
 	return ret;
 }
-
+/* Behold satya's great work
 void World_SetBrickSprites(World *w, int instance) {
 	bool top = false;
 	bool bottom = false;
@@ -144,14 +141,15 @@ void World_SetBrickSprites(World *w, int instance) {
 			}
 		}
 	
-	/* 
+	/ * 
 	TODO  set the sprites now that you have found out which is true 
 	I want to move the bool checking into a function, and then the last thing should be seting the spritesheet position
 	I also need to move the enum from leveleditor.h to somewhere else (brick.h?)
 	maybe we can move the checks into that
-	*/
+	* /
 
 }
+*/
 
 void World_Update(World *w, unsigned int dt, Container *container) {	
 	/* Update enemies */
