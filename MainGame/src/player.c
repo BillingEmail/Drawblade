@@ -86,6 +86,11 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	
 	printf("%d", p->traits->is_on_floor);
 
+	if (p->traits->velocity.y == 0) {
+		p->object->sprite_index[facingLeft] = 3;
+		p->object->animation = facingLeft;
+	}
+
 /*	if (p->traits->is_on_floor && p->traits->velocity.x == 0) {
 		ObjectType_ResetSpriteIndexes(p->otype, 0, NULL);
 		ObjectType_SetObjectAnimation(p->otype, 0, 	facingLeft);
@@ -132,7 +137,6 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		Player_Attack(p, container);
 	}
 	
-	p->traits->is_on_floor = false;
 	/* cap velocities */
 	if (p->traits->velocity.x > 5) {
 		p->traits->velocity.x = 5;
@@ -147,9 +151,9 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		p->traits->velocity.y = -7;
 	}
 
-
+	if (!p->traits->is_on_floor) {
 	p->traits->velocity.y += .25;
-
+	}
 	p->traits->velocity.x *= 0.9;
 
 	
