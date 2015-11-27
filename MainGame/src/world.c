@@ -94,7 +94,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			switch (level->tileArray[y][x]) {
 				case BRICK:
 					ObjectType_AddObject(ret->ObjectTypes[OBJECT_BRICK], x * TILE_SCALE, y * TILE_SCALE);
-					ret->ObjectTypes[OBJECT_BRICK]->instances[ret->ObjectTypes[OBJECT_BRICK]->instance_count].sprite_index[0] =  Level_GetBrickChoice(level, x, y);
+					ret->ObjectTypes[OBJECT_BRICK]->instances[ret->ObjectTypes[OBJECT_BRICK]->instance_count - 1].sprite_index[0] = Level_GetBrickChoice(level, x, y);
 				break;
 				case PLAYER:
 
