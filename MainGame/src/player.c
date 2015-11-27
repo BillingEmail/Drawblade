@@ -84,12 +84,14 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	/* Checks whether the last sprite was facing left or right */
 	bool facingLeft = (p->object->animation % 2 == 1);
 	
-	if (p->traits->is_on_floor && p->traits->velocity.x == 0) {
+	printf("%d", p->traits->is_on_floor);
+
+/*	if (p->traits->is_on_floor && p->traits->velocity.x == 0) {
 		ObjectType_ResetSpriteIndexes(p->otype, 0, NULL);
 		ObjectType_SetObjectAnimation(p->otype, 0, 	facingLeft);
 		p->otype->instances[0].sprite_index[facingLeft] = 3;
 	}
-
+*/
 	if (container->keyboardstate[SDL_SCANCODE_A]) {
 			ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
 		p->traits->velocity.x -= 0.5;
