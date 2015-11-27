@@ -177,13 +177,13 @@ void Level_CreateTiles(Level *level) {
 }
 
 BrickChoice Level_GetBrickChoice(Level *level, int x, int y) {
-	bool top = false;
+	bool top = true;
 	if (y > 0) top = !(level->tileArray[y - 1][x] == BRICK);
-	bool bottom = false;
+	bool bottom = true;
 	if (y < level->height - 1) bottom =	!(level->tileArray[y + 1][x] == BRICK);
-	bool left = false;
+	bool left = true;
 	if (x > 0) left = !(level->tileArray[y][x - 1] == BRICK);
-	bool right = false;
+	bool right = true;
 	if (x < level->width - 1) right = !(level->tileArray[y][x + 1] == BRICK);	
 
 	/* ayy thats my choice too */	

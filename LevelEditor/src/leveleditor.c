@@ -174,15 +174,15 @@ void LevelEditor_Render(LevelEditor *editor) {
 		for (int j = 0; j < editor->level->width; j++) {
 			if (editor->level->tileArray[i][j] == BRICK) {
 				Texture_RenderBrick(
-				editor->textureArray[theme][editor->level->tileArray[i][j]], 
-				editor->container->renderer, j * TILE_SCALE, i * TILE_SCALE, editor->container->camera,
-				Level_GetBrickChoice(editor->level, j, i)
+					editor->textureArray[theme][editor->level->tileArray[i][j]], 
+					editor->container->renderer, j * TILE_SCALE, i * TILE_SCALE, editor->container->camera,
+					Level_GetBrickChoice(editor->level, j, i)
 				);	
 			}
 			else {
 				Texture_Render(
-				editor->textureArray[theme][editor->level->tileArray[i][j]],
-				editor->container->renderer, j * TILE_SCALE, i * TILE_SCALE, editor->container->camera	
+					editor->textureArray[theme][editor->level->tileArray[i][j]],
+					editor->container->renderer, j * TILE_SCALE, i * TILE_SCALE, editor->container->camera	
 				);
 			}
 		}
@@ -195,34 +195,37 @@ void LevelEditor_Render(LevelEditor *editor) {
 	*/
 	for (int i = 0; i <= editor->level->height; i++) {
 		SDL_RenderDrawLine(editor->container->renderer,
-		0 - editor->container->camera->x, i * TILE_SCALE - editor->container->camera->y,
-		editor->level->width * TILE_SCALE - editor->container->camera->x, i * TILE_SCALE - editor->container->camera->y);
+			0 - editor->container->camera->x, i * TILE_SCALE - editor->container->camera->y,
+			editor->level->width * TILE_SCALE - editor->container->camera->x, i * TILE_SCALE - editor->container->camera->y);
 	}
 	for (int i = 0; i <= editor->level->width; i++) {
 		SDL_RenderDrawLine(editor->container->renderer,
-		i * TILE_SCALE - editor->container->camera->x, 0 - editor->container->camera->y,
-		i * TILE_SCALE - editor->container->camera->x, editor->level->height * TILE_SCALE - editor->container->camera->y);
+			i * TILE_SCALE - editor->container->camera->x, 0 - editor->container->camera->y,
+			i * TILE_SCALE - editor->container->camera->x, editor->level->height * TILE_SCALE - editor->container->camera->y);
 	}
 	
 	//Renders the currently selected item on the mouse cursor location, so the user can see it
-	Texture_Render(editor->textureArray[theme][editor->currentItem], editor->container->renderer,
-	editor->container->mouse.x - TILE_SCALE / 2, editor->container->mouse.y - TILE_SCALE / 2, NULL);
-	
+	if (editor->currentItem != BRICK) {
+		Texture_Render(editor->textureArray[theme][editor->currentItem], editor->container->renderer,
+			editor->container->mouse.x - TILE_SCALE / 2, editor->container->mouse.y - TILE_SCALE / 2, NULL);
+	}
+
 	//If the currently selected item is BLANK, it renders the eraser icon
 	if (editor->currentItem == BLANK) {
 		Texture_Render(editor->blankIcon, editor->container->renderer, 
-		editor->container->mouse.x - 78 / 2, editor->container->mouse.y - TILE_SCALE 72 / 2, NULL);
+		editor->container->mouse.x - 78 / 2, editor->container->mouse.y - 72 / 2, NULL);
 	}
 
 	if (editor->currentItem == BRICK) {
 		Texture_RenderBrick(
-		editor->textureArray[theme][editor->level->tileArray[i][j]],
-		editor->container->renderer, 
-		editor->container->mouse.x - TILE_SCALE / 2, 
-		editor->container->mouse.y - TILE_SCALE / 2, 
-		editor->container->camera,
-		ALL
-	};
+			editor->textureArray[theme][BRICK],
+			editor->container->renderer, 
+			editor->container->mouse.x - TILE_SCALE / 2, 
+			editor->container->mouse.y - TILE_SCALE / 2, 
+			NULL,	
+			ALL
+		);
+	}
 
 }
 
@@ -266,9 +269,9 @@ void LevelEditor_Update(LevelEditor *editor) {
 	if (LevelEditor_checkEditTile(editor)) {
 			//This sets the place they have clicked in to the currentItem
 			editor->level->tileArray
-			[(editor->container->mouse.y + editor->container->camera->y) / TILE_SCALE]
-			[(editor->container->mouse.x + editor->container->camera->x) / TILE_SCALE] =
- 	        editor->currentItem;
+				[(editor->container->mouse.y + editor->container->camera->y) / TILE_SCALE]
+				[(editor->container->mouse.x + editor->container->camera->x) / TILE_SCALE] =
+ 		        editor->currentItem;
 	}
 }
 /* 

@@ -15,11 +15,6 @@ typedef struct _LevelEditor {
 	int currentItem;
 } LevelEditor;
 
-
-typedef enum _BrickChoice {
-	NUDE, TOP, RIGHT, BOTTOM, LEFT, TOPRIGHT, RIGHTBOTTOM, BOTTOMLEFT, TOPLEFT, TOPRIGHTLEFT, TOPRIGHTBOTTOM, RIGHTBOTTOMLEFT, TOPBOTTOMLEFT, TOPBOTTOM, RIGHTLEFT, ALL
-} BrickChoice;
-
 /*
   All of the functions for editing a level are within this
   It is broken into making a new leveleditor, running it,
