@@ -83,36 +83,41 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 void Player_Update(Player *p, unsigned int dt, Container *container) {
 	/* Checks whether the last sprite was facing left or right */
 	bool facingLeft = (p->object->animation % 2 == 1);
+	
+	if (p->traits->is_on_floor && p->traits->velocity.x == 0) {
+		ObjectType_ResetSpriteIndexes(p->otype, 0, NULL);
+		ObjectType_SetObjectAnimation(p->otype, 0, 	facingLeft);
+		p->otype->instances[0].sprite_index[facingLeft] = 3;
+	}
 
 	if (container->keyboardstate[SDL_SCANCODE_A]) {
-		if (p->traits->is_on_floor) {
 			ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
-		}
 		p->traits->velocity.x -= 0.5;
 		
 	}
 
 	if (container->keyboardstate[SDL_SCANCODE_D]) {
-		if (p->traits->is_on_floor) {
 			ObjectType_SetObjectAnimation(p->otype, 0, RUN_RIGHT);
-		}
 		p->traits->velocity.x += 0.5;
 	}
 
 	if (container->keyboardstate[SDL_SCANCODE_SPACE]) {
-			if (facingLeft) {
-				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
-			}
-
-			if (!facingLeft) {
-				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);	
-			}
 		if (p->traits->is_on_floor) {
-				p->traits->velocity.y = -7;
+			p->traits->velocity.y = -7;
 			p->traits->is_on_floor = false;
 		}
 	}
 	
+	if (!p->traits->is_on_floor) {
+		if (facingLeft) {
+			ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
+		}
+		if (!facingLeft) {
+			ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);	
+		}
+
+	}
+
 	if (container->mouse.leftClick) {
 		if (p->traits->canAttack) {
 			if(container->mouse.x <= p->object->dstrect.x) {
