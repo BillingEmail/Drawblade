@@ -22,9 +22,11 @@ typedef struct _character_traits {
 	vector velocity;
 	vector acceleration;
 	int hitpoints;
+	float attackDelta;
 	bool is_dead;
 	bool is_on_floor;
 	bool jumping;
+	bool canAttack;
 } CharacterTraits;
 
 typedef struct _charactertype {

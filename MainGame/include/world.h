@@ -56,6 +56,8 @@ void World_Update(World *w, unsigned int dt, Container *container);
 /* Load a world from a file */
 World * NewWorld_FromFile(const char *path, Container *c);
 
+void World_SetBrickSprites(World *w, int instance);
+
 /* Destroy a world */
 void Destroy_World(World *w);
 

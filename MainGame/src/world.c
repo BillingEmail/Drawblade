@@ -72,9 +72,6 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 	);
 	ret->player->traits->hitpoints = 5;
 
-	for (int i = 0; i < 4; i++) {
-		printf("player %d\n", ret->player->object->sprite_index[i]);
-	}
 	ret->EnemyTypeCount = 0;
 //	ret->EnemyTypes = malloc(ret->EnemyTypeCount * sizeof(CharacterType *));	
 	
@@ -108,8 +105,52 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			}
 		}
 	}
+	
+	for (int i = 0; i < ret->ObjectTypes[OBJECT_BRICK]->instance_count; i++) {
+		World_SetBrickSprites(ret, i);
+	}
 
 	return ret;
+}
+
+void World_SetBrickSprites(World *w, int instance) {
+	bool top = false;
+	bool bottom = false;
+	bool left = false;
+	bool right = false;
+	int renderChoice = NUDE;
+		for (int i = 0; i < w->ObjectTypes[OBJECT_BRICK]->instance_count; i++) {
+			if (i != instance) {
+				if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.x == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.x - 32) {
+					if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.y == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.y) {
+						left = true;
+					}
+				}
+				if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.x == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.x + 32) {
+					if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.y == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.y) {
+						right = true;
+					}
+				}
+				if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.x == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.x) {
+					if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.y == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.y + 32) {
+						top = true;
+					}
+				}
+				if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.x == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.x - 32) {
+					if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.y == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.y) {
+						bottom = true;
+					}
+				}
+			}
+		}
+	
+	/* 
+	TODO  set the sprites now that you have found out which is true 
+	I want to move the bool checking into a function, and then the last thing should be seting the spritesheet position
+	I also need to move the enum from leveleditor.h to somewhere else (brick.h?)
+	maybe we can move the checks into that
+	*/
+
 }
 
 void World_Update(World *w, unsigned int dt, Container *container) {	

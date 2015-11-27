@@ -15,6 +15,11 @@ typedef struct _LevelEditor {
 	int currentItem;
 } LevelEditor;
 
+
+typedef enum _BrickChoice {
+	NUDE, TOP, RIGHT, BOTTOM, LEFT, TOPRIGHT, RIGHTBOTTOM, BOTTOMLEFT, TOPLEFT, TOPRIGHTLEFT, TOPRIGHTBOTTOM, RIGHTBOTTOMLEFT, TOPBOTTOMLEFT, TOPBOTTOM, RIGHTLEFT, ALL
+} BrickChoice;
+
 /*
   All of the functions for editing a level are within this
   It is broken into making a new leveleditor, running it,
@@ -34,6 +39,11 @@ void LevelEditor_Run(LevelEditor *editor);
 
 /* Components of Run */
 void LevelEditor_Render(LevelEditor *editor);
+
+/* Components of Render (Brick Rendering) */
+void LevelEditor_RenderBricks(LevelEditor *editor, int i, int j);
+void Texture_RenderBrick(Texture *t, SDL_Renderer *r, int x, int y, SDL_Rect *Camera, BrickChoice b);
+
 void LevelEditor_Update(LevelEditor *editor);
 
 /* Components of Update  */

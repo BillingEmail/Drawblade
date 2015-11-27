@@ -57,9 +57,14 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y,
 			2 * ct->character_traits_size * sizeof(CharacterTraits));
 		ct->character_traits_size *= 2;
 	}
-//	if (ct->affected_by_gravity) {
-//		ct->character_traits[ct->character_traits_count].acceleration.y = 2;
-//	}
+
+	float attackDelta = 0;
+	
+	bool is_dead = false;
+	bool is_on_floor = false;
+	bool jumping = false;
+	bool canAttack = false;
+
 	ct->character_traits_count++;
 }
 
@@ -115,7 +120,7 @@ void CharacterType_AdjustHitboxes(CharacterType *ct, int instance_index) {
 
 void CharacterType_AnimateCharacter(CharacterType *ct, int ii, int animation, unsigned int *delay, unsigned int duration) {
 	Object *object = ct->object_type->instances + ii;
-	if (object->lastAnimation == animation) {
+	if (object->lastAnimation != animation) {
 		object->lastAnimation = animation;
 		*delay = 0;
 		ObjectType_ResetSpriteIndexes(ct->object_type, ii, animation);

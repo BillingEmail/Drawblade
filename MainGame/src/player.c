@@ -62,8 +62,8 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 			p->object->sprite_index[JUMP_RIGHT] = p->object->sprite_index[JUMP_LEFT];
 		case JUMP_RIGHT:
 			CharacterType_AnimateCharacter(p->ctype, 0, JUMP_RIGHT, &delay, 50);
-			if (p->object->sprite_index[JUMP_RIGHT] > 3) {
-				p->object->sprite_index[JUMP_RIGHT] = 3;
+			if (p->object->sprite_index[JUMP_RIGHT] > 2) {
+				p->object->sprite_index[JUMP_RIGHT] = 2;
 			}
 			p->object->sprite_index[JUMP_LEFT] = p->object->sprite_index[JUMP_RIGHT];
 		break;
@@ -76,12 +76,13 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 //		break;
 	}
 	CharacterType_RenderCharacter(p->ctype, 0, dt, c);
+	p->object->lastAnimation = p->object->animation;
 }
 
 /* Take input from wrapper and apply to the player */
 void Player_Update(Player *p, unsigned int dt, Container *container) {
-
-	/*TODO add default stand left/write */
+	/* Checks whether the last sprite was facing left or right */
+	bool facingLeft = (p->object->animation % 2 == 1);
 
 	if (container->keyboardstate[SDL_SCANCODE_A]) {
 		if (p->traits->is_on_floor) {
@@ -99,11 +100,11 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	}
 
 	if (container->keyboardstate[SDL_SCANCODE_SPACE]) {
-			if (p->object->animation == RUN_LEFT) {
+			if (facingLeft) {
 				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
 			}
 
-			if (p->object->animation == RUN_RIGHT) {
+			if (!facingLeft) {
 				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);	
 			}
 		if (p->traits->is_on_floor) {
@@ -111,10 +112,21 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 			p->traits->is_on_floor = false;
 		}
 	}
-
-
+	
+	if (container->mouse.leftClick) {
+		if (p->traits->canAttack) {
+			if(container->mouse.x <= p->object->dstrect.x) {
+				ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_LEFT);
+			}
+			else {
+				ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_RIGHT);
+			}
+		}
+		Player_Attack(p, container);
+	}
+	
 	p->traits->is_on_floor = false;
-	/* cap velocities at 5 */
+	/* cap velocities */
 	if (p->traits->velocity.x > 5) {
 		p->traits->velocity.x = 5;
 	}
@@ -134,17 +146,17 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	p->traits->velocity.x *= 0.9;
 
 	
-	if (fabs(p->traits->velocity.x) < 0.1) p->traits->velocity.x = 0;
+	if (fabs(p->traits->velocity.x) < 0.3) p->traits->velocity.x = 0;
 
 	p->object->dstrect.x += p->traits->velocity.x;
 	p->object->dstrect.y += p->traits->velocity.y;		
 
 
 	CharacterType_AdjustHitboxes(p->ctype, 0);
+}
 
-
-//	printf("dstrect <%d,%d>\ntop hitbox <%d,%d>\n", p->object->dstrect.x, p->object->dstrect.y,
-//	p->object->hitboxes[TOP_HITBOX].x, p->object->hitboxes[TOP_HITBOX].y);
+void Player_Attack(Player *p, Container *c) {
+ /* TODO */
 }
 
 void Container_PlayerUpdateCamera(Container *container, Player *p) {

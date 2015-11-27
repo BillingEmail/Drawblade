@@ -40,6 +40,8 @@ void Player_Render(Player *p, unsigned int dt, Container *c);
 /* update player using keyboard */
 void Player_Update(Player *p, unsigned int dt, Container *c);
 
+void Player_Attack(Player *p, Container *c);
+
 /* Call CharacterType_KillCharacter() and end the game :^) */
 void Player_Die(Player *p);
 

@@ -29,6 +29,13 @@ void World_RunCollisions(World *world) {
 			}
 		}
 	}
+
+	for (int i = 0; i < world->EnemyTypeCount; i++) {
+		for (int j = 0; j < world->EnemyTypes[i]->object_type->instance_count; j++) {
+			checkEnemyCollision(world->player, &world->EnemyTypes[i]->object_type->instances[j].dstrect);
+		}
+	}
+
 }
 
 void checkNormalCollision(CharacterType *charactertype, int instance_index, SDL_Rect *block) {
@@ -64,4 +71,8 @@ void checkNormalCollision(CharacterType *charactertype, int instance_index, SDL_
 			CharacterType_AdjustHitboxes(charactertype, instance_index);
 		}
 	}
+}
+
+void checkEnemyCollision(Player *p, SDL_Rect *block) {
+		 /* TODO */
 }
