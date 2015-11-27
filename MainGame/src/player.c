@@ -38,18 +38,14 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 	switch (p->object->animation) {
 		case RUN_LEFT:
 			CharacterType_AnimateCharacter(p->ctype, 0, RUN_LEFT, &delay, 100);
-			if (fabs(p->traits->velocity.x) < .5) {
-				p->object->sprite_index[RUN_LEFT] = 3;
-			} else if (p->object->sprite_index[RUN_LEFT] > 7) {
+			if (p->object->sprite_index[RUN_LEFT] > 7) {
 				p->object->sprite_index[RUN_LEFT] = 0;
 			}
 			p->object->sprite_index[RUN_RIGHT] = p->object->sprite_index[RUN_LEFT];
 		break;
 		case RUN_RIGHT:
 			CharacterType_AnimateCharacter(p->ctype, 0, RUN_RIGHT, &delay, 100);
-			if (fabs(p->traits->velocity.x) < .5) {
-				p->object->sprite_index[RUN_RIGHT] = 3;
-			} else	if (p->object->sprite_index[RUN_RIGHT] > 7) {
+			if (p->object->sprite_index[RUN_RIGHT] > 7) {
 				p->object->sprite_index[RUN_RIGHT] = 0;
 			}
 			p->object->sprite_index[RUN_LEFT] = p->object->sprite_index[RUN_RIGHT];
@@ -136,6 +132,8 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		}
 		Player_Attack(p, container);
 	}
+
+	p->traits->is_on_floor = false;
 	
 	/* cap velocities */
 	if (p->traits->velocity.x > 5) {
@@ -159,8 +157,8 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	
 	if (fabs(p->traits->velocity.x) < 0.3) p->traits->velocity.x = 0;
 
-	p->object->dstrect.x += p->traits->velocity.x;
-	p->object->dstrect.y += p->traits->velocity.y;		
+	p->object->dstrect.x += ceil(p->traits->velocity.x);
+	p->object->dstrect.y += ceil(p->traits->velocity.y);	
 
 
 	CharacterType_AdjustHitboxes(p->ctype, 0);
