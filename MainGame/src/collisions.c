@@ -47,23 +47,19 @@ void checkNormalCollision(CharacterType *charactertype, int instance_index, SDL_
 		if (SDL_HasIntersection(hitboxes + i, block) == SDL_TRUE) {
 			switch (i) {
 				case TOP_HITBOX:
-					puts("top");
 					dstrect->y = block->y + block->h;
 					accvel->acceleration.y = accvel->velocity.y = 0;
 				break;
 				case BOTTOM_HITBOX:
-					puts("bottom");
 					dstrect->y = block->y - dstrect->h;
 					accvel->acceleration.y = accvel->velocity.y = 0;
 					accvel->is_on_floor = true;
 				break;
 				case LEFT_HITBOX:
-					puts("left");
 					dstrect->x = block->x + block->w;
 					accvel->acceleration.x = accvel->velocity.x = 0;
 				break;
 				case RIGHT_HITBOX:
-					puts("right");
 					dstrect->x = block->x - dstrect->w;
 					accvel->acceleration.x = accvel->velocity.x = 0;	
 				break;
