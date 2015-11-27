@@ -19,7 +19,7 @@ Textbox * New_Textbox(Texture *t, int x, int y, int maxCharacters) {
 	ret->renderRect.x = x;
 	ret->renderRect.y = y;
 	ret->renderRect.h = 46;
-	ret->renderRect.w = maxCharacters * 8;
+	ret->renderRect.w = 23 * maxCharacters;
 	ret->maxCharacters = maxCharacters;
 
 	return ret;
@@ -40,7 +40,18 @@ bool Textbox_Clicked(Textbox *textbox, Container *container) {
 }
 
 void Textbox_Render(Textbox *t, Container *container) {
+	SDL_Surface *TextSurface;
+	SDL_Texture *TextTexture;
+	SDL_Color TextColor = {15, 15, 15};
+
+	TextSurface = TTF_RenderText_Solid(container->font, t->text);
+	TextTexture = SDL_LoadTextureFromSurface(container->renderer, TextSurface);
+
+	/* destroy surface etc * TODO */
+
 	SDL_RenderCopy(container->renderer, t->texture->texture, NULL, &t->renderRect);
+
+	
 }
 
 void Textbox_ReadInput(Textbox *t) {

@@ -2,6 +2,7 @@
 
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -18,6 +19,7 @@ Container * New_Container(int SCREEN_WIDTH, int SCREEN_HEIGHT) {
 	/* Initialize SDL */
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
+	TTF_Init();
 	
 	/* Create the window */
 	container->window = New_Window(SCREEN_WIDTH, SCREEN_HEIGHT);	
@@ -34,6 +36,12 @@ Container * New_Container(int SCREEN_WIDTH, int SCREEN_HEIGHT) {
 	/* Sets up the keyboard */
 	container->keyboardstate = SDL_GetKeyboardState(NULL);
 	
+	/* Load the font */
+	container->font = TTF_OpenFont("../assets/fonts/font.ttf", 32);
+	if (!container->font) {
+		printf("TTF_OpenFont: %s\n", TTF_GetError());
+	}
+
 	return container;
 }
 
@@ -47,6 +55,7 @@ void Container_Destroy(Container * container) {
 
 	SDL_Quit();
 	IMG_Quit();
+	TTF_Quit();
 }
 
 /* 

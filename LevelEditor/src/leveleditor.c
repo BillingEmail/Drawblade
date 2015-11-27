@@ -48,13 +48,13 @@ editor into the textureArray and backgroundArray
 	
 	//Sets up the Bricks 
 	editor->textureArray[LAVA][BRICK] = New_Texture(editor->container->renderer,
-	 "../assets/img/LevelEditor/Lava/brick.png");
+	 "../assets/img/Lava/brick.png");
 	editor->textureArray[ICE][BRICK] = New_Texture(editor->container->renderer,
-	 "../assets/img/LevelEditor/Ice/brick.png");
+	 "../assets/img/Ice/brick.png");
 	editor->textureArray[MEDIEVAL][BRICK] = New_Texture(editor->container->renderer,
-	 "../assets/img/LevelEditor/Medieval/brick.png");
+	 "../assets/img/Medieval/brick.png");
 	editor->textureArray[SPOOKY][BRICK] = New_Texture(editor->container->renderer,
-	 "../assets/img/LevelEditor/Spooky/brick.png");
+	 "../assets/img/Spooky/brick.png");
 
 	//Sets up the Players
 	editor->textureArray[LAVA][PLAYER] = New_Texture(editor->container->renderer,

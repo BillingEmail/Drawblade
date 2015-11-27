@@ -8,8 +8,7 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
-
+#include <SDL2/SDL_ttf.h>
 
 /* Contains commonly-used interfacing objects */
 typedef struct _SDL_container {
@@ -27,6 +26,8 @@ typedef struct _SDL_container {
 		bool rightClick;      /* Whether the right mouse button is pressed    */
 		bool leftClick;       /* Whether the left mouse button is pressed     */
 	} mouse;
+
+	TTF_Font *font;
 
 } Container;
 
