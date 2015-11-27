@@ -82,12 +82,7 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	
 	printf("%d", p->traits->is_on_floor);
 
-	if (p->traits->velocity.y == 0) {
-		p->object->sprite_index[facingLeft] = 3;
-		p->object->animation = facingLeft;
-	}
-
-/*	if (p->traits->is_on_floor && p->traits->velocity.x == 0) {
+/*  if (p->traits->is_on_floor && p->traits->velocity.x == 0) {
 		ObjectType_ResetSpriteIndexes(p->otype, 0, NULL);
 		ObjectType_SetObjectAnimation(p->otype, 0, 	facingLeft);
 		p->otype->instances[0].sprite_index[facingLeft] = 3;
