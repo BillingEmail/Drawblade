@@ -173,7 +173,11 @@ void LevelEditor_Render(LevelEditor *editor) {
 	for (int i = 0; i < editor->level->height; i++) {
 		for (int j = 0; j < editor->level->width; j++) {
 			if (editor->level->tileArray[i][j] == BRICK) {
-				LevelEditor_RenderBricks(editor, j, i);
+				Texture_RenderBrick(
+				editor->textureArray[theme][editor->level->tileArray[i][j]], 
+				editor->container->renderer, j * TILE_SCALE, i * TILE_SCALE, editor->container->camera,
+				Level_GetBrickChoice(editor->level, j, i)
+				);	
 			}
 			else {
 				Texture_Render(
@@ -207,40 +211,19 @@ void LevelEditor_Render(LevelEditor *editor) {
 	//If the currently selected item is BLANK, it renders the eraser icon
 	if (editor->currentItem == BLANK) {
 		Texture_Render(editor->blankIcon, editor->container->renderer, 
-		editor->container->mouse.x - TILE_SCALE / 2, editor->container->mouse.y - TILE_SCALE / 2, NULL);
+		editor->container->mouse.x - 78 / 2, editor->container->mouse.y - TILE_SCALE 72 / 2, NULL);
 	}
-}
 
-void LevelEditor_RenderBricks(LevelEditor *editor, int x, int y) {
-	bool top = !(editor->level->tileArray[y - 1][x] == BRICK);
-	bool bottom = !(editor->level->tileArray[y + 1][x] == BRICK);
-	bool left = !(editor->level->tileArray[y][x - 1] == BRICK);
-	bool right = !(editor->level->tileArray[y][x + 1] == BRICK);	
+	if (editor->currentItem == BRICK) {
+		Texture_RenderBrick(
+		editor->textureArray[theme][editor->level->tileArray[i][j]],
+		editor->container->renderer, 
+		editor->container->mouse.x - TILE_SCALE / 2, 
+		editor->container->mouse.y - TILE_SCALE / 2, 
+		editor->container->camera,
+		ALL
+	};
 
-	/* ayy thats my choice too */	
-	int renderChoice = NUDE;
-
-	if (top && !bottom && !left && !right) renderChoice = TOP;
-	if (!top && bottom && !left && !right) renderChoice = BOTTOM;
-	if (!top && !bottom && left && !right) renderChoice = LEFT;
-	if (!top && !bottom && !left && right) renderChoice = RIGHT;
-	if (top && !bottom && !left && right) renderChoice = TOPRIGHT;
-	if (!top && bottom && left && !right) renderChoice = BOTTOMLEFT;
-	if (!top && bottom && !left && right) renderChoice = RIGHTBOTTOM;
-	if (top && !bottom && left && !right) renderChoice = TOPLEFT;
-	if (top && !bottom && left && right) renderChoice = TOPRIGHTLEFT;
-	if (top && bottom && !left && right) renderChoice = TOPRIGHTBOTTOM;
-	if (!top && right && bottom && left) renderChoice = RIGHTBOTTOMLEFT;
-	if (top && bottom && left && !right) renderChoice = TOPBOTTOMLEFT;
-	if (top && bottom && !left && !right) renderChoice = TOPBOTTOM;
-	if (!top && !bottom && left && right) renderChoice = RIGHTLEFT;
-	if (top && bottom && left && right) renderChoice = ALL; 
-
-	Texture_RenderBrick(
-	editor->textureArray[editor->level->theme][BRICK],
-	editor->container->renderer, 
-	x * TILE_SCALE, y * TILE_SCALE, editor->container->camera, renderChoice
-	);
 }
 
 void Texture_RenderBrick(Texture *t, SDL_Renderer *r, int x, int y, SDL_Rect *Camera, BrickChoice b) {

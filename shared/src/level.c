@@ -177,10 +177,14 @@ void Level_CreateTiles(Level *level) {
 }
 
 BrickChoice Level_GetBrickChoice(Level *level, int x, int y) {
-	bool top = !(level->tileArray[y - 1][x] == BRICK);
-	bool bottom = !(level->tileArray[y + 1][x] == BRICK);
-	bool left = !(level->tileArray[y][x - 1] == BRICK);
-	bool right = !(level->tileArray[y][x + 1] == BRICK);	
+	bool top = false;
+	if (y > 0) top = !(level->tileArray[y - 1][x] == BRICK);
+	bool bottom = false;
+	if (y < level->height - 1) bottom =	!(level->tileArray[y + 1][x] == BRICK);
+	bool left = false;
+	if (x > 0) left = !(level->tileArray[y][x - 1] == BRICK);
+	bool right = false;
+	if (x < level->width - 1) right = !(level->tileArray[y][x + 1] == BRICK);	
 
 	/* ayy thats my choice too */	
 	int renderChoice = NUDE;
