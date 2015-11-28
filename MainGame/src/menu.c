@@ -68,8 +68,14 @@ MenuReturn Menu_Run(Menu *m, Container *container) {
 	bool running = true;
 	int SelectedTextbox = 0; /* Focused textbox */
 
-	/* Clear keyboard inputs (prevents textbox buffer
-	 * from overlowing from game inputs) */
+	/* Clear keyboard inputs (prevents textbox buffer from overlowing from
+	 * game inputs)
+	 * Essentially, when the game was ran, all of the d's and
+	 * a's etc were collected onto the event queue, and then
+	 * when the game was quit and the menus ran again, the
+	 * textbox on the load custom level menu would collect all of the inputs on
+	 * the queue, which may have been more than it could store, causing a
+	 * segfault */
 	SDL_FlushEvent(SDL_TEXTINPUT);
 
 	while (running) {
