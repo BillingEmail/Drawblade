@@ -29,6 +29,19 @@ HUD * Create_HUD(Container *container) {
 	ret->weapondst.w = 199;
 	ret->weapondst.h = 199;
 
+	ret->actionFrameTexture = New_Texture(container->renderer, "../assets/img/HUD/actionframe.png");
+	ret->actionBarTexture = New_Texture(container->renderer, "../assets/img/HUD/actionbar.png");
+
+	ret->actionframedst.x = 1;
+	ret->actionframedst.y = 64;
+	ret->actionframedst.w = 204;
+	ret->actionframedst.h = 24;
+
+	ret->actionbardst.x = 3;
+	ret->actionbardst.y = 66;
+	ret->actionbardst.w = 20;
+	ret->actionbardst.h = 20;
+
 	return ret;
 }
 
@@ -38,6 +51,9 @@ void HUD_Render(HUD *h, Player *p, LevelType theme, Container *container) {
 
 	//Will render the weapon in bottom left
 	HUD_RenderWeapon(h, theme, container);
+
+	//Will render the action bar in top left
+	HUD_RenderActionBar(h, p, container);
 }
 
 void HUD_RenderHearts(HUD *h, Player *player, Container *container) {
@@ -52,6 +68,14 @@ void HUD_RenderHearts(HUD *h, Player *player, Container *container) {
 
 void HUD_RenderWeapon(HUD *h, LevelType theme, Container *container) {
 	Texture_Render(h->weaponTextures[theme], container->renderer, h->weapondst.x, h->weapondst.y, NULL);
+}
+
+void HUD_RenderActionBar(HUD *h, Player *player, Container *container) {
+	Texture_Render(h->actionFrameTexture, container->renderer, h->actionframedst.x, h->actionframedst.y, NULL);
+	//For rendering the action bar with amount filled related to numactions player has
+	for (int i = 0; i < player->traits->numactions; i++) {
+		Texture_Render(h->actionBarTexture, container->renderer, h->actionbardst.x, h->actionbardst.y + (i*20), NULL);
+	}
 }
 
 /* Destroy the HUD and it's textures */
