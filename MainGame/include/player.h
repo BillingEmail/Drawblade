@@ -11,7 +11,9 @@ enum {
 	JUMP_RIGHT = 2,
 	JUMP_LEFT = 3,
 	ATTACK_RIGHT = 4,
-	ATTACK_LEFT = 5
+	ATTACK_LEFT = 5, 
+	HIT_RIGHT = 6,
+	HIT_LEFT = 7
 };
 
 /* we'll make a player type later with weapon etc */

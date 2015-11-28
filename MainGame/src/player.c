@@ -78,56 +78,69 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 /* Take input from wrapper and apply to the player */
 void Player_Update(Player *p, unsigned int dt, Container *container) {
 	/* Checks whether the last sprite was facing left or right */
-	bool facingLeft = (p->object->animation % 2 == 1);
+	bool facingLeft = (p->object->lastAnimation % 2 == 1);
 	
-	printf("%d", p->traits->is_on_floor);
-
-/*  if (p->traits->is_on_floor && p->traits->velocity.x == 0) {
-		ObjectType_ResetSpriteIndexes(p->otype, 0, NULL);
-		ObjectType_SetObjectAnimation(p->otype, 0, 	facingLeft);
-		p->otype->instances[0].sprite_index[facingLeft] = 3;
-	}
-*/
-	if (container->keyboardstate[SDL_SCANCODE_A]) {
-			ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
-		p->traits->velocity.x -= 0.5;
+	if (!p->is_hit && !p->is_dead) {
+		if (container->keyboardstate[SDL_SCANCODE_A]) {
+				ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
+			p->traits->velocity.x -= 0.5;
 		
-	}
-
-	if (container->keyboardstate[SDL_SCANCODE_D]) {
-			ObjectType_SetObjectAnimation(p->otype, 0, RUN_RIGHT);
-		p->traits->velocity.x += 0.5;
-	}
-
-	if (container->keyboardstate[SDL_SCANCODE_SPACE]) {
-		if (p->traits->is_on_floor) {
-			p->traits->velocity.y = -7;
-			p->traits->is_on_floor = false;
 		}
-	}
+
+		if (container->keyboardstate[SDL_SCANCODE_D]) {
+				ObjectType_SetObjectAnimation(p->otype, 0, RUN_RIGHT);
+			p->traits->velocity.x += 0.5;
+		}
+
+		if (container->keyboardstate[SDL_SCANCODE_SPACE]) {
+			if (p->traits->is_on_floor) {
+				p->traits->velocity.y = -7;
+				p->traits->is_on_floor = false;
+			}
+		}
 	
-	if (!p->traits->is_on_floor) {
-		if (facingLeft) {
-			ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
-		}
-		if (!facingLeft) {
-			ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);	
+		if (!p->traits->is_on_floor) {
+			if (p->traits->animation = RUN_LEFT) {
+				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
+			}
+			if (p->traits->animation = RUN_RIGHT) {
+				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);	
+			}
+	
 		}
 
-	}
-
-	if (container->mouse.leftClick) {
-		if (p->traits->canAttack) {
+		if (container->mouse.leftClick) {
 			if(container->mouse.x <= p->object->dstrect.x) {
 				ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_LEFT);
 			}
 			else {
 				ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_RIGHT);
 			}
+
+			Player_Attack(p, container);
 		}
-		Player_Attack(p, container);
+
+		if (p->traits->is_attacking) {
+			if(p->object->lastAnimation == ATTACK_LEFT) {
+				ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_LEFT);
+			}
+			else {
+				ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_RIGHT);
+			}
+		}
+
+	}
+	if (p->is_hit) {
+		if (p->traits->velocity.x > 0) {
+			ObjectType_SetObjectAnimation(p->otype, 0, HIT_LEFT);
+		}
+		else {
+			ObjectType_SetObjectAnimation(p->otype, 0, HIT_RIGHT);
+		}
 	}
 
+	
+	
 	p->traits->is_on_floor = false;
 	
 	/* cap velocities */
@@ -144,23 +157,31 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		p->traits->velocity.y = -7;
 	}
 
-	if (!p->traits->is_on_floor) {
 	p->traits->velocity.y += .20;
-	}
 	p->traits->velocity.x *= 0.9;
 
 	
 	if (fabs(p->traits->velocity.x) < 0.3) p->traits->velocity.x = 0;
 
-	p->object->dstrect.x += ceil(p->traits->velocity.x);
-	p->object->dstrect.y += ceil(p->traits->velocity.y);	
-
+	p->object->dstrect.x += ceil(p->traits->velocity.x) * 60 * dt;
+	p->object->dstrect.y += ceil(p->traits->velocity.y) * 60 * dt;	
+	
+	attackDelta -= dt;
+	hitDelta -= dt;
+	if (attackDelta < 0) {
+		canAttack = true;
+		attackDelta = .75;
+	}
+	if (hitDelta < 0) {
+		is_hit = false;
+	}
 
 	CharacterType_AdjustHitboxes(p->ctype, 0);
 }
 
-void Player_Attack(Player *p, Container *c) {
- /* TODO */
+void Player_Attack(Player *p, Container *c) { 
+ 	p->traits->canAttack = false;
+	p->traits->is_attacking = true;
 }
 
 void Container_PlayerUpdateCamera(Container *container, Player *p) {
