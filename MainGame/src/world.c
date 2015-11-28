@@ -36,24 +36,24 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 	ret->is_complete = false;	
 	switch (level->theme) {
 		case LAVA:
-			ret->background = New_Texture(container->renderer, "../assets/img/Lava/background.png");
+			ret->background.still = New_Texture(container->renderer, "../assets/img/Lava/background_still.png");
 			player_texture = "../assets/img/Lava/player.png";
 			brick_texture = "../assets/img/Lava/brick.png";
 		break;
 		case MEDIEVAL:
-			ret->background = New_Texture(container->renderer, "../assets/img/Medieval/background.png");
+			ret->background.still = New_Texture(container->renderer, "../assets/img/Medieval/background_still.png");
 			player_texture = "../assets/img/Medieval/player.png";
-			brick_texture = "../assets/img/Lava/brick.png";
+			brick_texture = "../assets/img/Medieval/brick.png";
 		break;
 		case ICE:
-			ret->background = New_Texture(container->renderer, "../assets/img/Ice/background.png");
+			ret->background.still = New_Texture(container->renderer, "../assets/img/Ice/background_still.png");
 			player_texture = "../assets/img/Ice/player.png";
-			brick_texture = "../assets/img/Lava/brick.png";
+			brick_texture = "../assets/img/Ice/brick.png";
 		break;
 		case SPOOKY:
-			ret->background = New_Texture(container->renderer, "../assets/img/Medieval/background.png");
+			ret->background.still = New_Texture(container->renderer, "../assets/img/Medieval/background_still.png");
 			player_texture = "../assets/img/Spooky/player.png";
-			brick_texture = "../assets/img/Lava/brick.png";					
+			brick_texture = "../assets/img/Spooky/brick.png";					
 		break;
 	}
 
@@ -63,10 +63,10 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 				New_Texture(
 					container->renderer, player_texture
 				),
-				4,
-				8, 8, 4, 4
+				10,
+				8, 8, 4, 4, 3, 3, 2, 2, 1, 1
 			),
-			23, 32
+			26, 36
 		),
 		0, 0
 	);
@@ -164,7 +164,7 @@ void World_Update(World *w, unsigned int dt, Container *container) {
 
 void World_Render(World *w, unsigned int dt, Container *container) {
 	/* Render the background first */
-	Texture_Render(w->background, container->renderer, 0, 0, NULL);
+	Texture_Render(w->background.still, container->renderer, 0, 0, NULL);
 
 
 	/* Render all of the objects */
@@ -196,6 +196,6 @@ void World_Destroy(World *w) {
 		Destroy_ObjectType(w->ObjectTypes[i]);
 	}
 	Destroy_Player(w->player);
-	Destroy_Texture(w->background);
+	Destroy_Texture(w->background.still);
 	free(w);
 }

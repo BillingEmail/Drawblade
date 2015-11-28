@@ -84,9 +84,10 @@ MenuReturn Menu_Run(Menu *m, Container *container) {
 				SelectedTextbox = i;
 			}
 		}
-		/* Listen for input in the focused textbox */
-		Textbox_ReadInput(m->textboxes[SelectedTextbox]);
-
+		if (running) {
+			/* Listen for input in the focused textbox */
+			Textbox_ReadInput(m->textboxes[SelectedTextbox]);
+		}
 		/* Render the components */
 		Texture_Render(m->background, container->renderer, 0, 0, NULL);
 		for (int i = 0; i < m->buttonCount; i++) {

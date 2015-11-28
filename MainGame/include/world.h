@@ -39,7 +39,10 @@ typedef struct _world {
 
 	int ObjectTypeCount; /* "                    " of Objects */
 
-	Texture *background; /* Texture used for the background for the world */
+	struct {
+		Texture *still;
+		Texture *tiled;
+	} background;
 
 	bool is_complete; /* player -> goalpost :^) */
 

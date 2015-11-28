@@ -8,12 +8,11 @@
 #include "../include/game.h"
 #include <SDL2/SDL.h>
 
-Game * New_Game(Container *container, GameMode mode, const char *custom_level_path) {
+Game * New_Game(Container *container, GameMode mode, const char *custom_level_name) {
 	Game *ret;
 
 	ret = malloc(sizeof(Game));
-
-
+	ret->custom_level_path = malloc(64 * sizeof(char));
 	/* assign some stuff */
 	ret->current_level = 1;
 	ret->running = false;
@@ -23,10 +22,11 @@ Game * New_Game(Container *container, GameMode mode, const char *custom_level_pa
 
 	ret->mode = mode;
 	if (mode == CUSTOM_LEVEL) {
-		if (!custom_level_path) {
+		if (!custom_level_name) {
 			fprintf(stderr, "New_Game called with mode CUSTOM_LEVEL but no path provided\n");
 		}
-		ret->world = NewWorld_FromFile(custom_level_path, container);
+		puts(custom_level_name);
+		sprintf(ret->custom_level_path, "../assets/levels/%s.lvl", custom_level_name);
 	}
 	return ret;
 }
@@ -38,7 +38,11 @@ void Game_Run(Game *game, Container *container) {
 	unsigned int lastTime = 0;
 
 	/* load the first level */
-	game->world = LoadWorld(game->current_level, container);
+	if (game->mode == ADVENTURE) {
+		game->world = LoadWorld(game->current_level, container);
+	} else if (game->mode == CUSTOM_LEVEL) {
+		game->world = NewWorld_FromFile(game->custom_level_path, container);
+	}
 	Container_PlayerUpdateCamera(container, game->world->player);
 
 	game->running = true;
@@ -108,6 +112,9 @@ void Game_Run(Game *game, Container *container) {
 void Game_Close(Game *game) {
 //	Hud_Destroy(game->hud)
 	World_Destroy(game->world);
+	if (game->mode == CUSTOM_LEVEL) {
+		free(game->custom_level_path);
+	}
 	free(game);
 }
 

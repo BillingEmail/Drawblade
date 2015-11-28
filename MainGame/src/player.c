@@ -145,7 +145,7 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	}
 
 	if (!p->traits->is_on_floor) {
-	p->traits->velocity.y += .25;
+	p->traits->velocity.y += .20;
 	}
 	p->traits->velocity.x *= 0.9;
 

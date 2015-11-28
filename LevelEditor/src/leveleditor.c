@@ -108,13 +108,13 @@ editor into the textureArray and backgroundArray
 	
 	//Sets up the Backgrounds
 	editor->backgroundArray[LAVA] = New_Texture(editor->container->renderer,
-	 "../assets/img/LevelEditor/Lava/background.png");
+	 "../assets/img/Lava/background_still.png");
 	editor->backgroundArray[ICE] = New_Texture(editor->container->renderer,
-	 "../assets/img/LevelEditor/Ice/background.png");
+	 "../assets/img/Ice/background_still.png");
 	editor->backgroundArray[MEDIEVAL] = New_Texture(editor->container->renderer,
-	 "../assets/img/LevelEditor/Medieval/background.png");
+	 "../assets/img/Medieval/background_still.png");
 	editor->backgroundArray[SPOOKY] = New_Texture(editor->container->renderer,
-	 "../assets/img/LevelEditor/Spooky/background.png");
+	 "../assets/img/Spooky/background_still.png");
 
 	
 	return editor;

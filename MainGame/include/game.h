@@ -22,7 +22,7 @@ typedef struct __game_overhead {
 
 	GameMode mode;
 	
-	const char *custom_level_path; /* Unused if mode == ADVENTURE */
+	char *custom_level_path; /* Unused if mode == ADVENTURE */
 } Game;
 
 /* Make game, using mode ADVENTURE ore CUSTOM_LEVEL, if the latter,

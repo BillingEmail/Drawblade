@@ -12,8 +12,8 @@ Textbox * New_Textbox(Texture *t, int x, int y, int maxCharacters) {
 	Textbox *ret;
 
 	ret = malloc(sizeof(Textbox));
-	ret->text = malloc(maxCharacters * sizeof(char));
-
+	ret->text = calloc(maxCharacters, sizeof(char));
+	ret->text[0] = '\0';
 	ret->texture = t;
 
 	ret->renderRect.x = x;
@@ -40,29 +40,40 @@ bool Textbox_Clicked(Textbox *textbox, Container *container) {
 }
 
 void Textbox_Render(Textbox *t, Container *container) {
-/*	SDL_Surface *TextSurface;
+	SDL_Surface *TextSurface;
 	SDL_Texture *TextTexture;
 	SDL_Color TextColor = {15, 15, 15};
+	SDL_Rect TextRect;
+
+	SDL_RenderCopy(container->renderer, t->texture->texture, NULL, &t->renderRect);
+	if (t->text[0] == '\0') return;
 
 	TextSurface = TTF_RenderText_Solid(container->font, t->text, TextColor);
 	TextTexture = SDL_CreateTextureFromSurface(container->renderer, TextSurface);
+	
+	TextRect.x = t->renderRect.x;
+	TextRect.y = t->renderRect.y;
+	TextRect.w = TextSurface->w;
+	TextRect.h = TextSurface->h;
 
-	/ * destroy surface etc * TODO * /
+//	SDL_FreeSurface(TextSurface);
 
-	SDL_RenderCopy(container->renderer, t->texture->texture, NULL, &t->renderRect);
 
-*/	
+	SDL_RenderCopy(container->renderer, TextTexture, NULL, &TextRect);
 }
 
 void Textbox_ReadInput(Textbox *t) {
-/*	SDL_Event e;
-	bool renderText = false;
+	SDL_Event e;
 
-	if (SDL_PollEvent(&e)) {
-		if (e.type == SDL_TEXTINPUT) {
+	while (SDL_PollEvent(&e)) {
+		if (e.type == SDL_KEYDOWN) {
+			if (e.key.keysym.sym == SDLK_BACKSPACE && t->text[0] != '\0') {
+				t->text[strlen(t->text) - 1] = '\0';
+			}
+		} else if (e.type == SDL_TEXTINPUT) {
+			puts(e.text.text);
+			puts(t->text);
 			strcat(t->text, e.text.text);
 		}
-*/
-
-
+	}
 }
