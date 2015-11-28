@@ -143,6 +143,7 @@ void Game_Close(Game *game) {
 	free(game);
 }
 
+/* Load an Adventure mode level using the level number */
 World * LoadWorld(int worldnum, Container *c) {
 	World *ret;
 	char path[64];

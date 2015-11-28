@@ -166,13 +166,9 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	
 	if (fabs(p->traits->velocity.x) < 0.3) p->traits->velocity.x = 0;
 
-<<<<<<< HEAD
-	p->object->dstrect.x += ceil(p->traits->velocity.x);//* 60 * dt;
-	p->object->dstrect.y += ceil(p->traits->velocity.y);//* 60 * dt;	
-=======
 	p->object->dstrect.x += ceil(p->traits->velocity.x);
 	p->object->dstrect.y += ceil(p->traits->velocity.y);	
->>>>>>> 9afb3216ba272ea066679ab29e6842e027592277
+
 	
 	p->traits->attackDelta -= dt;
 	p->traits->hitDelta -= dt;

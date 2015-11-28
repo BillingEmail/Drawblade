@@ -29,6 +29,10 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 	World *ret = malloc(sizeof(World));
 	char *player_texture;
 	char *brick_texture;
+	char *melee_enemy_texture;
+	char *ranged_enemy_texture;
+	char *flying_enemy_texture;
+
 	ret->size.h = level->height * TILE_SCALE;
 	ret->size.w = level->width * TILE_SCALE;
 
@@ -39,21 +43,33 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			ret->background.still = New_Texture(container->renderer, "../assets/img/Lava/background_still.png");
 			player_texture = "../assets/img/Lava/player.png";
 			brick_texture = "../assets/img/Lava/brick.png";
+			melee_enemy_texture = "../assets/img/Lava/melee_enemy.png";
+			ranged_enemy_texture = "../assets/img/Lava/melee_enemy.png";
+			flying_enemy_texture = "../assets/img/Lava/flying_enemy.png";			
 		break;
 		case MEDIEVAL:
 			ret->background.still = New_Texture(container->renderer, "../assets/img/Medieval/background_still.png");
 			player_texture = "../assets/img/Medieval/player.png";
 			brick_texture = "../assets/img/Medieval/brick.png";
+			melee_enemy_texture = "../assets/img/Medieval/melee_enemy.png";
+			ranged_enemy_texture = "../assets/img/Medieval/melee_enemy.png";
+			flying_enemy_texture = "../assets/img/Medieval/flying_enemy.png";
 		break;
 		case ICE:
 			ret->background.still = New_Texture(container->renderer, "../assets/img/Ice/background_still.png");
 			player_texture = "../assets/img/Ice/player.png";
 			brick_texture = "../assets/img/Ice/brick.png";
+			melee_enemy_texture = "../assets/img/Ice/melee_enemy.png";
+			ranged_enemy_texture = "../assets/img/Ice/melee_enemy.png";
+			flying_enemy_texture = "../assets/img/Ice/flying_enemy.png";
 		break;
 		case SPOOKY:
 			ret->background.still = New_Texture(container->renderer, "../assets/img/Medieval/background_still.png");
 			player_texture = "../assets/img/Spooky/player.png";
-			brick_texture = "../assets/img/Spooky/brick.png";					
+			brick_texture = "../assets/img/Spooky/brick.png";
+			melee_enemy_texture = "../assets/img/Spooky/melee_enemy.png";
+			ranged_enemy_texture = "../assets/img/Spooky/melee_enemy.png";
+			flying_enemy_texture = "../assets/img/Spook/flying_enemy.png";					
 		break;
 	}
 
@@ -72,9 +88,45 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 	);
 	ret->player->traits->hitpoints = 5;
 
-	ret->EnemyTypeCount = 0;
-//	ret->EnemyTypes = malloc(ret->EnemyTypeCount * sizeof(CharacterType *));	
+	ret->EnemyTypeCount = 3;
+	ret->EnemyTypes = malloc(ret->EnemyTypeCount * sizeof(CharacterType *));	
 	
+	ret->EnemyTypes[0] = New_CharacterType(
+		New_ObjectType(
+			New_Spritesheet(
+				New_Texture(container->renderer, melee_enemy_texture),
+				10,
+				8, 8, 4, 4, 3, 3, 2, 2, 1, 1
+			),
+			31, 33
+		),
+		0, 0
+	);
+
+	ret->EnemyTypes[1] = New_CharacterType(
+		New_ObjectType(
+			New_Spritesheet(
+				New_Texture(container->renderer, ranged_enemy_texture),
+				10,
+				8, 8, 4, 4, 3, 3, 2, 2, 1, 1
+			),
+			31, 33
+		),
+		0, 0
+	);
+
+	ret->EnemyTypes[2] = New_CharacterType(
+		New_ObjectType(
+			New_Spritesheet(
+				New_Texture(container->renderer, flying_enemy_texture),
+				6,
+				4, 4, 3, 3, 2, 2
+			),
+			34, 33
+		),
+		0, 0
+	);
+
 	ret->ObjectTypeCount = 1;
 	ret->ObjectTypes = malloc(ret->ObjectTypeCount * sizeof(ObjectType *));
 
