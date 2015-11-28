@@ -107,15 +107,23 @@ editor into the textureArray and backgroundArray
 	"../assets/img/LevelEditor/Spooky/boss.png");
 	
 	//Sets up the Backgrounds
-	editor->backgroundArray[LAVA] = New_Texture(editor->container->renderer,
+	editor->backgroundArray[LAVA][0] = New_Texture(editor->container->renderer,
 	 "../assets/img/Lava/background_still.png");
-	editor->backgroundArray[ICE] = New_Texture(editor->container->renderer,
+	editor->backgroundArray[ICE][0] = New_Texture(editor->container->renderer,
 	 "../assets/img/Ice/background_still.png");
-	editor->backgroundArray[MEDIEVAL] = New_Texture(editor->container->renderer,
+	editor->backgroundArray[MEDIEVAL][0] = New_Texture(editor->container->renderer,
 	 "../assets/img/Medieval/background_still.png");
-	editor->backgroundArray[SPOOKY] = New_Texture(editor->container->renderer,
+	editor->backgroundArray[SPOOKY][0] = New_Texture(editor->container->renderer,
 	 "../assets/img/Spooky/background_still.png");
-
+	
+	editor->backgroundArray[LAVA][1] = New_Texture(editor->container->renderer,
+	"../assets/img/Lava/background_tiled.png");
+	editor->backgroundArray[ICE][1] = New_Texture(editor->container->renderer,
+	"../assets/img/Ice/background_tiled.png");
+	editor->backgroundArray[MEDIEVAL][1] = New_Texture(editor->container->renderer,
+	"../assets/img/Medieval/background_tiled.png");
+	editor->backgroundArray[SPOOKY][1] = New_Texture(editor->container->renderer,
+	"../assets/img/Spooky/background_tiled.png");
 	
 	return editor;
 }
