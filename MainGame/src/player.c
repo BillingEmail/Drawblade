@@ -80,7 +80,7 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	/* Checks whether the last sprite was facing left or right */
 	bool facingLeft = (p->object->lastAnimation % 2 == 1);
 	
-	if (!p->is_hit && !p->is_dead) {
+	if (!p->traits->is_hit && !p->traits->is_dead) {
 		if (container->keyboardstate[SDL_SCANCODE_A]) {
 				ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
 			p->traits->velocity.x -= 0.5;
@@ -100,10 +100,10 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		}
 	
 		if (!p->traits->is_on_floor) {
-			if (p->traits->animation = RUN_LEFT) {
+			if (facingLeft) {
 				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
 			}
-			if (p->traits->animation = RUN_RIGHT) {
+			else {
 				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);	
 			}
 	
@@ -130,7 +130,8 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		}
 
 	}
-	if (p->is_hit) {
+
+	if (p->traits->is_hit) {
 		if (p->traits->velocity.x > 0) {
 			ObjectType_SetObjectAnimation(p->otype, 0, HIT_LEFT);
 		}
@@ -166,14 +167,15 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	p->object->dstrect.x += ceil(p->traits->velocity.x) * 60 * dt;
 	p->object->dstrect.y += ceil(p->traits->velocity.y) * 60 * dt;	
 	
-	attackDelta -= dt;
-	hitDelta -= dt;
-	if (attackDelta < 0) {
-		canAttack = true;
-		attackDelta = .75;
+	p->traits->attackDelta -= dt;
+	p->traits->hitDelta -= dt;
+
+	if (p->traits->attackDelta < 0) {
+		p->traits->canAttack = true;
+		p->traits->attackDelta = .75;
 	}
-	if (hitDelta < 0) {
-		is_hit = false;
+	if (p->traits->hitDelta < 0) {
+		p->traits->is_hit = false;
 	}
 
 	CharacterType_AdjustHitboxes(p->ctype, 0);
