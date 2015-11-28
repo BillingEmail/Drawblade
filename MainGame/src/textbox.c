@@ -69,7 +69,10 @@ void Textbox_Render(Textbox *t, Container *container) {
 	TextTexture = SDL_CreateTextureFromSurface(container->renderer, TextSurface);
 
 	/* Use the size of the entire string to make the final render rect */
-	TextRect.x = t->renderRect.x;
+	/* Center justify text in textbox */
+	TextRect.x = t->renderRect.x + t->renderRect.w / 2 - strlen(t->text) * 10;
+	/* Left justify text in textbox */
+//	TextRect.x = t->renderRect.x;
 	TextRect.y = t->renderRect.y;
 	TextRect.w = TextSurface->w;
 	TextRect.h = TextSurface->h;

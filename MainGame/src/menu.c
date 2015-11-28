@@ -75,7 +75,7 @@ MenuReturn Menu_Run(Menu *m, Container *container) {
 	 * when the game was quit and the menus ran again, the
 	 * textbox on the load custom level menu would collect all of the inputs on
 	 * the queue, which may have been more than it could store, causing a
-	 * segfault */
+	 * segfault -- this line fixes that by dumping all those d's and a's */
 	SDL_FlushEvent(SDL_TEXTINPUT);
 
 	while (running) {
@@ -96,9 +96,10 @@ MenuReturn Menu_Run(Menu *m, Container *container) {
 			}
 		}
 
-		
-		/* Listen for input in the focused textbox */
-		Textbox_ReadInput(m->textboxes[SelectedTextbox]);
+		if (m->textboxCount > 0) {		
+			/* Listen for input in the focused textbox */
+			Textbox_ReadInput(m->textboxes[SelectedTextbox]);
+		}
 
 		/* Render the components */
 		Texture_Render(m->background, container->renderer, 0, 0, NULL);
@@ -201,11 +202,9 @@ void RunMenuManager(Menu *MainMenu, Menu *LoadLevelMenu, Container *container) {
 		MenuInput = Menu_Run(CurrentMenu, container);
 		/* If we're on the main menu */
 		if (CurrentMenu == MainMenu) {
-			printf("Menu: MainMenu\n");
 			switch(MenuInput.action) {
 				/* If the start button was pressed */
 				case START:
-					puts("Action: START");
 					/* Start the game - Adventure mode */
 					game = New_Game(container, ADVENTURE, NULL);
 					/* Run the game, going through level1, level2, etc */
@@ -217,13 +216,11 @@ void RunMenuManager(Menu *MainMenu, Menu *LoadLevelMenu, Container *container) {
 				break;
 				/* If the quit button was pressed */
 				case QUIT:
-					puts("Action: QUIT");
 					/* Close */
 					running = false;
 				break;
 				/* If the Load Custom Level button was pressed */
 				case LOAD_CUSTOM_LEVEL:
-					puts("Action: LOAD_CUSTOM_LEVEL");
 					/* Switch to LoadLevelMenu */
 					CurrentMenu = LoadLevelMenu;
 				break;
@@ -233,13 +230,13 @@ void RunMenuManager(Menu *MainMenu, Menu *LoadLevelMenu, Container *container) {
 			}
 		/* If we're on the Load Level menu */
 		} else if (CurrentMenu == LoadLevelMenu) {
-			puts("Menu: LoadLevelMenu");
 			switch (MenuInput.action) {
 				/* If the start button was pressed */
 				case START:
 					/* Start the custom level *********************************/
 					/* Start a new game in CUSTOM_LEVEL mode using the text */
 					game = New_Game(container, CUSTOM_LEVEL, MenuInput.text);
+					/* Do nothing if Custom Level not found */
 					if (!game) break;
 					/* Run the game */
 					Game_Run(game, container);
@@ -257,7 +254,6 @@ void RunMenuManager(Menu *MainMenu, Menu *LoadLevelMenu, Container *container) {
 					fprintf(stderr, "Internal error: %s:%s:%d\n", __FILE__, __func__, __LINE__);
 				break;
 			}
-		} /* It the user typed something but clicked Back button */
-//		if (MenuInput.text) free(MenuInput.text);
+		}
 	}
 }
