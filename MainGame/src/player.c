@@ -77,6 +77,8 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 
 /* Take input from wrapper and apply to the player */
 void Player_Update(Player *p, unsigned int dt, Container *container) {
+	
+	
 	/* Checks whether the last sprite was facing left or right */
 	bool facingLeft = (p->object->lastAnimation % 2 == 1);
 	
@@ -100,10 +102,10 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		}
 	
 		if (!p->traits->is_on_floor) {
-			if (facingLeft) {
+			if (p->object->animation == RUN_LEFT) {
 				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
 			}
-			else {
+			if (p->object->animation == RUN_RIGHT) {
 				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);	
 			}
 	
@@ -124,7 +126,7 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 			if(p->object->lastAnimation == ATTACK_LEFT) {
 				ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_LEFT);
 			}
-			else {
+			if(p->object->lastAnimation == ATTACK_RIGHT) {
 				ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_RIGHT);
 			}
 		}
@@ -164,14 +166,20 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	
 	if (fabs(p->traits->velocity.x) < 0.3) p->traits->velocity.x = 0;
 
+<<<<<<< HEAD
 	p->object->dstrect.x += ceil(p->traits->velocity.x);//* 60 * dt;
 	p->object->dstrect.y += ceil(p->traits->velocity.y);//* 60 * dt;	
+=======
+	p->object->dstrect.x += ceil(p->traits->velocity.x);
+	p->object->dstrect.y += ceil(p->traits->velocity.y);	
+>>>>>>> 9afb3216ba272ea066679ab29e6842e027592277
 	
 	p->traits->attackDelta -= dt;
 	p->traits->hitDelta -= dt;
 
 	if (p->traits->attackDelta < 0) {
 		p->traits->canAttack = true;
+		p->traits->is_attacking = false;
 		p->traits->attackDelta = .75;
 	}
 	if (p->traits->hitDelta < 0) {
@@ -184,6 +192,7 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 void Player_Attack(Player *p, Container *c) { 
  	p->traits->canAttack = false;
 	p->traits->is_attacking = true;
+	p->traits->attackDelta = .75;
 }
 
 void Container_PlayerUpdateCamera(Container *container, Player *p) {
