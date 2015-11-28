@@ -23,6 +23,9 @@ void Textbox_Destroy(Textbox *t);
 /* Whether or not the mouse is clicking in the textbox */
 bool Textbox_Clicked(Textbox *t, Container *container);
 
+/* Whether the textbox should recieve keyboard input */
+bool Textbox_Unfocused(Textbox *t, Container *container);
+
 /* Render a textbox and it's current text to the screen */
 void Textbox_Render(Textbox *button, Container *container);
 

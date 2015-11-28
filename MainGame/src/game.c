@@ -10,24 +10,47 @@
 
 Game * New_Game(Container *container, GameMode mode, const char *custom_level_name) {
 	Game *ret;
-
+	FILE *CustomLevelExists;
+	/* Create the game overhead */
 	ret = malloc(sizeof(Game));
-	ret->custom_level_path = malloc(64 * sizeof(char));
-	/* assign some stuff */
-	ret->current_level = 1;
-	ret->running = false;
-	ret->paused = false;
 
-	ret->hud = Create_HUD(container);
-
+	/* Copy the mode of the game */
 	ret->mode = mode;
+
+	/* Set up for Custom Level mode */
 	if (mode == CUSTOM_LEVEL) {
+		/* Place to store custom level path */
+		ret->custom_level_path = malloc(64 * sizeof(char));
+		/* If no name provided */
 		if (!custom_level_name) {
 			fprintf(stderr, "New_Game called with mode CUSTOM_LEVEL but no path provided\n");
 		}
 		puts(custom_level_name);
+		/* Fill in the path to the custom level */
 		sprintf(ret->custom_level_path, "../assets/levels/%s.lvl", custom_level_name);
+		/* Test if level exists ***** */
+		CustomLevelExists = fopen(ret->custom_level_path, "rb");
+		/* If level exists found */
+		if (CustomLevelExists) {
+			fclose(CustomLevelExists);
+		/* If level is not found */
+		} else {
+			/* Do not load game, return NULL */
+			free(ret->custom_level_path);
+			free(ret);
+			return NULL;
+		
+		}
 	}
+
+	/* Initialize */
+	ret->current_level = 1;
+	ret->running = false;
+	ret->paused = false;
+
+	/* load the HUD */
+	ret->hud = Create_HUD(container);
+
 	return ret;
 }
 
@@ -64,7 +87,7 @@ void Game_Run(Game *game, Container *container) {
 		/* ************** Switch to next level ********* */
 		/* If the world has been completed */
 		if (game->world->is_complete || container->keyboardstate[SDL_SCANCODE_N]) {
-			/* switch to next world -- will later be a function with a transition */
+			/* switch to next world -- TODO will later be a function with a transition */
 			/* Increment world if ADVENTURE mode */			
 /*			if (game->mode == ADVENTURE) {
 				game->current_level++;
@@ -80,6 +103,7 @@ void Game_Run(Game *game, Container *container) {
 			game->current_level = (game->current_level % 2) + 1;
 			World_Destroy(game->world);
 			game->world = LoadWorld(game->current_level, container);
+			/* TEMPORARY TODO TODO TODO */
 		}
 
 
@@ -89,6 +113,7 @@ void Game_Run(Game *game, Container *container) {
 		}
 
 		/* ************** Restart world on death ******* */
+		/* TODO put in a function */
 		if (game->world->player->traits->hitpoints == 0) {
 			/* Do better */
 			//Game_RenderDeathScreen(game);
@@ -110,7 +135,7 @@ void Game_Run(Game *game, Container *container) {
 
 /* Close and destroy everything */
 void Game_Close(Game *game) {
-//	Hud_Destroy(game->hud)
+	HUD_Destroy(game->hud);
 	World_Destroy(game->world);
 	if (game->mode == CUSTOM_LEVEL) {
 		free(game->custom_level_path);

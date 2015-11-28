@@ -68,6 +68,10 @@ MenuReturn Menu_Run(Menu *m, Container *container) {
 	bool running = true;
 	int SelectedTextbox = 0; /* Focused textbox */
 
+	/* Clear keyboard inputs (prevents textbox buffer
+	 * from overlowing from game inputs) */
+	SDL_FlushEvent(SDL_TEXTINPUT);
+
 	while (running) {
 		Container_Refresh(container);
 		/* If a button is clicked, set the return and exit loop */
@@ -78,16 +82,18 @@ MenuReturn Menu_Run(Menu *m, Container *container) {
 				running = false;
 			}
 		}
+
 		/* If a textbox is clicked, set the focus to it */
 		for (int i = 0; i < m->textboxCount; i++) {
 			if (Textbox_Clicked(m->textboxes[i], container)) {
 				SelectedTextbox = i;
 			}
 		}
-		if (running) {
-			/* Listen for input in the focused textbox */
-			Textbox_ReadInput(m->textboxes[SelectedTextbox]);
-		}
+
+		
+		/* Listen for input in the focused textbox */
+		Textbox_ReadInput(m->textboxes[SelectedTextbox]);
+
 		/* Render the components */
 		Texture_Render(m->background, container->renderer, 0, 0, NULL);
 		for (int i = 0; i < m->buttonCount; i++) {
@@ -228,6 +234,7 @@ void RunMenuManager(Menu *MainMenu, Menu *LoadLevelMenu, Container *container) {
 					/* Start the custom level *********************************/
 					/* Start a new game in CUSTOM_LEVEL mode using the text */
 					game = New_Game(container, CUSTOM_LEVEL, MenuInput.text);
+					if (!game) break;
 					/* Run the game */
 					Game_Run(game, container);
 					/* After the game is finished, clean up */
