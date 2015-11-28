@@ -41,6 +41,8 @@ Container * New_Container(int SCREEN_WIDTH, int SCREEN_HEIGHT) {
 	if (!container->font) {
 		printf("TTF_OpenFont: %s\n", TTF_GetError());
 	}
+	/* Set font style to bold */
+	TTF_SetFontStyle(container->font, TTF_STYLE_BOLD);
 
 	return container;
 }
