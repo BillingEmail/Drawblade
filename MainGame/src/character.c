@@ -13,7 +13,7 @@
 #include "../../shared/include/container.h"
 
 /* Create a new CharacterType */
-CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int)) {
+CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int), int HP) {
 	CharacterType *ret = malloc(sizeof(CharacterType));
 	if (!ret) {
 		fprintf(stderr, "Error creating CharacterType\n");
@@ -28,7 +28,7 @@ CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _chara
 	ret->character_traits = malloc(sizeof(CharacterTraits));
 	ret->character_traits_count = 0;
 	ret->character_traits_size = 1;
-
+	ret->defaultHP = HP;
 	/* There's not much to do here, most of everything is in the ObjectType */
 	return ret;
 }
@@ -57,15 +57,15 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y,
 			2 * ct->character_traits_size * sizeof(CharacterTraits));
 		ct->character_traits_size *= 2;
 	}
-
-	float attackDelta = 0;
-	
-	bool is_dead = false;
-	bool is_on_floor = false;
-	bool jumping = false;
-	bool canAttack = false;
-
 	ct->character_traits_count++;
+	ct->character_traits[ct->character_traits_count].attackDelta = 0;
+	ct->character_traits[ct->character_traits_count].hitDelta = 0;
+	ct->character_traits[ct->character_traits_count].is_dead = false;
+	ct->character_traits[ct->character_traits_count].is_on_floor = false;
+	ct->character_traits[ct->character_traits_count].is_hit = false;
+	ct->character_traits[ct->character_traits_count].is_attacking = false;
+	ct->character_traits[ct->character_traits_count].canAttack = false;
+	ct->character_traits[ct->character_traits_count].hitpoints = ct->defaultHP;
 }
 
 

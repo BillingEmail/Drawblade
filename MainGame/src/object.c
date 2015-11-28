@@ -87,7 +87,7 @@ void ObjectType_AddObject(ObjectType *ot, int x, int y) {
 	temprect->w = ot->size.w;
 	temprect->h = 8;
 
-
+	
 
 	/* Copy the passed initial animation and initial sprite */
 	ot->instances[ot->instance_count].animation = 0;
