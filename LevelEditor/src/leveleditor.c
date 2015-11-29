@@ -110,10 +110,8 @@ editor into the textureArray and backgroundArray
 	"../assets/img/LevelEditor/Spooky/boss.png");
 	
 	//Sets up the Backgrounds
-	editor->backgroundArray[LAVA][1] = New_Texture(editor->container->renderer,
-	 "../assets/img/Lava/background_still.png");
-	editor->backgroundArray[ICE][1] = New_Texture(editor->container->renderer,
-	 "../assets/img/Ice/background_still.png");
+	editor->backgroundArray[LAVA][1] = NULL;
+	editor->backgroundArray[ICE][1] = NULL;
 	editor->backgroundArray[MEDIEVAL][1] = New_Texture(editor->container->renderer,
 	 "../assets/img/Medieval/background_still.png");
 	editor->backgroundArray[SPOOKY][1] = New_Texture(editor->container->renderer,
@@ -299,7 +297,7 @@ void LevelEditor_AdjustBackground(LevelEditor *editor, int xdiff, int ydiff) {
 	xdiff = (int)(xdiff *.10);
 	ydiff = (int)(ydiff *.10);
 	
-	if (editor->FirstBkgRP[1].x % editor->backgroundArray[editor->level->theme][0]->w == 0) {
+	if ((editor->FirstBkgRP[1].x % editor->backgroundArray[editor->level->theme][0]->w) == 0) {
 		editor->FirstBkgRP[0].x = -editor->backgroundArray[editor->level->theme][0]->w;
 		editor->FirstBkgRP[1].x = 0;
 		editor->FirstBkgRP[2].x = editor->backgroundArray[editor->level->theme][0]->w;
