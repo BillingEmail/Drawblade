@@ -13,8 +13,8 @@
    All of the functions for editing the level are broken down this way
    The LevelEditor is made, then ran, and then when it is quit it is ended
 */
-void Level_Edit(Level *level) {
-	LevelEditor *editor = New_LevelEditor(level);
+void Level_Edit(Level *level, Container *container) {
+	LevelEditor *editor = New_LevelEditor(level, container);
 	LevelEditor_Run(editor);
 	LevelEditor_End(editor);	
 	
@@ -107,22 +107,22 @@ editor into the textureArray and backgroundArray
 	"../assets/img/LevelEditor/Spooky/boss.png");
 	
 	//Sets up the Backgrounds
-	editor->backgroundArray[LAVA][0] = New_Texture(editor->container->renderer,
+	editor->backgroundArray[LAVA][1] = New_Texture(editor->container->renderer,
 	 "../assets/img/Lava/background_still.png");
-	editor->backgroundArray[ICE][0] = New_Texture(editor->container->renderer,
+	editor->backgroundArray[ICE][1] = New_Texture(editor->container->renderer,
 	 "../assets/img/Ice/background_still.png");
-	editor->backgroundArray[MEDIEVAL][0] = New_Texture(editor->container->renderer,
+	editor->backgroundArray[MEDIEVAL][1] = New_Texture(editor->container->renderer,
 	 "../assets/img/Medieval/background_still.png");
-	editor->backgroundArray[SPOOKY][0] = New_Texture(editor->container->renderer,
+	editor->backgroundArray[SPOOKY][1] = New_Texture(editor->container->renderer,
 	 "../assets/img/Spooky/background_still.png");
 	
-	editor->backgroundArray[LAVA][1] = New_Texture(editor->container->renderer,
+	editor->backgroundArray[LAVA][0] = New_Texture(editor->container->renderer,
 	"../assets/img/Lava/background_tiled.png");
-	editor->backgroundArray[ICE][1] = New_Texture(editor->container->renderer,
+	editor->backgroundArray[ICE][0] = New_Texture(editor->container->renderer,
 	"../assets/img/Ice/background_tiled.png");
-	editor->backgroundArray[MEDIEVAL][1] = New_Texture(editor->container->renderer,
+	editor->backgroundArray[MEDIEVAL][0] = New_Texture(editor->container->renderer,
 	"../assets/img/Medieval/background_tiled.png");
-	editor->backgroundArray[SPOOKY][1] = New_Texture(editor->container->renderer,
+	editor->backgroundArray[SPOOKY][0] = New_Texture(editor->container->renderer,
 	"../assets/img/Spooky/background_tiled.png");
 	
 	return editor;
@@ -173,8 +173,11 @@ void LevelEditor_Render(LevelEditor *editor) {
 	LevelType theme = editor->level->theme;
 	
 	//This renders the background for the editor
-	Texture_Render(editor->backgroundArray[theme][0], editor->container->renderer, 0, 0, NULL);
-	
+	Texture_Render(editor->backgroundArray[theme][1], editor->container->renderer, 0, 0, NULL);
+	Texture_Render(editor->backgroundArray[theme][0], editor->container->renderer, editor->FirstBkgRP[0].x, editor->FirstBkgRP[0].y, NULL);
+	Texture_Render(editor->backgroundArray[theme][0], editor->container->renderer, editor->FirstBkgRP[1].x, editor->FirstBkgRP[1].y, NULL);
+	Texture_Render(editor->backgroundArray[theme][0], editor->container->renderer, editor->FirstBkgRP[2].x, editor->FirstBkgRP[2].y, NULL);
+
 	/* 
 	This loops through the level in the editor and renders each of the objects in the level
 	It basically goes through each tile of the level, and if there is an object, then 
@@ -283,7 +286,30 @@ void LevelEditor_Update(LevelEditor *editor) {
 				[(editor->container->mouse.x + editor->container->camera->x) / TILE_SCALE] =
  		        editor->currentItem;
 	}
+	
+	LevelEditor_AdjustBackground(editor, editor->container->camera->x - editor->container->lastcp.x, 
+	editor->container->camera->y - editor->container->lastcp.y);
+
+	editor->container->lastcp.x = editor->container->camera->x;
+	editor->container->lastcp.y = editor->container->camera->y;
 }
+
+void LevelEditor_AdjustBackground(LevelEditor *editor, int xdiff, int ydiff) {
+	xdiff = (int)(xdiff *.90);
+	ydiff = (int)(ydiff *.90);
+
+	for (int i = 0; i < 3; i++) {
+		editor->FirstBkgRP[i].x += xdiff;
+		editor->FirstBkgRP[i].y = 0;
+	}
+	
+	if (editor->backgroundArray[editor->level->theme][0]->w % editor->FirstBkgRP[1].x == 0) {
+		editor->FirstBkgRP[0].x = -editor->backgroundArray[editor->level->theme][0]->w;
+		editor->FirstBkgRP[1].x = 0;
+		editor->FirstBkgRP[2].x = editor->backgroundArray[editor->level->theme][0]->w;
+	}
+}
+
 /* 
 This sets the bounds for where the camera can go for the editor
 The bounds are basically the size of the level, but there is a buffer of half of a tile on all sides, 
