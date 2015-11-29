@@ -93,9 +93,7 @@ void ObjectType_AddObject(ObjectType *ot, int x, int y) {
 	ot->instances[ot->instance_count].animation = 0;
 
 	ot->instances[ot->instance_count].sprite_index = calloc(ot->spritesheet->animation_count, sizeof(int));
-	printf("%d\n", ot->instances[ot->instance_count].sprite_index[1]);
 
-	printf("animations: %d\n", ot->spritesheet->animation_count);
 	ot->instance_count++;
 }
 

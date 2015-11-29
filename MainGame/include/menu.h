@@ -35,8 +35,17 @@ Menu * New_MainMenu(Container *container);
 /* Shortcut to creating the Load Custom Level menu, " */
 Menu * New_LoadLevelMenu(Container *container);
 
+/* " Level Editor menu */
+Menu * New_LevelEditorMenu(Container *container);
+
+/* " Load a custom level to edit menu */
+Menu * New_LevelEditorLoadCustomLevelMenu(Container *container);
+
+/* " Create a new custom level to edit */
+Menu * New_LevelEditorCreateCustomLevelMenu(Container *container);
+
 /* Overhead manager for menus, basically runs the whole deal */
-void RunMenuManager(Menu *MainMenu, Menu *LoadLevelMenu, Container *container);
+void RunMenuManager(Container *container);
 
 /* Add a button to a menu */
 void Menu_AddButton(Menu *m, Button *b);

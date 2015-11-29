@@ -46,5 +46,11 @@ void Level_Save(Level *level);
 void Level_Destroy(Level *level);
 void Level_CreateTiles(Level *level);
 
+/* because satya didn't think when designing */
+Level * New_LevelFromFile(const char *path);
+
+/* convenicneniceencnce */
+Level * New_LevelByName(const char *name);
+
 BrickChoice Level_GetBrickChoice(Level *level, int x, int y);
 #endif

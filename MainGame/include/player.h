@@ -25,6 +25,7 @@ typedef struct _player {
 	Object *object; /* shortcut to physical object */
 	CharacterTraits *traits; /* shortcut to the traits */
 
+	int numActions;
 } Player;
 
 

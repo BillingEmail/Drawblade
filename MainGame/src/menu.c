@@ -114,6 +114,8 @@ MenuReturn Menu_Run(Menu *m, Container *container) {
 	return ret;
 }
 
+
+/* ******************************** Shortcut to make the main menu */
 Menu * New_MainMenu(Container *container) {
 	/* Create menu with background texture */
 	Menu *ret = New_Menu(New_Texture(container->renderer, "../assets/img/Menus/MainMenu/background.png"));
@@ -124,7 +126,7 @@ Menu * New_MainMenu(Container *container) {
 		New_Button(
 			New_Texture(container->renderer, "../assets/img/Menus/Buttons/start.png"),
 			START,
-			435, 200, 357, 132
+			150, 200, 357, 132
 		)
 	);
 
@@ -134,7 +136,17 @@ Menu * New_MainMenu(Container *container) {
 		New_Button(
 			New_Texture(container->renderer, "../assets/img/Menus/Buttons/loadcustomlevel.png"),
 			LOAD_CUSTOM_LEVEL,
-			435, 350, 357, 132
+			550, 200, 357, 132
+		)
+	);
+
+	/* Add level editor button */
+	Menu_AddButton(
+		ret,
+		New_Button(
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/leveleditor.png"),
+			LEVEL_EDITOR,
+			150, 350, 357, 132
 		)
 	);
 
@@ -144,16 +156,94 @@ Menu * New_MainMenu(Container *container) {
 		New_Button(
 			New_Texture(container->renderer, "../assets/img/Menus/Buttons/quit.png"),
 			QUIT,
-			435, 500, 357, 132
+			550, 350, 357, 132
 		)
 	);
 
 	return ret;
 }
 
+/* ******************************* Shortcut to make the Load Custom Level menu */
 Menu * New_LoadLevelMenu(Container *container) {
 	/* Create menu with background texture */
-	Menu *ret = New_Menu(New_Texture(container->renderer, "../assets/img/Menus/LoadLevel/background.png"));
+	Menu *ret = New_Menu(New_Texture(container->renderer, "../assets/img/Menus/MainMenu/background.png"));
+
+	/* Add textbox for custom level path */
+	Menu_AddTextbox(
+		ret,
+		New_Textbox(
+			New_Texture(container->renderer, "../assets/img/Menus/textbox.png"),
+			350, 200, 64
+		)
+	);
+
+	/* Add back button */
+	Menu_AddButton(
+		ret,
+		New_Button(
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/back.png"),
+			BACK,
+			50, 548, 357, 132
+		)
+	);
+
+	/* Add start button */
+	Menu_AddButton(
+		ret,
+		New_Button(
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/start.png"),
+			START,
+			425, 280, 357, 132
+		)
+	);
+
+	return ret;
+}
+
+/* */
+Menu * New_LevelEditorMenu(Container *container) {
+	Menu *ret = New_Menu(New_Texture(container->renderer, "../assets/img/Menus/MainMenu/background.png"));
+
+	/* Add "New Custom Level" button */
+	Menu_AddButton(
+		ret,
+		New_Button(
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/newlevel.png"),
+			CREATE_CUSTOM_LEVEL,
+			435, 200, 357, 132
+		)
+	);
+
+	/* Add "Load Custom Level" button */
+	Menu_AddButton(
+		ret,
+		New_Button(
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/loadcustomlevel.png"),
+			LOAD_CUSTOM_LEVEL,
+			435, 350, 357, 132
+		)
+	);
+
+	/* Add back button */
+	Menu_AddButton(
+		ret,
+		New_Button(
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/back.png"),
+			BACK,
+			50, 548, 357, 132
+		)
+	);
+
+
+
+	return ret;
+}
+
+
+
+Menu * New_LevelEditorLoadCustomLevelMenu(Container *container) {
+	/* Create menu with background texture */
+	Menu *ret = New_Menu(New_Texture(container->renderer, "../assets/img/Menus/MainMenu/background.png"));
 
 	/* Add textbox for custom level path */
 	Menu_AddTextbox(
@@ -174,12 +264,12 @@ Menu * New_LoadLevelMenu(Container *container) {
 		)
 	);
 
-	/* Add start button */
+	/* Add start editing button */
 	Menu_AddButton(
 		ret,
 		New_Button(
-			New_Texture(container->renderer, "../assets/img/Menus/Buttons/start.png"),
-			START,
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/loadcustomlevel.png"),
+			LOAD_CUSTOM_LEVEL,
 			850, 480 - 132 - 10, 357, 132
 		)
 	);
@@ -187,15 +277,80 @@ Menu * New_LoadLevelMenu(Container *container) {
 	return ret;
 }
 
-void RunMenuManager(Menu *MainMenu, Menu *LoadLevelMenu, Container *container) {
-	/* Default to MainMenu */
-	Menu *CurrentMenu = MainMenu;
+Menu * New_LevelEditorCreateCustomLevelMenu(Container *container) {
+	Menu *ret = New_Menu(New_Texture(container->renderer, "../assets/img/Menus/LoadLevel/background.png"));
+
+	/* Add textbox for x size */
+	Menu_AddTextbox(
+		ret,
+		New_Textbox(
+			New_Texture(container->renderer, "../assets/img/Menus/textbox.png"),
+			350, 200, 10
+		)
+	);
+
+	/* Add textbox for y size */
+	Menu_AddTextbox(
+		ret,
+		New_Textbox(
+			New_Texture(container->renderer, "../assets/img/Menus/textbox.png"),
+			450, 200, 10
+		)
+	);
+
+	/* Add back button */
+	Menu_AddButton(
+		ret,
+		New_Button(
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/back.png"),
+			BACK,
+			850, 480, 357, 132
+		)
+	);
+
+	/* Add start editing button */
+	Menu_AddButton(
+		ret,
+		New_Button(
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/createcustomlevel.png"),
+			CREATE_CUSTOM_LEVEL,
+			850, 480 - 132 - 10, 357, 132
+		)
+	);
+
+	return ret;
+}
+
+void RunMenuManager(Container *container) {
+	/* Main menu of program */
+	Menu *MainMenu;
+	/* Load and play a custom level menu */
+	Menu *LoadLevelMenu;
+	/* Level editor menu - create or load a custom level to edit */
+	Menu *LevelEditorMenu;
+	/* Create a custom level - enter width and height */
+	Menu *LevelEditorCreateCustomLevelMenu;
+	/* Load a custom level to edit - enter name of level */
+	Menu *LevelEditorLoadCustomLevelMenu;
+	/* The current menu being ran */
+	Menu *CurrentMenu;
+
 	/* The input from the user through the menu */
 	MenuReturn MenuInput;
 	/* Whether the loop should be running */
 	bool running = true;
 	/* The actual game */
 	Game *game;
+
+	/* Create all of the menus */
+	MainMenu = New_MainMenu(container);
+	LoadLevelMenu = New_LoadLevelMenu(container);
+	LevelEditorMenu = New_LevelEditorMenu(container);
+	LevelEditorCreateCustomLevelMenu = New_LevelEditorCreateCustomLevelMenu(container);
+	LevelEditorLoadCustomLevelMenu = New_LevelEditorLoadCustomLevelMenu(container);
+
+	/* Set the default menu */
+	CurrentMenu = MainMenu;
 
 	while (running) {
 		/* Run the menu, get the input (button click) */
@@ -223,6 +378,9 @@ void RunMenuManager(Menu *MainMenu, Menu *LoadLevelMenu, Container *container) {
 				case LOAD_CUSTOM_LEVEL:
 					/* Switch to LoadLevelMenu */
 					CurrentMenu = LoadLevelMenu;
+				break;
+				case LEVEL_EDITOR:
+					CurrentMenu = LevelEditorMenu;
 				break;
 				default:
 					fprintf(stderr, "Internal error: %s:%s:%d\n", __FILE__, __func__, __LINE__);
@@ -254,6 +412,46 @@ void RunMenuManager(Menu *MainMenu, Menu *LoadLevelMenu, Container *container) {
 					fprintf(stderr, "Internal error: %s:%s:%d\n", __FILE__, __func__, __LINE__);
 				break;
 			}
+		/* If we're on the Level Editor menu */
+		} else if (CurrentMenu == LevelEditorMenu) {
+			switch (MenuInput.action) {
+				case BACK:
+					CurrentMenu = MainMenu;
+				break;
+				case LOAD_CUSTOM_LEVEL:
+					CurrentMenu = LevelEditorLoadCustomLevelMenu;
+				break;
+				case CREATE_CUSTOM_LEVEL:
+					CurrentMenu = LevelEditorCreateCustomLevelMenu;
+				break;
+			}
+		} else if (CurrentMenu == LevelEditorLoadCustomLevelMenu) {
+			switch (MenuInput.action) {
+				case BACK:
+					CurrentMenu = LevelEditorMenu;
+				break;
+				case LOAD_CUSTOM_LEVEL:
+//					Level *level = New_LevelByName(MenuInput.txt);
+					/* TODO call the level editor with EDIT mode here */
+				break;
+			}
+		} else if (CurrentMenu == LevelEditorCreateCustomLevelMenu) {
+			switch (MenuInput.action) {
+				case BACK:
+					CurrentMenu = LevelEditorMenu;
+				break;
+				case CREATE_CUSTOM_LEVEL:
+					/* TODO call the level editor with NEW mode here */
+				break;
+			}
 		}
 	}
+
+	Menu_Destroy(MainMenu);
+	Menu_Destroy(LoadLevelMenu);
+	Menu_Destroy(LevelEditorMenu);
+	Menu_Destroy(LevelEditorCreateCustomLevelMenu);
+	Menu_Destroy(LevelEditorLoadCustomLevelMenu);
+
+
 }

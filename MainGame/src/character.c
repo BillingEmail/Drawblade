@@ -75,8 +75,9 @@ void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, unsign
 	/* ch_traits are the traits of the character instance */
 	CharacterTraits *ch_traits = &ct->character_traits[instance_index];
 
+	
 	/* need to pass player to this -- playerType global? */
-	ct->behavior(ct, instance_index, NULL, 0);
+//	ct->behavior(ct, instance_index, NULL, 0);
 
 	/* Cap velocities at +-5 */
 	if (ch_traits->velocity.x > 5) {

@@ -10,6 +10,9 @@
 Player * New_Player(ObjectType *ot, int x, int y) {
 	Player *ret = malloc(sizeof(Player));
 
+
+	ret->numActions = 10; /* wtf idk lmao */
+
 	ret->ctype = New_CharacterType(ot, NULL, 5);
 	/* Add the player character */
 	CharacterType_AddCharacter(ret->ctype, x, y, 0, 0);
