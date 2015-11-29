@@ -13,13 +13,12 @@ Player * New_Player(ObjectType *ot, int x, int y, LevelType theme) {
 
 	ret->ctype = New_CharacterType(ot, NULL, 5, 100, 10);
 	/* Add the player character */
-	CharacterType_AddCharacter(ret->ctype, x, y, 0, 0);
+	CharacterType_AddCharacter(ret->ctype, x, y);
 	/* shortcut to the objecttype, not sure why */
 	ret->otype = ret->ctype->object_type;
 	/* shortcut to the physical object */
 	ret->object = ret->otype->instances;
 	ret->traits = ret->ctype->character_traits;
-
 	ret->traits->velocity.y = 0;
 	ret->traits->velocity.x = 0;
 
@@ -81,10 +80,10 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 			p->object->sprite_index[ATTACK_LEFT] = p->object->sprite_index[ATTACK_RIGHT];
 		break;
 		case STAND_RIGHT:
-			ObjectType_SetObjectAnimation(p->otype, 0, STAND_RIGHT);
+		//	ObjectType_SetObjectAnimation(p->otype, 0, STAND_RIGHT);
 		break;
 		case STAND_LEFT:
-			ObjectType_SetObjectAnimation(p->otype, 0, STAND_LEFT);
+		//	ObjectType_SetObjectAnimation(p->otype, 0, STAND_LEFT);
 		break;
 	}
 
@@ -202,6 +201,7 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 
 	if (p->traits->hitDelta < 0) {
 		p->traits->is_hit = false;
+		p->traits->hitDelta = .75;
 	}
 
 	CharacterType_AdjustHitboxes(p->ctype, 0);

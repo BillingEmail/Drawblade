@@ -142,8 +142,6 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 		TILE_SCALE, TILE_SCALE /* width, height */
 	);
 
-/*	TODO ret->EnemyTypes[ENEMY_1] = New_CharacterType FINISH THIS WHEN ENEMIES FINAL */
-
 	/* Collect and load instances from level tiles */
 	for (int y = 0; y < level->height; y++) {
 		for (int x = 0; x < level->width; x++) {
@@ -157,13 +155,13 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 					ret->player->object->dstrect.y = y * TILE_SCALE;
 				break;
 				case MELEE:
-					CharacterType_AddCharacter(ret->EnemyTypes[0], x * TILE_SCALE, y * TILE_SCALE, 0, 0);
+					CharacterType_AddCharacter(ret->EnemyTypes[0], x * TILE_SCALE, y * TILE_SCALE);
 				break;
 				case RANGED:
-					CharacterType_AddCharacter(ret->EnemyTypes[1], x * TILE_SCALE, y * TILE_SCALE, 0, 0);
+					CharacterType_AddCharacter(ret->EnemyTypes[1], x * TILE_SCALE, y * TILE_SCALE);
 				break;
 				case FLYING:
-					CharacterType_AddCharacter(ret->EnemyTypes[2], x * TILE_SCALE, y * TILE_SCALE, 0, 0);
+					CharacterType_AddCharacter(ret->EnemyTypes[2], x * TILE_SCALE, y * TILE_SCALE);
 				default:
 
 
