@@ -22,6 +22,10 @@ Menu * New_Menu(Texture *background) {
 	ret->textboxCount = 0;
 	ret->textboxesSize = 1;
 
+	ret->images = malloc(sizeof(Image *));
+	ret->imageCount = 0;
+	ret->imagesSize = 1;
+
 	return ret;
 }
 
@@ -49,6 +53,21 @@ void Menu_AddTextbox(Menu *m, Textbox *t) {
 	m->textboxCount++;
 }
 
+void Menu_AddImage(Menu *m, Texture *t, int x, int y) {
+	/* Resize buttons array if cap is reached, increase cap accordingly */
+	if (m->imageCount == m->imagesSize) {
+		m->images = realloc(m->images, m->imagesSize * 2 * sizeof(Image *));
+		m->imagesSize *= 2;
+	}
+	/* Add the button */
+	m->images[m->imageCount] = malloc(sizeof(Image));
+	m->images[m->imageCount]->x = x;
+	m->images[m->imageCount]->y = y;
+	m->images[m->imageCount]->texture = t;
+	m->imageCount++;
+}
+
+
 /* Destroy a menu from existence, all of its buttons and textboxes included */
 void Menu_Destroy(Menu *m) {
 	for (int i = 0; i < m->buttonCount; i++) {
@@ -57,6 +76,13 @@ void Menu_Destroy(Menu *m) {
 	for (int i = 0; i < m->textboxCount; i++) {
 		Textbox_Destroy(m->textboxes[i]);
 	}
+	for (int i = 0; i < m->imageCount; i++) {
+		Destroy_Texture(m->images[i]->texture);
+		free(m->images[i]);
+	}
+	free(m->buttons);
+	free(m->textboxes);
+	free(m->images);
 	Destroy_Texture(m->background);
 	free(m);
 }
@@ -109,6 +135,9 @@ MenuReturn Menu_Run(Menu *m, Container *container) {
 		for (int i = 0; i < m->textboxCount; i++) {
 			Textbox_Render(m->textboxes[i], container);
 		}
+		for (int i = 0; i < m->imageCount; i++) {
+			Texture_Render(m->images[i]->texture, container->renderer, m->images[i]->x, m->images[i]->y, NULL);
+		}
 	}
 
 	return ret;
@@ -160,6 +189,13 @@ Menu * New_MainMenu(Container *container) {
 		)
 	);
 
+	/* Add the title image */
+	Menu_AddImage(
+		ret,
+		New_Texture(container->renderer, "../assets/img/Menus/MainMenu/title.png"),
+		2, 2
+	);
+
 	return ret;
 }
 
@@ -208,7 +244,7 @@ Menu * New_LevelEditorMenu(Container *container) {
 	Menu_AddButton(
 		ret,
 		New_Button(
-			New_Texture(container->renderer, "../assets/img/Menus/Buttons/newlevel.png"),
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/createcustomlevel.png"),
 			CREATE_CUSTOM_LEVEL,
 			435, 200, 357, 132
 		)
@@ -239,8 +275,6 @@ Menu * New_LevelEditorMenu(Container *container) {
 	return ret;
 }
 
-
-
 Menu * New_LevelEditorLoadCustomLevelMenu(Container *container) {
 	/* Create menu with background texture */
 	Menu *ret = New_Menu(New_Texture(container->renderer, "../assets/img/Menus/MainMenu/background.png"));
@@ -268,8 +302,8 @@ Menu * New_LevelEditorLoadCustomLevelMenu(Container *container) {
 	Menu_AddButton(
 		ret,
 		New_Button(
-			New_Texture(container->renderer, "../assets/img/Menus/Buttons/loadcustomlevel.png"),
-			LOAD_CUSTOM_LEVEL,
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/starteditingpng"),
+			START_EDITING,
 			850, 480 - 132 - 10, 357, 132
 		)
 	);
@@ -277,7 +311,8 @@ Menu * New_LevelEditorLoadCustomLevelMenu(Container *container) {
 	return ret;
 }
 
-Menu * New_LevelEditorCreateCustomLevelMenu(Container *container) {
+/* Enterprise quality */
+Menu * New_LevelEditorCreateCustomLevelHorizontalSizeMenu(Container *container) {
 	Menu *ret = New_Menu(New_Texture(container->renderer, "../assets/img/Menus/LoadLevel/background.png"));
 
 	/* Add textbox for x size */
@@ -286,15 +321,6 @@ Menu * New_LevelEditorCreateCustomLevelMenu(Container *container) {
 		New_Textbox(
 			New_Texture(container->renderer, "../assets/img/Menus/textbox.png"),
 			350, 200, 10
-		)
-	);
-
-	/* Add textbox for y size */
-	Menu_AddTextbox(
-		ret,
-		New_Textbox(
-			New_Texture(container->renderer, "../assets/img/Menus/textbox.png"),
-			450, 200, 10
 		)
 	);
 
@@ -312,10 +338,60 @@ Menu * New_LevelEditorCreateCustomLevelMenu(Container *container) {
 	Menu_AddButton(
 		ret,
 		New_Button(
-			New_Texture(container->renderer, "../assets/img/Menus/Buttons/createcustomlevel.png"),
-			CREATE_CUSTOM_LEVEL,
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/next.png"),
+			NEXT,
 			850, 480 - 132 - 10, 357, 132
 		)
+	);
+
+	/* Add "Enter Width" image */
+	Menu_AddImage(
+		ret,
+		New_Texture(container->renderer, "../assets/img/Menus/enterwidth.png"),
+		400, 278
+	);
+
+	return ret;
+}
+
+/* Enterprise quality */
+Menu * New_LevelEditorCreateCustomLevelVerticalSizeMenu(Container *container) {
+	Menu *ret = New_Menu(New_Texture(container->renderer, "../assets/img/Menus/LoadLevel/background.png"));
+
+	/* Add textbox for x size */
+	Menu_AddTextbox(
+		ret,
+		New_Textbox(
+			New_Texture(container->renderer, "../assets/img/Menus/textbox.png"),
+			400, 400, 10
+		)
+	);
+
+	/* Add Back button */
+	Menu_AddButton(
+		ret,
+		New_Button(
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/back.png"),
+			BACK,
+			850, 480, 357, 132
+		)
+	);
+
+	/* Add Next button */
+	Menu_AddButton(
+		ret,
+		New_Button(
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/next.png"),
+			NEXT,
+			850, 480 - 132 - 10, 357, 132
+		)
+	);
+
+	/* Add "Enter Height" image */
+	Menu_AddImage(
+		ret,
+		New_Texture(container->renderer, "../assets/img/Menus/enterheight.png"),
+		400, 278
 	);
 
 	return ret;
@@ -328,8 +404,10 @@ void RunMenuManager(Container *container) {
 	Menu *LoadLevelMenu;
 	/* Level editor menu - create or load a custom level to edit */
 	Menu *LevelEditorMenu;
-	/* Create a custom level - enter width and height */
-	Menu *LevelEditorCreateCustomLevelMenu;
+	/* Create a custom level - enter height */
+	Menu *LevelEditorCreateCustomLevelHorizontalSizeMenu;
+	/* enter width */
+	Menu *LevelEditorCreateCustomLevelVerticalSizeMenu;
 	/* Load a custom level to edit - enter name of level */
 	Menu *LevelEditorLoadCustomLevelMenu;
 	/* The current menu being ran */
@@ -342,11 +420,14 @@ void RunMenuManager(Container *container) {
 	/* The actual game */
 	Game *game;
 
+	int width, height;
+
 	/* Create all of the menus */
 	MainMenu = New_MainMenu(container);
 	LoadLevelMenu = New_LoadLevelMenu(container);
 	LevelEditorMenu = New_LevelEditorMenu(container);
-	LevelEditorCreateCustomLevelMenu = New_LevelEditorCreateCustomLevelMenu(container);
+	LevelEditorCreateCustomLevelHorizontalSizeMenu = New_LevelEditorCreateCustomLevelHorizontalSizeMenu(container);
+	LevelEditorCreateCustomLevelVerticalSizeMenu = New_LevelEditorCreateCustomLevelVerticalSizeMenu(container);
 	LevelEditorLoadCustomLevelMenu = New_LevelEditorLoadCustomLevelMenu(container);
 
 	/* Set the default menu */
@@ -415,34 +496,52 @@ void RunMenuManager(Container *container) {
 		/* If we're on the Level Editor menu */
 		} else if (CurrentMenu == LevelEditorMenu) {
 			switch (MenuInput.action) {
+				/* If back is pressed, go to main menu */
 				case BACK:
 					CurrentMenu = MainMenu;
 				break;
+				/* If the Load Custom Level button is pressed */
 				case LOAD_CUSTOM_LEVEL:
 					CurrentMenu = LevelEditorLoadCustomLevelMenu;
 				break;
+				/* If the user wants to create a new level */
 				case CREATE_CUSTOM_LEVEL:
-					CurrentMenu = LevelEditorCreateCustomLevelMenu;
+					CurrentMenu = LevelEditorCreateCustomLevelHorizontalSizeMenu;
 				break;
+				default: break;
 			}
+		/* If w're on the Load Custom Level to Edit menu */
 		} else if (CurrentMenu == LevelEditorLoadCustomLevelMenu) {
 			switch (MenuInput.action) {
+				/* Go back to Level editor main menu */
 				case BACK:
 					CurrentMenu = LevelEditorMenu;
 				break;
-				case LOAD_CUSTOM_LEVEL:
-//					Level *level = New_LevelByName(MenuInput.txt);
-					/* TODO call the level editor with EDIT mode here */
+				case START_EDITING:
+				/* TODO */
 				break;
+				default: break;
 			}
-		} else if (CurrentMenu == LevelEditorCreateCustomLevelMenu) {
+		} else if (CurrentMenu == LevelEditorCreateCustomLevelHorizontalSizeMenu) {
 			switch (MenuInput.action) {
 				case BACK:
 					CurrentMenu = LevelEditorMenu;
 				break;
-				case CREATE_CUSTOM_LEVEL:
-					/* TODO call the level editor with NEW mode here */
+				case NEXT:
+					width = atoi(MenuInput.text);
+					CurrentMenu = LevelEditorCreateCustomLevelVerticalSizeMenu;
 				break;
+				default: break;
+			}
+		} else if (CurrentMenu == LevelEditorCreateCustomLevelVerticalSizeMenu) {
+			switch (MenuInput.action) {
+				case BACK:
+					CurrentMenu = LevelEditorCreateCustomLevelHorizontalSizeMenu;
+				break;
+				case CREATE_CUSTOM_LEVEL:
+					height = atoi(MenuInput.text);
+				break;
+				default: break;
 			}
 		}
 	}
@@ -450,7 +549,8 @@ void RunMenuManager(Container *container) {
 	Menu_Destroy(MainMenu);
 	Menu_Destroy(LoadLevelMenu);
 	Menu_Destroy(LevelEditorMenu);
-	Menu_Destroy(LevelEditorCreateCustomLevelMenu);
+	Menu_Destroy(LevelEditorCreateCustomLevelVerticalSizeMenu);
+	Menu_Destroy(LevelEditorCreateCustomLevelHorizontalSizeMenu);
 	Menu_Destroy(LevelEditorLoadCustomLevelMenu);
 
 

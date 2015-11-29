@@ -24,10 +24,10 @@ void Level_Edit(Level *level) {
    Mallocs a LevelEditor object, sets up the container, and then 
    fills in the arrays of textures
 */
-LevelEditor * New_LevelEditor(Level *level) {
+LevelEditor * New_LevelEditor(Level *level, Container *container) {
 	LevelEditor *editor = malloc(sizeof(LevelEditor));
 	/* Sets up all of the defaults for the level editor */
-	editor->container = New_Container(SCREEN_WIDTH, SCREEN_HEIGHT);
+	editor->container = container;
 	editor->level = level;
 	editor->currentItem = BRICK;
 	editor->container->camera->y = editor->level->height * TILE_SCALE - SCREEN_HEIGHT;

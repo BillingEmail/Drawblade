@@ -6,15 +6,16 @@
 #include "../include/player.h"
 typedef struct _hud {
 	Texture **weaponTextures;
-	Texture *heartFullTexture;
-	Texture *heartEmptyTexture;
 	Texture *actionFrameTexture;
 	Texture *actionBarTexture;
+	Texture *healthbarTexture;
 
 	SDL_Rect heartdst;
 	SDL_Rect weapondst;
 	SDL_Rect actionframedst;
 	SDL_Rect actionbardst;
+	SDL_Rect actionframe2dst;
+	SDL_Rect healthbardst;
 
 } HUD;
 
