@@ -178,8 +178,10 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 void World_Update(World *w, unsigned int dt, Container *container) {	
 	/* Update enemies */
 	for (int i = 0; i < w->EnemyTypeCount; i++) {
+		printf("i: %d\n", i);
 		for (int e = 0; e < w->EnemyTypes[i]->object_type->instance_count; i++) {
 			CharacterType_UpdateCharacter(w->EnemyTypes[i], dt, e);
+			printf("e: %d\n", e);	
 		}
 	}
 	Player_Update(w->player, dt, container);
