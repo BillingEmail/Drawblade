@@ -23,7 +23,7 @@ HUD * Create_HUD(Container *container) {
 
 	ret->actionFrameTexture = New_Texture(container->renderer, "../assets/img/HUD/actionframe.png");
 	ret->actionBarTexture = New_Texture(container->renderer, "../assets/img/HUD/actionbar.png");
-	ret->heartBarTexture = New_Texture(container->renderer, "../assets/img/HUD/healthbar.png");
+	ret->healthBarTexture = New_Texture(container->renderer, "../assets/img/HUD/healthbar.png");
 
 	ret->actionframedst.x = 1;
 	ret->actionframedst.y = 64;
@@ -42,7 +42,7 @@ HUD * Create_HUD(Container *container) {
 
 	ret->healthbardst.x = 3;
 	ret->healthbardst.y = 37;
-	ret->healthbardst.w = 20;
+	ret->healthbardst.w = 1;
 	ret->healthbardst.h = 10;
 
 	return ret;
@@ -63,8 +63,8 @@ void HUD_RenderHearts(HUD *h, Player *player, Container *container) {
 	//Renders the frame
 	Texture_Render(h->actionFrameTexture, container->renderer, h->actionframe2dst.x, h->actionframe2dst.y, NULL);
 	//Based on player health, will render health bar
-	for (int i = 0; i < player->traits->hitpoints; i++){		
-		Texture_Render(h->healthBarTexture, container->renderer, h->healthbardst.x + (i * 20), h->healthbardst.y, NULL);
+	for (int i = 0; i < (player->traits->hitpoints)*40; i++){		
+		Texture_Render(h->healthBarTexture, container->renderer, h->healthbardst.x + i, h->healthbardst.y, NULL);
 	}
 }
 
@@ -89,8 +89,7 @@ void HUD_Destroy(HUD *h) {
 	}
 	free(h->weaponTextures);
 
-	Destroy_Texture(h->heartFullTexture);
-	Destroy_Texture(h->heartEmptyTexture);
+	Destroy_Texture(h->healthBarTexture);
 	Destroy_Texture(h->actionBarTexture);
 	Destroy_Texture(h->actionFrameTexture);
 	free(h);
