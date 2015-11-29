@@ -129,6 +129,28 @@ void Level_LoadFromFile(Level *level, FILE *fp) {
 
 }
 
+/* The most sane way to load from a file into a structure */
+Level * New_LevelFromFile(const char *path) {
+	Level *ret = malloc(sizeof(Level));
+
+	FILE *fp = fopen(path, "rb");
+	if (!fp) {
+		puts("Too bad");
+	}
+
+	Level_LoadFromFile(ret, fp);
+
+	return ret;
+}
+
+/* Load a level by it's name, for convienience purposes */
+Level * New_LevelByName(const char *name) {
+	char path[64];
+
+	sprintf(path, "../assets/levels/%s.lvl", name);
+	return New_LevelFromFile(path);
+}
+
 /*
 This saves the level to a binary file
 it first opens the file with the desired file name of the user
