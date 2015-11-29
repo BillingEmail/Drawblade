@@ -57,7 +57,7 @@ CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _chara
 void Destroy_CharacterType(CharacterType *t);
 
 /* Render a specific instance of a CharacterType */
-#define CharacterType_RenderCharacter(CT, II, DT,  W) ObjectType_RenderObject((CT)->object_type, (II), (DT), (W))
+#define CharacterType_RenderCharacter(CT, II, DT,  C) ObjectType_RenderObject((CT)->object_type, (II), (DT), (C))
 
 /* Add another instance of the CharacterType to the list of instances */
  
