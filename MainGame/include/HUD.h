@@ -8,7 +8,7 @@ typedef struct _hud {
 	Texture **weaponTextures;
 	Texture *actionFrameTexture;
 	Texture *actionBarTexture;
-	Texture *healthbarTexture;
+	Texture *healthBarTexture;
 
 	SDL_Rect heartdst;
 	SDL_Rect weapondst;
