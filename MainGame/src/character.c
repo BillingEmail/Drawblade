@@ -49,8 +49,7 @@ void Destroy_CharacterType(CharacterType *ct) {
 }
 
 /* testing */
-void CharacterType_AddCharacter(CharacterType *ct, int x, int y,
-	int default_animation, int default_sprite) {
+void CharacterType_AddCharacter(CharacterType *ct, int x, int y) {
 	ObjectType_AddObject(ct->object_type, x, y);
 
 	/* losing my patience with commenting rn tbh */
@@ -59,6 +58,9 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y,
 			2 * ct->character_traits_size * sizeof(CharacterTraits));
 		ct->character_traits_size *= 2;
 	}
+
+	ct->object_type->instances[ct->character_traits_count].animation = 0;
+	ct->object_type->instances[ct->character_traits_count].lastAnimation = 0;
 
 	ct->character_traits[ct->character_traits_count].hitDelta = 0;
 	ct->character_traits[ct->character_traits_count].is_dead = false;

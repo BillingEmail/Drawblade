@@ -64,7 +64,7 @@ void Destroy_CharacterType(CharacterType *t);
 /* Add another instance of the CharacterType to the list of instances */
  
 //	ObjectType_AddObject((CT)->object_type, (X), (Y), (DA), (DS))
-void CharacterType_AddCharacter(CharacterType *ct, int x, int y, int default_animation, int default_sprite);
+void CharacterType_AddCharacter(CharacterType *ct, int x, int y);
 /* Returns the count of instances of a character type */
 #define CharacterType_Count(CT) ObjectType_Count((CT)->object_type)
 
