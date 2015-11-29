@@ -80,10 +80,12 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 			p->object->sprite_index[ATTACK_LEFT] = p->object->sprite_index[ATTACK_RIGHT];
 		break;
 		case STAND_RIGHT:
-		//	ObjectType_SetObjectAnimation(p->otype, 0, STAND_RIGHT);
+			ObjectType_ResetSpriteIndexes(p->ctype->object_type, 0, STAND_RIGHT);
+			ObjectType_SetObjectAnimation(p->otype, 0, RUN_RIGHT);
 		break;
 		case STAND_LEFT:
-		//	ObjectType_SetObjectAnimation(p->otype, 0, STAND_LEFT);
+			ObjectType_ResetSpriteIndexes(p->ctype->object_type, 0, STAND_LEFT);
+			ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
 		break;
 	}
 
