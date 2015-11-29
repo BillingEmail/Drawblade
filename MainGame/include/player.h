@@ -4,7 +4,7 @@
 #include "../../shared/include/container.h" 
 #include "character.h"
 #include "object.h"
-
+#include "../../shared/include/level.h"
 enum {
 	RUN_RIGHT = 0,
 	RUN_LEFT = 1,
@@ -26,14 +26,13 @@ typedef struct _player {
 	ObjectType *otype; /* may be handy */
 	Object *object; /* shortcut to physical object */
 	CharacterTraits *traits; /* shortcut to the traits */
-
-	int numActions;
+	LevelType theme;
 } Player;
 
 
 
 /* Basically call New_CharacterType and do some things */
-Player * New_Player(ObjectType *ot, int x, int y);
+Player * New_Player(ObjectType *ot, int x, int y, LevelType theme);
 
 /* " */
 void Destroy_Player(Player *p);

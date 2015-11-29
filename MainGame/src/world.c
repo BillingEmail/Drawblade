@@ -85,7 +85,8 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			),
 			26, 36
 		),
-		0, 0
+		0, 0,
+		level->theme
 	);
 	ret->player->traits->hitpoints = 5;
 
@@ -103,7 +104,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			),
 			31, 33
 		), NULL,
-		1
+		1, 100, 5
 	);
 
 	ret->EnemyTypes[1] = New_CharacterType(
@@ -115,7 +116,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			),
 			31, 33
 		), NULL,
-		1
+		1, 100, 1
 	);
 
 	ret->EnemyTypes[2] = New_CharacterType(
@@ -127,7 +128,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			),
 			34, 33
 		), NULL, /* behavior */
-		2
+		2, 100, 1
 	);
 
 	ret->ObjectTypeCount = 1;
@@ -173,47 +174,6 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 	
 	return ret;
 }
-/* Behold satya's great work
-void World_SetBrickSprites(World *w, int instance) {
-	bool top = false;
-	bool bottom = false;
-	bool left = false;
-	bool right = false;
-	int renderChoice = NUDE;
-		for (int i = 0; i < w->ObjectTypes[OBJECT_BRICK]->instance_count; i++) {
-			if (i != instance) {
-				if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.x == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.x - 32) {
-					if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.y == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.y) {
-						left = true;
-					}
-				}
-				if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.x == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.x + 32) {
-					if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.y == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.y) {
-						right = true;
-					}
-				}
-				if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.x == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.x) {
-					if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.y == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.y + 32) {
-						top = true;
-					}
-				}
-				if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.x == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.x - 32) {
-					if (w->ObjectTypes[OBJECT_BRICK]->instances[i].dstrect.y == w->ObjectTypes[OBJECT_BRICK]->instances[instance].dstrect.y) {
-						bottom = true;
-					}
-				}
-			}
-		}
-	
-	/ * 
-	TODO  set the sprites now that you have found out which is true 
-	I want to move the bool checking into a function, and then the last thing should be seting the spritesheet position
-	I also need to move the enum from leveleditor.h to somewhere else (brick.h?)
-	maybe we can move the checks into that
-	* /
-
-}
-*/
 
 void World_Update(World *w, unsigned int dt, Container *container) {	
 	/* Update enemies */
@@ -237,8 +197,6 @@ void World_Render(World *w, unsigned int dt, Container *container) {
 			/* TODO Check if the object is within view, only render it if so */
 			/* Render the object */
 			ObjectType_RenderObject(w->ObjectTypes[i], o, dt, container);
-//			SDL_SetRenderDrawColor(container->renderer, 255, 0, 0, 128);
-//			SDL_RenderFillRect(container->renderer, &w->ObjectTypes[i]->instances[o].dstrect);
 		}
 	}
 	/* Render all of the characters/enemies */

@@ -13,7 +13,7 @@
 #include "../../shared/include/container.h"
 
 /* Create a new CharacterType */
-CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int), int HP) {
+CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int), int HP, int actionCost, int actionRegen) {
 	CharacterType *ret = malloc(sizeof(CharacterType));
 	if (!ret) {
 		fprintf(stderr, "Error creating CharacterType\n");
@@ -29,6 +29,8 @@ CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _chara
 	ret->character_traits_count = 0;
 	ret->character_traits_size = 1;
 	ret->defaultHP = HP;
+	ret->defaultactionCost = actionCost;
+	ret->defaultactionRegen = actionRegen;
 	/* There's not much to do here, most of everything is in the ObjectType */
 	return ret;
 }
@@ -57,15 +59,17 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y,
 			2 * ct->character_traits_size * sizeof(CharacterTraits));
 		ct->character_traits_size *= 2;
 	}
-	ct->character_traits_count++;
-	ct->character_traits[ct->character_traits_count].attackDelta = 0;
+
 	ct->character_traits[ct->character_traits_count].hitDelta = 0;
 	ct->character_traits[ct->character_traits_count].is_dead = false;
 	ct->character_traits[ct->character_traits_count].is_on_floor = false;
 	ct->character_traits[ct->character_traits_count].is_hit = false;
 	ct->character_traits[ct->character_traits_count].is_attacking = false;
-	ct->character_traits[ct->character_traits_count].canAttack = false;
 	ct->character_traits[ct->character_traits_count].hitpoints = ct->defaultHP;
+	ct->character_traits[ct->character_traits_count].actionCost = ct->defaultactionCost;
+	ct->character_traits[ct->character_traits_count].actionRegen = ct->defaultactionRegen;
+	ct->character_traits[ct->character_traits_count].numActions = 100;
+	ct->character_traits_count++;
 }
 
 
