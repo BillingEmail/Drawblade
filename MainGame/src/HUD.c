@@ -16,14 +16,6 @@ HUD * Create_HUD(Container *container) {
 	ret->weaponTextures[SPOOKY]   = New_Texture(container->renderer, "../assets/img/HUD/bow.png");
 	ret->weaponTextures[ICE]      = New_Texture(container->renderer, "../assets/img/HUD/bow.png");
 
-	ret->heartFullTexture = New_Texture(container->renderer, "../assets/img/HUD/heartfull.png");
-	ret->heartEmptyTexture = New_Texture(container->renderer, "../assets/img/HUD/heartempty.png");
-
-	ret->heartdst.x = 1;
-	ret->heartdst.y = 35;
-	ret->heartdst.w = 21;
-	ret->heartdst.h = 19;
-
 	ret->weapondst.x = 0;
 	ret->weapondst.y = 521;
 	ret->weapondst.w = 199;
@@ -31,16 +23,27 @@ HUD * Create_HUD(Container *container) {
 
 	ret->actionFrameTexture = New_Texture(container->renderer, "../assets/img/HUD/actionframe.png");
 	ret->actionBarTexture = New_Texture(container->renderer, "../assets/img/HUD/actionbar.png");
+	ret->heartBarTexture = New_Texture(container->renderer, "../assets/img/HUD/healthbar.png");
 
 	ret->actionframedst.x = 1;
 	ret->actionframedst.y = 64;
 	ret->actionframedst.w = 204;
-	ret->actionframedst.h = 24;
+	ret->actionframedst.h = 14;
 
 	ret->actionbardst.x = 3;
 	ret->actionbardst.y = 66;
-	ret->actionbardst.w = 20;
-	ret->actionbardst.h = 20;
+	ret->actionbardst.w = 1;
+	ret->actionbardst.h = 10;
+
+	ret->actionframe2dst.x = 1;
+	ret->actionframe2dst.y = 35;
+	ret->actionframe2dst.w = 204;
+	ret->actionframe2dst.h = 14;
+
+	ret->healthbardst.x = 3;
+	ret->healthbardst.y = 37;
+	ret->healthbardst.w = 20;
+	ret->healthbardst.h = 10;
 
 	return ret;
 }
@@ -57,12 +60,11 @@ void HUD_Render(HUD *h, Player *p, LevelType theme, Container *container) {
 }
 
 void HUD_RenderHearts(HUD *h, Player *player, Container *container) {
-	//Based on player health, will render hearts
+	//Renders the frame
+	Texture_Render(h->actionFrameTexture, container->renderer, h->actionframe2dst.x, h->actionframe2dst.y, NULL);
+	//Based on player health, will render health bar
 	for (int i = 0; i < player->traits->hitpoints; i++){		
-		Texture_Render(h->heartFullTexture, container->renderer, h->heartdst.x + (i * 21) + 5, 5, NULL);
-	}
-	for (int i = player->traits->hitpoints; i < 5; i++) {
-		Texture_Render(h->heartEmptyTexture, container->renderer, h->heartdst.x + (i * 21) + 5, 5, NULL);
+		Texture_Render(h->healthBarTexture, container->renderer, h->healthbardst.x + (i * 20), h->healthbardst.y, NULL);
 	}
 }
 
@@ -74,7 +76,7 @@ void HUD_RenderActionBar(HUD *h, Player *player, Container *container) {
 /*	Texture_Render(h->actionFrameTexture, container->renderer, h->actionframedst.x, h->actionframedst.y, NULL);
 	//For rendering the action bar with amount filled related to numactions player has
 	for (int i = 0; i < player->numActions; i++) {
-		Texture_Render(h->actionBarTexture, container->renderer, h->actionbardst.x + i * 20, h->actionbardst.y, NULL);
+		Texture_Render(h->actionBarTexture, container->renderer, h->actionbardst.x + i, h->actionbardst.y, NULL);
 	}
 */
 }
