@@ -8,9 +8,13 @@ typedef struct _hud {
 	Texture **weaponTextures;
 	Texture *heartFullTexture;
 	Texture *heartEmptyTexture;
+	Texture *actionFrameTexture;
+	Texture *actionBarTexture;
 
 	SDL_Rect heartdst;
 	SDL_Rect weapondst;
+	SDL_Rect actionframedst;
+	SDL_Rect actionbardst;
 
 } HUD;
 
@@ -25,6 +29,9 @@ void HUD_RenderHearts(HUD *h, Player *player, Container *container);
 
 //Renders the weapon box based on player weapon
 void HUD_RenderWeapon(HUD *h, LevelType theme, Container *container);
+
+//Renders a visual representation of number of attacks player has (mana/stamina)
+void HUD_RenderActionBar(HUD *h, Player *player, Container *container);
 
 /* Destroy the HUD and it's textures */
 void HUD_Destroy(HUD *h);

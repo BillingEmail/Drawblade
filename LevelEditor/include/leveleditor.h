@@ -10,7 +10,7 @@ typedef struct _LevelEditor {
 	Container *container;
 	Level *level;
 	Texture *textureArray[4][7];
-	Texture *backgroundArray[4];
+	Texture *backgroundArray[4][2];
 	Texture *blankIcon;
 	int currentItem;
 } LevelEditor;
