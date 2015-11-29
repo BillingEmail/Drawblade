@@ -19,7 +19,7 @@ typedef struct _LevelEditor {
 	Texture *backgroundArray[4][2];
 	Texture *blankIcon;
 	int currentItem;
-	Renderpos 
+//	Renderpos 
 } LevelEditor;
 
 /*
