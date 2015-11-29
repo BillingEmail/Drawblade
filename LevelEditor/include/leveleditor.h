@@ -6,12 +6,6 @@
 #include "../../shared/include/container.h"
 #include <stdbool.h>
 
-
-typedef struct _Renderpos {
-	int x;
-	int y;
-} Renderpos;
-
 typedef struct _LevelEditor {
 	Container *container;
 	Level *level;
@@ -19,7 +13,11 @@ typedef struct _LevelEditor {
 	Texture *backgroundArray[4][2];
 	Texture *blankIcon;
 	int currentItem;
+<<<<<<< HEAD
 //	Renderpos 
+=======
+	Renderpos FirstBkgRP[3]; 
+>>>>>>> bd6beadace3195ae0ef6f45d451c6dca7e2f9c43
 } LevelEditor;
 
 /*
@@ -27,11 +25,11 @@ typedef struct _LevelEditor {
   It is broken into making a new leveleditor, running it,
   and destroying it
 */
-void Level_Edit(Level *level);
+void Level_Edit(Level *level, Container *container);
 
 
 /* Creates a new LevelEditor struct and fills it */
-LevelEditor *New_LevelEditor(Level *level);
+LevelEditor *New_LevelEditor(Level *level, Container *container);
 
 /* Destroys a LevelEditor struct */
 void LevelEditor_End(LevelEditor *editor);
@@ -49,6 +47,7 @@ void Texture_RenderBrick(Texture *t, SDL_Renderer *r, int x, int y, SDL_Rect *Ca
 void LevelEditor_Update(LevelEditor *editor);
 
 /* Components of Update  */
+void LevelEditor_AdjustBackground(LevelEditor *editor, int xdiff, int ydiff);
 void LevelEditor_AssertCameraBounds(LevelEditor *editor);
 bool LevelEditor_checkEditTile(LevelEditor *editor);
 void LevelEditor_getCurrentTheme(LevelEditor *editor);

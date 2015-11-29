@@ -121,19 +121,26 @@ SDL_Renderer * New_Renderer(SDL_Window *window) {
 	return ret;
 }
 
-/* Updates camera depending on arrow keys */
+/* 
+Updates camera depending on arrow keys
+If shift is held, it moves even faster
+*/
 void Container_KeyBoardUpdateCamera(Container *container) {
-	if (container->keyboardstate[SDL_SCANCODE_UP]) {
-		container->camera->y -= 5;
-	}
-	if (container->keyboardstate[SDL_SCANCODE_DOWN]) {
-		container->camera->y += 5;
-	}
-	if (container->keyboardstate[SDL_SCANCODE_RIGHT]) {
-		container->camera->x += 5;
-	}
-	if (container->keyboardstate[SDL_SCANCODE_LEFT]) {
-		container->camera->x -= 5;
+	int multiplier = 1;
+	if (container->keyboardstate[SDL_SCANCODE_LSHIFT]) {
+		multiplier = 3;
 	}
 
+	if (container->keyboardstate[SDL_SCANCODE_UP]) {
+		container->camera->y -= 5 * multiplier;
+	}
+	if (container->keyboardstate[SDL_SCANCODE_DOWN]) {
+		container->camera->y += 5 * multiplier;
+	}
+	if (container->keyboardstate[SDL_SCANCODE_RIGHT]) {
+		container->camera->x += 5 * multiplier;
+	}
+	if (container->keyboardstate[SDL_SCANCODE_LEFT]) {
+		container->camera->x -= 5 * multiplier;
+	}
 }
