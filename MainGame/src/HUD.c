@@ -71,11 +71,12 @@ void HUD_RenderWeapon(HUD *h, LevelType theme, Container *container) {
 }
 
 void HUD_RenderActionBar(HUD *h, Player *player, Container *container) {
-	Texture_Render(h->actionFrameTexture, container->renderer, h->actionframedst.x, h->actionframedst.y, NULL);
+/*	Texture_Render(h->actionFrameTexture, container->renderer, h->actionframedst.x, h->actionframedst.y, NULL);
 	//For rendering the action bar with amount filled related to numactions player has
 	for (int i = 0; i < player->numActions; i++) {
 		Texture_Render(h->actionBarTexture, container->renderer, h->actionbardst.x + i * 20, h->actionbardst.y, NULL);
 	}
+*/
 }
 
 /* Destroy the HUD and it's textures */

@@ -22,14 +22,14 @@ typedef struct _character_traits {
 	vector velocity;
 	vector acceleration;
 	int hitpoints;
-	float attackDelta;
+	int numActions;
+	int actionCost;
+	int actionRegen;
 	float hitDelta;
 	bool is_dead;
 	bool is_on_floor;
 	bool is_hit;
 	bool is_attacking;
-	bool jumping;
-	bool canAttack;
 } CharacterTraits;
 
 typedef struct _charactertype {
@@ -43,6 +43,8 @@ typedef struct _charactertype {
 	int character_traits_size; /* size of traits array */
 
 	int defaultHP;
+	int defaultactionCost;
+	int defaultactionRegen;
 
 	void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int);
 
@@ -51,7 +53,7 @@ typedef struct _charactertype {
 typedef void (*Behavior)(CharacterType *s, int, CharacterType, int);
 
 /* Create a new character type from an ObjectType and whether or not it falls */
-CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int), int HP);
+CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int), int HP, int defaultactionCost, int defaultactionRegen);
 
 /* Destroy a charactertype, including it's objecttype etc */
 void Destroy_CharacterType(CharacterType *t);

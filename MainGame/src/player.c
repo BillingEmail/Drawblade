@@ -7,13 +7,11 @@
 #include "../../shared/include/container.h"
 
 /* Create the player */
-Player * New_Player(ObjectType *ot, int x, int y) {
+Player * New_Player(ObjectType *ot, int x, int y, LevelType theme) {
 	Player *ret = malloc(sizeof(Player));
+	ret->theme = theme;
 
-
-	ret->numActions = 10; /* wtf idk lmao */
-
-	ret->ctype = New_CharacterType(ot, NULL, 5);
+	ret->ctype = New_CharacterType(ot, NULL, 5, 100, 10);
 	/* Add the player character */
 	CharacterType_AddCharacter(ret->ctype, x, y, 0, 0);
 	/* shortcut to the objecttype, not sure why */
@@ -66,22 +64,36 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 			}
 			p->object->sprite_index[JUMP_LEFT] = p->object->sprite_index[JUMP_RIGHT];
 		break;
-
-//		case ATTACK:
-			/* attack lol TODO */
-//		break;
-//		case DEATH:
-			/* die lol TODO render smoke thing lol */
-//		break;
+		case ATTACK_LEFT:
+			CharacterType_AnimateCharacter(p->ctype, 0, ATTACK_LEFT, &delay, 50);
+			if (p->object->sprite_index[ATTACK_LEFT] > 3) {
+				p->traits->is_attacking = false;
+				p->object->sprite_index[ATTACK_LEFT] = 3; 
+			}
+			p->object->sprite_index[ATTACK_RIGHT] = p->object->sprite_index[ATTACK_LEFT];
+		break;
+		case ATTACK_RIGHT:
+			CharacterType_AnimateCharacter(p->ctype, 0, ATTACK_RIGHT, &delay, 50);
+			if (p->object->sprite_index[ATTACK_RIGHT] > 3) {
+				p->traits->is_attacking = false;
+				p->object->sprite_index[ATTACK_RIGHT] = 3;
+			}
+			p->object->sprite_index[ATTACK_LEFT] = p->object->sprite_index[ATTACK_RIGHT];
+		break;
+		case STAND_RIGHT:
+			ObjectType_SetObjectAnimation(p->otype, 0, STAND_RIGHT);
+		break;
+		case STAND_LEFT:
+			ObjectType_SetObjectAnimation(p->otype, 0, STAND_LEFT);
+		break;
 	}
+
 	CharacterType_RenderCharacter(p->ctype, 0, dt, c);
 	p->object->lastAnimation = p->object->animation;
 }
 
 /* Take input from wrapper and apply to the player */
 void Player_Update(Player *p, unsigned int dt, Container *container) {
-	
-	
 	/* Checks whether the last sprite was facing left or right */
 	bool facingLeft = (p->object->lastAnimation % 2 == 1);
 	if (!p->traits->is_hit && !p->traits->is_dead) {
@@ -122,7 +134,11 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		}
 
 		if (container->mouse.leftClick) {
+<<<<<<< HEAD
 			if (p->traits->canAttack) {
+=======
+			if (p->traits->numActions > p->traits->actionCost && !p->traits->is_attacking) {
+>>>>>>> 4f4f813d9e1cc1872cec2455ddd958afb5fd1a0d
 				if(container->mouse.x <= p->object->dstrect.x + p->object->dstrect.w - container->camera->x) {
 					ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_LEFT);
 				}
@@ -141,6 +157,7 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 			if(p->object->lastAnimation == ATTACK_RIGHT) {
 				ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_RIGHT);
 			}
+			Player_Attack(p, container);
 		}
 
 	}
@@ -155,7 +172,9 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	}
 
 	
-	
+	p->traits->numActions += p->traits->actionRegen;
+	if (p->traits->numActions > 100) p->traits->numActions = 100;
+
 	p->traits->is_on_floor = false;
 	
 	/* cap velocities */
@@ -181,15 +200,8 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	p->object->dstrect.x += ceil(p->traits->velocity.x);
 	p->object->dstrect.y += ceil(p->traits->velocity.y);	
 
-	
-	p->traits->attackDelta -= dt;
 	p->traits->hitDelta -= dt;
 
-	if (p->traits->attackDelta < 0) {
-		p->traits->canAttack = true;
-		p->traits->is_attacking = false;
-		p->traits->attackDelta = .75;
-	}
 	if (p->traits->hitDelta < 0) {
 		p->traits->is_hit = false;
 	}
@@ -198,9 +210,10 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 }
 
 void Player_Attack(Player *p, Container *c) { 
- 	p->traits->canAttack = false;
+ 	if (!p->traits->is_attacking) {
+		p->traits->numActions -= p->traits->actionCost;
+	}
 	p->traits->is_attacking = true;
-	p->traits->attackDelta = .75;
 }
 
 void Container_PlayerUpdateCamera(Container *container, Player *p) {
