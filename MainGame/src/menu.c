@@ -372,7 +372,7 @@ Menu * New_SaveLevelMenu(Container *container) {
 	Menu_AddButton(
 		ret,
 		New_Button(
-			New_Texture(container->renderer, "../assets/img/Menus/button/save.png"),
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/save.png"),
 			SAVE,
 			425, 280, 357, 132
 		)
