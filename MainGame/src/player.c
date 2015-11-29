@@ -65,17 +65,17 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 		break;
 		case ATTACK_LEFT:
 			CharacterType_AnimateCharacter(p->ctype, 0, ATTACK_LEFT, &delay, 50);
-			if (p->object->sprite_index[ATTACK_LEFT] > 3) {
+			if (p->object->sprite_index[ATTACK_LEFT] > 2) {
 				p->traits->is_attacking = false;
-				p->object->sprite_index[ATTACK_LEFT] = 3; 
+				p->object->sprite_index[ATTACK_LEFT] = 2; 
 			}
 			p->object->sprite_index[ATTACK_RIGHT] = p->object->sprite_index[ATTACK_LEFT];
 		break;
 		case ATTACK_RIGHT:
 			CharacterType_AnimateCharacter(p->ctype, 0, ATTACK_RIGHT, &delay, 50);
-			if (p->object->sprite_index[ATTACK_RIGHT] > 3) {
+			if (p->object->sprite_index[ATTACK_RIGHT] > 2) {
 				p->traits->is_attacking = false;
-				p->object->sprite_index[ATTACK_RIGHT] = 3;
+				p->object->sprite_index[ATTACK_RIGHT] = 2;
 			}
 			p->object->sprite_index[ATTACK_LEFT] = p->object->sprite_index[ATTACK_RIGHT];
 		break;
