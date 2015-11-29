@@ -144,8 +144,8 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 				else {
 					ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_RIGHT);
 				}
-
-				Player_Attack(p, container);
+				p->traits->numActions -= p->traits->actionCost;
+				p->traits->is_attacking = true;
 			}
 		}
 
@@ -156,7 +156,6 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 			if(p->object->lastAnimation == ATTACK_RIGHT) {
 				ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_RIGHT);
 			}
-			Player_Attack(p, container);
 		}
 
 	}
@@ -207,13 +206,6 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	}
 
 	CharacterType_AdjustHitboxes(p->ctype, 0);
-}
-
-void Player_Attack(Player *p, Container *c) { 
- 	if (!p->traits->is_attacking) {
-		p->traits->numActions -= p->traits->actionCost;
-	}
-	p->traits->is_attacking = true;
 }
 
 void Container_PlayerUpdateCamera(Container *container, Player *p) {
