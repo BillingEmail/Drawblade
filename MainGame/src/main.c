@@ -9,21 +9,14 @@
 int main(void) {
 	/* Holds window, renderer, camera, etc */
 	Container *container;
-	/* Main Menu, Load Custom Level Menu */
-	Menu *MainMenu;
-	Menu *LoadLevelMenu;
 
 	/* Create the container */
 	container = New_Container(SCREEN_WIDTH, SCREEN_HEIGHT);
-	/* Load the menus */
-	MainMenu = New_MainMenu(container);
-	LoadLevelMenu = New_LoadLevelMenu(container);
 
 	/* Menu switcher, entire overheard, etc */
-	RunMenuManager(MainMenu, LoadLevelMenu, container);
+	RunMenuManager(container);
 
-	Menu_Destroy(MainMenu);
-	Menu_Destroy(LoadLevelMenu);
+	/* Destroy everything in the container */
 	Container_Destroy(container);
 
 	return 0;
