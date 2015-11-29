@@ -68,33 +68,33 @@ editor into the textureArray and backgroundArray
 	
 	//Sets up the Flying Enemies
 	editor->textureArray[LAVA][FLYING] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Lava/flying.png");
+	"../assets/img/LevelEditor/Lava/flying_enemy_enemy.png");
 	editor->textureArray[ICE][FLYING] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Ice/flying.png");
+	"../assets/img/LevelEditor/Ice/flying_enemy.png");
 	editor->textureArray[MEDIEVAL][FLYING] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Medieval/flying.png");
+	"../assets/img/LevelEditor/Medieval/flying_enemy.png");
 	editor->textureArray[SPOOKY][FLYING] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Spooky/flying.png");
+	"../assets/img/LevelEditor/Spooky/flying_enemy.png");
 	
 	//Sets up the Melee Enemies
 	editor->textureArray[LAVA][MELEE] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Lava/melee.png");
+	"../assets/img/LevelEditor/Lava/melee_enemy.png");
 	editor->textureArray[ICE][MELEE] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Ice/melee.png");
+	"../assets/img/LevelEditor/Ice/melee_enemy.png");
 	editor->textureArray[MEDIEVAL][MELEE] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Medieval/melee.png");
+	"../assets/img/LevelEditor/Medieval/melee_enemy.png");
 	editor->textureArray[SPOOKY][MELEE] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Spooky/melee.png");
+	"../assets/img/LevelEditor/Spooky/melee_enemy.png");
 	
 	//Sets up the Ranged Enemies
 	editor->textureArray[LAVA][RANGED] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Lava/ranged.png");
+	"../assets/img/LevelEditor/Lava/ranged_enemy.png");
 	editor->textureArray[ICE][RANGED] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Ice/ranged.png");
+	"../assets/img/LevelEditor/Ice/ranged_enemy.png");
 	editor->textureArray[MEDIEVAL][RANGED] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Medieval/ranged.png");
+	"../assets/img/LevelEditor/Medieval/ranged_enemy.png");
 	editor->textureArray[SPOOKY][RANGED] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Spooky/ranged.png");
+	"../assets/img/LevelEditor/Spooky/ranged_enemy.png");
 
 	//Sets up the Boss Enemies
 	editor->textureArray[LAVA][BOSS] = New_Texture(editor->container->renderer,
