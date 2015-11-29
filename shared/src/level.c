@@ -132,7 +132,7 @@ void Level_LoadFromFile(Level *level, FILE *fp) {
 /* The most sane way to load from a file into a structure */
 Level * New_LevelFromFile(const char *path) {
 	Level *ret = malloc(sizeof(Level));
-
+	printf("PATH: %s\n", path);
 	FILE *fp = fopen(path, "rb");
 	if (!fp) {
 		puts("Too bad");
@@ -176,6 +176,24 @@ void Level_Save(Level *level) {
 	fclose(fp);
 }
 
+
+void Level_SaveByName(Level *level, const char *name) {
+	FILE *fp;
+	char path[64];
+
+	sprintf(path, "../assets/levels/%s.lvl", name);
+	fp = fopen(path, "rb");
+
+	fwrite(&level->width, sizeof(int), 1, fp);
+	fwrite(&level->height, sizeof(int), 1, fp);
+	fwrite(&level->theme, sizeof(int), 1, fp);
+	for (int i = 0; i < level->height; i++) {
+		fwrite((level->tileArray[i]), sizeof(Tile), level->width, fp);
+	}
+
+	fclose(fp);
+}
+
 /*
 Goes through the array and frees everything
 It then frees the actual level
@@ -187,6 +205,16 @@ void Level_Destroy(Level *level) {
 	free(level->tileArray);
 	free(level);
 }
+
+/* make a blank level using width and height */
+Level * New_BlankLevel(int width, int height) {
+	Level *ret = malloc(sizeof(Level));
+	ret->width = width;
+	ret->height = height;
+	Level_CreateTiles(ret);
+	return ret;
+}
+
 /*
 Mallocs the giant tile array you have
 It then callocs it so that every value in the array is 0

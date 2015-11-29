@@ -155,15 +155,17 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 					ret->player->object->dstrect.y = y * TILE_SCALE;
 				break;
 				case MELEE:
+					puts("adding melee enemy");
 					CharacterType_AddCharacter(ret->EnemyTypes[0], x * TILE_SCALE, y * TILE_SCALE);
 				break;
 				case RANGED:
+					puts("adding ranged enemy");
 					CharacterType_AddCharacter(ret->EnemyTypes[1], x * TILE_SCALE, y * TILE_SCALE);
 				break;
 				case FLYING:
+					puts("adding flying enemy");
 					CharacterType_AddCharacter(ret->EnemyTypes[2], x * TILE_SCALE, y * TILE_SCALE);
 				default:
-
 
 				break;
 			}
@@ -177,7 +179,7 @@ void World_Update(World *w, unsigned int dt, Container *container) {
 	/* Update enemies */
 	for (int i = 0; i < w->EnemyTypeCount; i++) {
 		printf("i: %d\n", i);
-		for (int e = 0; e < w->EnemyTypes[i]->object_type->instance_count; i++) {
+		for (int e = 0; e < w->EnemyTypes[i]->character_traits_count; e++) {
 			CharacterType_UpdateCharacter(w->EnemyTypes[i], dt, e);
 			printf("e: %d\n", e);	
 		}

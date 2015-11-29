@@ -13,11 +13,7 @@ typedef struct _LevelEditor {
 	Texture *backgroundArray[4][2];
 	Texture *blankIcon;
 	int currentItem;
-<<<<<<< HEAD
-//	Renderpos 
-=======
 	Renderpos FirstBkgRP[3]; 
->>>>>>> bd6beadace3195ae0ef6f45d451c6dca7e2f9c43
 } LevelEditor;
 
 /*
