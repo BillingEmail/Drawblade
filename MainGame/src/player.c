@@ -134,11 +134,9 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		}
 
 		if (container->mouse.leftClick) {
-<<<<<<< HEAD
-			if (p->traits->canAttack) {
-=======
+
 			if (p->traits->numActions > p->traits->actionCost && !p->traits->is_attacking) {
->>>>>>> 4f4f813d9e1cc1872cec2455ddd958afb5fd1a0d
+
 				if(container->mouse.x <= p->object->dstrect.x + p->object->dstrect.w - container->camera->x) {
 					ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_LEFT);
 				}
