@@ -58,8 +58,8 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 			p->object->sprite_index[JUMP_RIGHT] = p->object->sprite_index[JUMP_LEFT];
 		case JUMP_RIGHT:
 			CharacterType_AnimateCharacter(p->ctype, 0, JUMP_RIGHT, &delay, 50);
-			if (p->object->sprite_index[JUMP_RIGHT] > 2) {
-				p->object->sprite_index[JUMP_RIGHT] = 2;
+			if (p->object->sprite_index[JUMP_RIGHT] > 3) {
+				p->object->sprite_index[JUMP_RIGHT] = 3;
 			}
 			p->object->sprite_index[JUMP_LEFT] = p->object->sprite_index[JUMP_RIGHT];
 		break;
@@ -136,7 +136,7 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 
 		if (container->mouse.leftClick) {
 
-			if (p->traits->numActions > p->traits->actionCost && !p->traits->is_attacking) {
+			if (p->traits->numActions >= p->traits->actionCost && !p->traits->is_attacking) {
 
 				if(container->mouse.x <= p->object->dstrect.x + p->object->dstrect.w - container->camera->x) {
 					ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_LEFT);
