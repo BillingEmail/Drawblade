@@ -84,8 +84,15 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	
 	/* Checks whether the last sprite was facing left or right */
 	bool facingLeft = (p->object->lastAnimation % 2 == 1);
-	
 	if (!p->traits->is_hit && !p->traits->is_dead) {
+	
+		if (facingLeft) {
+			ObjectType_SetObjectAnimation(p->otype, 0, STAND_LEFT);
+		}
+		if (!facingLeft) {
+			ObjectType_SetObjectAnimation(p->otype, 0, STAND_RIGHT);
+		}
+
 		if (container->keyboardstate[SDL_SCANCODE_A]) {
 				ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
 			p->traits->velocity.x -= 0.5;
@@ -105,24 +112,26 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		}
 	
 		if (!p->traits->is_on_floor) {
-			if (p->object->animation == RUN_LEFT) {
+			if (p->object->animation == RUN_LEFT || p->object->animation == STAND_LEFT) {
 				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_LEFT);
 			}
-			if (p->object->animation == RUN_RIGHT) {
+			if (p->object->animation == RUN_RIGHT || p->object->animation == STAND_RIGHT) {
 				ObjectType_SetObjectAnimation(p->otype, 0, JUMP_RIGHT);	
 			}
 	
 		}
 
 		if (container->mouse.leftClick) {
-			if(container->mouse.x <= p->object->dstrect.x) {
-				ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_LEFT);
-			}
-			else {
-				ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_RIGHT);
-			}
+			if (p->traits->canAttack) {
+				if(container->mouse.x <= p->object->dstrect.x + p->object->dstrect.w - container->camera.x) {
+					ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_LEFT);
+				}
+				else {
+					ObjectType_SetObjectAnimation(p->otype, 0, ATTACK_RIGHT);
+				}
 
-			Player_Attack(p, container);
+				Player_Attack(p, container);
+			}
 		}
 
 		if (p->traits->is_attacking) {

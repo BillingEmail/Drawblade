@@ -6,6 +6,12 @@
 #include "../../shared/include/container.h"
 #include <stdbool.h>
 
+
+typedef struct _Renderpos {
+	int x;
+	int y;
+} Renderpos;
+
 typedef struct _LevelEditor {
 	Container *container;
 	Level *level;
@@ -13,6 +19,7 @@ typedef struct _LevelEditor {
 	Texture *backgroundArray[4][2];
 	Texture *blankIcon;
 	int currentItem;
+	Renderpos 
 } LevelEditor;
 
 /*
