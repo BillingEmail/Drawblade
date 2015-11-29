@@ -10,6 +10,7 @@
 #include "../include/collisions.h"
 #include "../include/player.h"
 #include "../../shared/include/container.h"
+#include "../../shared/include/level.h"
 
 World * NewWorld_FromFile(const char *path, Container *container) {
 	World *ret;
@@ -90,7 +91,9 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 
 	ret->EnemyTypeCount = 3;
 	ret->EnemyTypes = malloc(ret->EnemyTypeCount * sizeof(CharacterType *));	
-	
+
+
+	/* Create Melee enemy type */	
 	ret->EnemyTypes[0] = New_CharacterType(
 		New_ObjectType(
 			New_Spritesheet(
@@ -99,8 +102,8 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 				8, 8, 4, 4, 3, 3, 2, 2, 1, 1
 			),
 			31, 33
-		),
-		0, 0
+		), NULL,
+		1
 	);
 
 	ret->EnemyTypes[1] = New_CharacterType(
@@ -111,8 +114,8 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 				8, 8, 4, 4, 3, 3, 2, 2, 1, 1
 			),
 			31, 33
-		),
-		0, 0
+		), NULL,
+		1
 	);
 
 	ret->EnemyTypes[2] = New_CharacterType(
@@ -123,8 +126,8 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 				4, 4, 3, 3, 2, 2
 			),
 			34, 33
-		),
-		0, 0
+		), NULL, /* behavior */
+		2
 	);
 
 	ret->ObjectTypeCount = 1;
@@ -149,11 +152,20 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 					ret->ObjectTypes[OBJECT_BRICK]->instances[ret->ObjectTypes[OBJECT_BRICK]->instance_count - 1].sprite_index[0] = Level_GetBrickChoice(level, x, y);
 				break;
 				case PLAYER:
-
 					ret->player->object->dstrect.x = x * TILE_SCALE;
 					ret->player->object->dstrect.y = y * TILE_SCALE;
 				break;
+				case MELEE:
+					CharacterType_AddCharacter(ret->EnemyTypes[0], x * TILE_SCALE, y * TILE_SCALE, 0, 0);
+				break;
+				case RANGED:
+					CharacterType_AddCharacter(ret->EnemyTypes[1], x * TILE_SCALE, y * TILE_SCALE, 0, 0);
+				break;
+				case FLYING:
+					CharacterType_AddCharacter(ret->EnemyTypes[2], x * TILE_SCALE, y * TILE_SCALE, 0, 0);
 				default:
+
+
 				break;
 			}
 		}
@@ -234,7 +246,7 @@ void World_Render(World *w, unsigned int dt, Container *container) {
 		for (int e = 0; e < w->EnemyTypes[i]->object_type->instance_count; e++) {
 			/* TODO Check if the enemy is within view, only render it if so */
 			/* Render the enemy */
-//			CharacterType_RenderCharacter(w->EnemyTypes[i], e, container);
+			CharacterType_RenderCharacter(w->EnemyTypes[i], e, dt, container);
 		}
 	}
 	Player_Render(w->player, dt, container);
