@@ -142,7 +142,9 @@ void LevelEditor_End(LevelEditor *editor) {
 			Destroy_Texture(editor->textureArray[i][j]);
 	
 		}
-		Destroy_Texture(editor->backgroundArray[i]);
+		for (int j = 0; j < 2; j++) {
+			Destroy_Texture(editor->backgroundArray[i][j]);
+		}
 	}
 	
 	//frees the editor
@@ -171,7 +173,7 @@ void LevelEditor_Render(LevelEditor *editor) {
 	LevelType theme = editor->level->theme;
 	
 	//This renders the background for the editor
-	Texture_Render(editor->backgroundArray[theme], editor->container->renderer, 0, 0, NULL);
+	Texture_Render(editor->backgroundArray[theme][0], editor->container->renderer, 0, 0, NULL);
 	
 	/* 
 	This loops through the level in the editor and renders each of the objects in the level
