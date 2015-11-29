@@ -23,7 +23,7 @@ HUD * Create_HUD(Container *container) {
 
 	ret->actionFrameTexture = New_Texture(container->renderer, "../assets/img/HUD/actionframe.png");
 	ret->actionBarTexture = New_Texture(container->renderer, "../assets/img/HUD/actionbar.png");
-	ret->heartBarTexture = New_Texture(container->renderer, "../assets/img/HUD/healthbar.png");
+	ret->healthBarTexture = New_Texture(container->renderer, "../assets/img/HUD/healthbar.png");
 
 	ret->actionframedst.x = 1;
 	ret->actionframedst.y = 64;
@@ -89,8 +89,7 @@ void HUD_Destroy(HUD *h) {
 	}
 	free(h->weaponTextures);
 
-	Destroy_Texture(h->heartFullTexture);
-	Destroy_Texture(h->heartEmptyTexture);
+	Destroy_Texture(h->healthBarTexture);
 	Destroy_Texture(h->actionBarTexture);
 	Destroy_Texture(h->actionFrameTexture);
 	free(h);
