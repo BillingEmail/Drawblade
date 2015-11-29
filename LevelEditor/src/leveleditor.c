@@ -33,8 +33,8 @@ LevelEditor * New_LevelEditor(Level *level, Container *container) {
 	editor->container->camera->y = editor->level->height * TILE_SCALE - SCREEN_HEIGHT;
 	editor->container->camera->x = 0;
 	for (int i = 0; i < 3; i++) {
-		editor->FirstBkgRP[i].x == 0;
-		editor->FirstBkgRP[i].y == 0;
+		editor->FirstBkgRP[i].x = 0;
+		editor->FirstBkgRP[i].y = 0;
 	}
 /* 
 The next section loads all of the textures needed for the level 
@@ -294,13 +294,13 @@ void LevelEditor_Update(LevelEditor *editor) {
 }
 
 void LevelEditor_AdjustBackground(LevelEditor *editor, int xdiff, int ydiff) {
-	xdiff = (int)(xdiff *.10);
-	ydiff = (int)(ydiff *.10);
+	xdiff = (int)(xdiff * .20);
+	ydiff = (int)(ydiff * .20);
 	
-	if ((editor->FirstBkgRP[1].x % editor->backgroundArray[editor->level->theme][0]->w) == 0) {
-		editor->FirstBkgRP[0].x = -editor->backgroundArray[editor->level->theme][0]->w;
+	if ((editor->FirstBkgRP[1].x % editor->backgroundArray[editor->level->theme][0]->w) < 2) {
+		editor->FirstBkgRP[0].x = -editor->backgroundArray[editor->level->theme][0]->w + 1;
 		editor->FirstBkgRP[1].x = 0;
-		editor->FirstBkgRP[2].x = editor->backgroundArray[editor->level->theme][0]->w;
+		editor->FirstBkgRP[2].x = editor->backgroundArray[editor->level->theme][0]->w - 1;
 	}
 
 	for (int i = 0; i < 3; i++) {
