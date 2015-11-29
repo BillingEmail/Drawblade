@@ -12,6 +12,12 @@ typedef struct _menu_return {
 		char *text; /* Only used if action == LOAD_LEVEL_PATH in the Load Custom Level menu */
 } MenuReturn;
 
+typedef struct _image {
+	Texture *texture;
+	int x;
+	int y;
+} Image;
+
 /* A menu - a list of buttons on a background */
 typedef struct _menu {
 	/* Background of the menu */
@@ -24,6 +30,11 @@ typedef struct _menu {
 	Textbox **textboxes;
 	int textboxCount; /* Count of textboxes */
 	int textboxesSize; /* Length of textboxes array */
+
+	Image **images;
+	int imageCount;
+	int imagesSize;
+
 } Menu;
 
 /* Create a new menu with a background */
@@ -51,7 +62,10 @@ void RunMenuManager(Container *container);
 void Menu_AddButton(Menu *m, Button *b);
 
 /* Add a textbox to a menu */
-//void Menu_AddTextBox(Menu *m, Textbox *t);
+void Menu_AddTextBox(Menu *m, Textbox *t);
+
+/* Add an image to a menu */
+void Menu_AddImage(Menu *m, Texture *i, int x, int y);
 
 /* Wait for a button to be clicked and return its action */
 MenuReturn Menu_Run(Menu *m, Container *c);

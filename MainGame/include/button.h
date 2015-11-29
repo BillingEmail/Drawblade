@@ -8,7 +8,7 @@
 
 /* A signal that a button returns when it is clicked */
 typedef enum _action {
-	START, LOAD_CUSTOM_LEVEL, QUIT, BACK, CREATE_CUSTOM_LEVEL, LEVEL_EDITOR
+	START, LOAD_CUSTOM_LEVEL, QUIT, BACK, CREATE_CUSTOM_LEVEL, LEVEL_EDITOR, NEXT, START_EDITING
 } Action;
 
 /* A button used on a Menu */
