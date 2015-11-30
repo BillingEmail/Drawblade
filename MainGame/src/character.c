@@ -25,9 +25,9 @@ CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _chara
 	ret->behavior = behavior;
 
 	/* Create room for one character trait - increased when added */
-	ret->character_traits = malloc(sizeof(CharacterTraits));
+	ret->character_traits = malloc(2 * sizeof(CharacterTraits));
 	ret->character_traits_count = 0;
-	ret->character_traits_size = 1;
+	ret->character_traits_size = 2;
 	ret->defaultHP = HP;
 	ret->defaultactionCost = actionCost;
 	ret->defaultactionRegen = actionRegen;
@@ -53,7 +53,7 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y) {
 	ObjectType_AddObject(ct->object_type, x, y);
 
 	/* losing my patience with commenting rn tbh */
-	if (ct->character_traits_count >= ct->character_traits_size - 1) {
+	if (ct->character_traits_count == ct->character_traits_size) {
 		ct->character_traits = realloc(ct->character_traits,
 			2 * ct->character_traits_size * sizeof(CharacterTraits));
 		ct->character_traits_size *= 2;
@@ -77,35 +77,37 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y) {
 
 void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, unsigned int dt) {
 	/* ch_object is the physical object of the character instance */
-	Object *ch_object = &ct->object_type->instances[instance_index];
+	Object *ch_object = ct->object_type->instances + instance_index;
 	/* ch_traits are the traits of the character instance */
-	CharacterTraits *ch_traits = &ct->character_traits[instance_index];
+//	CharacterTraits *ch_traits = &ct->character_traits[instance_index];
 
-	
+
+	printf("%d, %d\n", ch_object->animation, __LINE__);
+	ch_object->animation = 1;	
 	/* need to pass player to this -- playerType global? */
 //	ct->behavior(ct, instance_index, NULL, 0);
 
 	/* Cap velocities at +-5 */
-	if (ch_traits->velocity.x > 5) {
-		ch_traits->velocity.x = 5;
-	}
-	if (ch_traits->velocity.y > 5) {
-		ch_traits->velocity.y = 5;
-	}
-	if (ch_traits->velocity.x < -5) {
-		ch_traits->velocity.x = -5;
-	}
-	if (ch_traits->velocity.y < -5) {
-		ch_traits->velocity.y = -5;
-	}
+//	if (ch_traits->velocity.x > 5) {
+//		ch_traits->velocity.x = 5;
+//	}
+//	if (ch_traits->velocity.y > 5) {
+//		ch_traits->velocity.y = 5;
+//	}
+//	if (ch_traits->velocity.x < -5) {
+//		ch_traits->velocity.x = -5;
+//	}
+//	if (ch_traits->velocity.y < -5) {
+//		ch_traits->velocity.y = -5;
+//	}
 
 
 
 	/* Apply velocities to the position */
-	ch_object->dstrect.x += ch_traits->velocity.x;
-	ch_object->dstrect.y += ch_traits->velocity.y;
+//	ch_object->dstrect.x += ch_traits->velocity.x;
+//	ch_object->dstrect.y += ch_traits->velocity.y;
 
-	CharacterType_AdjustHitboxes(ct, instance_index);
+//	CharacterType_AdjustHitboxes(ct, instance_index);
 }
 
 void CharacterType_AdjustHitboxes(CharacterType *ct, int instance_index) {

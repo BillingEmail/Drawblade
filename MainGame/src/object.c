@@ -5,6 +5,7 @@
 
 #include <SDL2/SDL.h>
 #include "../include/object.h"
+#include "../../shared/include/container.h"
 
 /* Create a new Object, with a spritesheet already created */
 ObjectType * New_ObjectType(Spritesheet *spritesheet, int w, int h) {
@@ -44,7 +45,7 @@ ObjectType * New_ObjectType(Spritesheet *spritesheet, int w, int h) {
 /* Create a new object of an ObjectType ot */
 void ObjectType_AddObject(ObjectType *ot, int x, int y) {
 	/* Make sure ot->instances is large enough to have another object */
-	if (ot->instance_count >= ot->instances_size - 1) {
+	if (ot->instance_count >= ot->instances_size) {
 		/* Double the size of ot->instances */
 		ot->instances = realloc(ot->instances, ot->instances_size * 2 * sizeof(Object));
 		ot->instances_size *= 2;
@@ -91,6 +92,7 @@ void ObjectType_AddObject(ObjectType *ot, int x, int y) {
 
 	/* Copy the passed initial animation and initial sprite */
 	ot->instances[ot->instance_count].animation = 0;
+	ot->instances[ot->instance_count].lastAnimation = 0;
 
 	ot->instances[ot->instance_count].sprite_index = calloc(ot->spritesheet->animation_count, sizeof(int));
 
@@ -119,6 +121,7 @@ void ObjectType_ObjectNextSprite(ObjectType *ot, int instance_index) {
 /* Render an instance of ObjectType */
 void ObjectType_RenderObject(ObjectType *ot, int instance_index, unsigned int dt, Container *container) {
 	SDL_Rect *objectrefrect = &ot->instances[instance_index].dstrect;
+
 	SDL_Rect dstrect = {
 		objectrefrect->x - container->camera->x,
 		objectrefrect->y - container->camera->y,
@@ -126,6 +129,11 @@ void ObjectType_RenderObject(ObjectType *ot, int instance_index, unsigned int dt
 		objectrefrect->h
 	};
 	
+	if (dstrect.x + dstrect.w < 0 || dstrect.y + dstrect.h< 0 ||
+		dstrect.x > 1280 || dstrect.y > 720) {
+		return;
+	}
+
 //	printf("s %d\n", ot->instances[instance_index].sprite_index[ot->instances[instance_index].animation]);
 //	printf("a %d\n", ot->instances[instance_index].animation);
 
@@ -144,6 +152,7 @@ void Destroy_ObjectType(ObjectType *ot) {
 		free(ot->animations[i]);
 	}
 	for (int i = 0; i < ot->instance_count; i++) {
+		printf("%d --\n", i);
 		free(ot->instances[i].sprite_index);
 	}
 	free(ot->animations);

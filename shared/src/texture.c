@@ -66,16 +66,6 @@ void Texture_Render(Texture *t, SDL_Renderer *r, int x, int y, SDL_Rect *Camera)
 	if (t == NULL) {
 		return;
 	}
-
-	if (Camera) {
-		if (x + t->w - Camera->x < 0 ||
-			y - t->h - Camera->y < 0 ||
-			x + t->w - Camera->x > SCREEN_W ||
-			y - t->h - Camera->y > SCREEN_H) {
-			return;
-		}
-	}
-
 	
 	/* Destination relative to window to render texture */
 	SDL_Rect renderRect;
