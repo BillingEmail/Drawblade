@@ -52,5 +52,11 @@ Level * New_LevelFromFile(const char *path);
 /* convenicneniceencnce */
 Level * New_LevelByName(const char *name);
 
+/* because satya has bad design */
+Level * New_BlankLevel(int width, int height);
+
+/* " */
+void Level_SaveByName(Level *level, const char *name);
+
 BrickChoice Level_GetBrickChoice(Level *level, int x, int y);
 #endif

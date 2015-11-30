@@ -32,7 +32,10 @@ LevelEditor * New_LevelEditor(Level *level, Container *container) {
 	editor->currentItem = BRICK;
 	editor->container->camera->y = editor->level->height * TILE_SCALE - SCREEN_HEIGHT;
 	editor->container->camera->x = 0;
-
+	for (int i = 0; i < 3; i++) {
+		editor->FirstBkgRP[i].x = 0;
+		editor->FirstBkgRP[i].y = 0;
+	}
 /* 
 The next section loads all of the textures needed for the level 
 editor into the textureArray and backgroundArray 
@@ -107,10 +110,8 @@ editor into the textureArray and backgroundArray
 	"../assets/img/LevelEditor/Spooky/boss.png");
 	
 	//Sets up the Backgrounds
-	editor->backgroundArray[LAVA][1] = New_Texture(editor->container->renderer,
-	 "../assets/img/Lava/background_still.png");
-	editor->backgroundArray[ICE][1] = New_Texture(editor->container->renderer,
-	 "../assets/img/Ice/background_still.png");
+	editor->backgroundArray[LAVA][1] = NULL;
+	editor->backgroundArray[ICE][1] = NULL;
 	editor->backgroundArray[MEDIEVAL][1] = New_Texture(editor->container->renderer,
 	 "../assets/img/Medieval/background_still.png");
 	editor->backgroundArray[SPOOKY][1] = New_Texture(editor->container->renderer,
@@ -130,8 +131,6 @@ editor into the textureArray and backgroundArray
 
 /* Destroys the LevelEditor */
 void LevelEditor_End(LevelEditor *editor) {
-	//destroys the LevelEditor's container
-	Container_Destroy(editor->container);
 	
 	//destroys the eraser
 	Destroy_Texture(editor->blankIcon);
@@ -295,19 +294,14 @@ void LevelEditor_Update(LevelEditor *editor) {
 }
 
 void LevelEditor_AdjustBackground(LevelEditor *editor, int xdiff, int ydiff) {
-	xdiff = (int)(xdiff *.90);
-	ydiff = (int)(ydiff *.90);
-
-	for (int i = 0; i < 3; i++) {
-		editor->FirstBkgRP[i].x += xdiff;
-		editor->FirstBkgRP[i].y = 0;
-	}
+	xdiff = (int)(xdiff * .20);
+	ydiff = (int)(ydiff * .20);
 	
-	if (editor->backgroundArray[editor->level->theme][0]->w % editor->FirstBkgRP[1].x == 0) {
-		editor->FirstBkgRP[0].x = -editor->backgroundArray[editor->level->theme][0]->w;
-		editor->FirstBkgRP[1].x = 0;
-		editor->FirstBkgRP[2].x = editor->backgroundArray[editor->level->theme][0]->w;
-	}
+		editor->FirstBkgRP[1].x -= xdiff;
+
+		editor->FirstBkgRP[0].x = -editor->backgroundArray[editor->level->theme][0]->w + 1;
+		editor->FirstBkgRP[2].x = editor->backgroundArray[editor->level->theme][0]->w - 1;
+		
 }
 
 /* 
