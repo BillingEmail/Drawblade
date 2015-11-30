@@ -182,7 +182,7 @@ void Level_SaveByName(Level *level, const char *name) {
 	char path[64];
 
 	sprintf(path, "../assets/levels/%s.lvl", name);
-	fp = fopen(path, "rb");
+	fp = fopen(path, "wb");
 
 	fwrite(&level->width, sizeof(int), 1, fp);
 	fwrite(&level->height, sizeof(int), 1, fp);
