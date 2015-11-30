@@ -8,6 +8,32 @@
 #include "../include/game.h"
 #include <SDL2/SDL.h>
 
+/* Used to render either "Level Complete!" or "Level Failed" when
+ * goalpost is touched or timer runs out, respectively */
+void RenderLevelEnd(Container *container, Texture *t, World *world, unsigned int ct) {
+	unsigned int dt, lastTime, currentTime, timeLeft;
+	lastTime = 0;
+	timeLeft = 3000;
+
+	while (timeLeft > 0) {
+		debug_msg("time left: %u\n", timeLeft);
+		currentTime = SDL_GetTicks() - ct;
+		dt = currentTime - lastTime;
+		lastTime = currentTime;
+		timeLeft -= dt;
+		if (timeLeft < 16) {
+			timeLeft = 0;
+		}
+
+		World_Render(world, 0, container);
+		Texture_Render(t, container->renderer, 1280 / 2 - t->w / 2,
+			720 / 2 - t->h / 2, NULL);
+	
+		Container_Refresh(container);
+	}
+}
+
+
 Game * New_Game(Container *container, GameMode mode, const char *custom_level_name) {
 	Game *ret;
 	FILE *CustomLevelExists;
@@ -51,6 +77,8 @@ Game * New_Game(Container *container, GameMode mode, const char *custom_level_na
 	/* load the HUD */
 	ret->hud = Create_HUD(container);
 
+	ret->levelComplete = New_Texture(container->renderer, "../assets/img/levelcomplete.png");
+	ret->levelFailed = New_Texture(container->renderer, "../assets/img/levelfailed.png");
 	return ret;
 }
 
@@ -59,6 +87,8 @@ void Game_Run(Game *game, Container *container) {
 	unsigned int dt;
 	unsigned int currentTime;
 	unsigned int lastTime = 0;
+
+
 
 	/* load the first level */
 	if (game->mode == ADVENTURE) {
@@ -74,6 +104,13 @@ void Game_Run(Game *game, Container *container) {
 		currentTime = SDL_GetTicks();
 		dt = currentTime - lastTime;
 		lastTime = currentTime;
+
+		/* Health acting as a timer: finish the level in time */
+		game->world->player->traits->hitpoints -= dt;
+		if ((game->world->player->traits->hitpoints -= dt) < 0) {
+			game->world->player->traits->hitpoints = 0;
+		}
+
 		/* *************** Run the world *************** */
 		/* Update the world */
 		World_Update(game->world, dt, container);
@@ -87,23 +124,18 @@ void Game_Run(Game *game, Container *container) {
 		/* ************** Switch to next level ********* */
 		/* If the world has been completed */
 		if (game->world->is_complete || container->keyboardstate[SDL_SCANCODE_N]) {
+			RenderLevelEnd(container, game->levelComplete, game->world, currentTime);
 			/* switch to next world -- TODO will later be a function with a transition */
 			/* Increment world if ADVENTURE mode */			
-/*			if (game->mode == ADVENTURE) {
+			if (game->mode == ADVENTURE) {
 				game->current_level++;
 				World_Destroy(game->world);
 				game->world = LoadWorld(game->current_level, container);
-//			* Restart world if CUSTOM_LEVEL mode * /
+			/* Restart world if CUSTOM_LEVEL mode */
 			} else if (game->mode == CUSTOM_LEVEL) {
 				World_Destroy(game->world);
 				game->world = NewWorld_FromFile(game->custom_level_path, container);
 			}
-*/
-			/* Temporary for switching between "level1" and "level2" */
-			game->current_level = (game->current_level % 2) + 1;
-			World_Destroy(game->world);
-			game->world = LoadWorld(game->current_level, container);
-			/* TEMPORARY TODO TODO TODO */
 		}
 
 
@@ -115,9 +147,7 @@ void Game_Run(Game *game, Container *container) {
 		/* ************** Restart world on death ******* */
 		/* TODO put in a function */
 		if (game->world->player->traits->hitpoints == 0) {
-			/* Do better */
-			//Game_RenderDeathScreen(game);
-			/* restart world */
+			RenderLevelEnd(container, game->levelFailed, game->world, currentTime);
 			World_Destroy(game->world);
 			game->world = LoadWorld(game->current_level, container);
 		}

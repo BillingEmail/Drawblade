@@ -43,19 +43,28 @@ void HUD_Render(HUD *h, Player *p, LevelType theme, Container *container) {
 	HUD_RenderHearts(h, p, container); 
 
 
-
-
 	//Will render the action bar in top left
-	HUD_RenderActionBar(h, p, container);
+//	HUD_RenderActionBar(h, p, container);
 }
 
 void HUD_RenderHearts(HUD *h, Player *player, Container *container) {
+	SDL_Rect HealthBar = {
+		0, 0,
+		player->traits->hitpoints / 78,
+		h->healthbardst.h
+	};
+	debug_msg("hp: %d; w: %d\n", player->traits->hitpoints, HealthBar.w);
+
 	//Renders the frame
-	Texture_Render(h->actionFrameTexture, container->renderer, h->actionframe2dst.x, h->actionframe2dst.y, NULL);
+//	Texture_Render(h->actionFrameTexture, container->renderer, h->actionframe2dst.x, h->actionframe2dst.y, NULL);
+
+	SDL_RenderCopy(container->renderer, h->healthBarTexture->texture, NULL, &HealthBar);
 	//Based on player health, will render health bar
-	for (int i = 0; i < (player->traits->hitpoints)*40; i++){		
-		Texture_Render(h->healthBarTexture, container->renderer, h->healthbardst.x + i, h->healthbardst.y, NULL);
-	}
+//	for (int i = 0; i < (player->traits->hitpoints)*40; i++){		
+//		Texture_Render(h->healthBarTexture, container->renderer, h->healthbardst.x + i, h->healthbardst.y, NULL);
+//	}
+
+
 }
 
 void HUD_RenderActionBar(HUD *h, Player *player, Container *container) {

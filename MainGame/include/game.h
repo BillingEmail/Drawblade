@@ -23,6 +23,10 @@ typedef struct __game_overhead {
 	GameMode mode;
 	
 	char *custom_level_path; /* Unused if mode == ADVENTURE */
+
+	Texture *levelComplete;
+	Texture *levelFailed;
+
 } Game;
 
 /* Make game, using mode ADVENTURE ore CUSTOM_LEVEL, if the latter,

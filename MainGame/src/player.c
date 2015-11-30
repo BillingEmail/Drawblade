@@ -11,7 +11,7 @@ Player * New_Player(ObjectType *ot, int x, int y, LevelType theme) {
 	Player *ret = malloc(sizeof(Player));
 	ret->theme = theme;
 
-	ret->ctype = New_CharacterType(ot, NULL, 5, 100, 5);
+	ret->ctype = New_CharacterType(ot, NULL, 100000, 100, 5);
 	/* Add the player character */
 	CharacterType_AddCharacter(ret->ctype, x, y);
 	/* shortcut to the objecttype, not sure why */
@@ -133,7 +133,7 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 			}
 	
 		}
-
+/*		** Not needed if doing just the runner with timed levels ***********
 		if (container->mouse.leftClick) {
 
 			if (p->traits->numActions >= p->traits->actionCost && !p->traits->is_attacking) {
@@ -167,7 +167,7 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		else {
 			ObjectType_SetObjectAnimation(p->otype, 0, HIT_RIGHT);
 		}
-	}
+*/	}
 
 	
 	p->traits->numActions += p->traits->actionRegen;
