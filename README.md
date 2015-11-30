@@ -8,7 +8,13 @@ Drawblade is a 2-dimensional, side-scrolling platformer game based on the imagin
 Additionally, you have the ability to be the bored yet incredibly imaginative student by utilizing the Drawblade Level Editor, which will allow you to create your own scenes for the adventurer to fight through.
 
 ####How can I play?
-Patience. Drawblade is still deep in its development, but may be seeing demos soon. But, for now, patience.
+At the moment, Drawblade is deep in development, but much of the features are available.
+```
+git clone https://github.com/BillingEmail/Drawblade.git
+cd Drawblade/MainGame
+make
+./drawblade
+```
 
 ####How is it made?
 Drawblade is written in C, using the Simple Directmedia Layer library for graphics.
