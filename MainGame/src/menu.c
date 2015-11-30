@@ -384,6 +384,16 @@ Menu * New_SaveLevelMenu(Container *container) {
 		450, 20
 	);
 
+	Menu_AddButton(
+		ret,
+		New_Button(
+			New_Texture(container->renderer, "../assets/img/Menus/Buttons/cancel.png"),
+			CANCEL,
+			425, 420, 357, 132
+		)
+	);
+
+
 	return ret;
 }
 
@@ -455,6 +465,7 @@ void RunMenuManager(Container *container) {
 	/* The actual game */
 	Game *game;
 
+	/* potentially used for creating a new level */
 	int width, height;
 	Level *level;
 
@@ -470,9 +481,22 @@ void RunMenuManager(Container *container) {
 	/* Set the default menu */
 	CurrentMenu = MainMenu;
 
+
+	unsigned int CurrentTime, LastTime = 0, dt;
+	unsigned int delay;
+
 	while (running) {
+		CurrentTime = SDL_GetTicks();
+		dt = CurrentTime - LastTime;
+		LastTime = CurrentTime;
 		/* Run the menu, get the input (button click) */
 		MenuInput = Menu_Run(CurrentMenu, container);
+		delay += dt;
+		if (delay < 500) {
+			continue;
+		} else {
+			delay = 0;
+		}
 		/* If we're on the main menu */
 		if (CurrentMenu == MainMenu) {
 			switch(MenuInput.action) {
