@@ -71,7 +71,7 @@ editor into the textureArray and backgroundArray
 	
 	//Sets up the Flying Enemies
 	editor->textureArray[LAVA][FLYING] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Lava/flying_enemy_enemy.png");
+	"../assets/img/LevelEditor/Lava/flying_enemy.png");
 	editor->textureArray[ICE][FLYING] = New_Texture(editor->container->renderer,
 	"../assets/img/LevelEditor/Ice/flying_enemy.png");
 	editor->textureArray[MEDIEVAL][FLYING] = New_Texture(editor->container->renderer,
@@ -110,21 +110,17 @@ editor into the textureArray and backgroundArray
 	"../assets/img/LevelEditor/Spooky/boss.png");
 	
 	//Sets up the Backgrounds
-	editor->backgroundArray[LAVA][1] = NULL;
-	editor->backgroundArray[ICE][1] = NULL;
-	editor->backgroundArray[MEDIEVAL][1] = New_Texture(editor->container->renderer,
+
+
+	editor->backgroundArray[MEDIEVAL][0] = New_Texture(editor->container->renderer,
 	 "../assets/img/Medieval/background_still.png");
-	editor->backgroundArray[SPOOKY][1] = New_Texture(editor->container->renderer,
+	editor->backgroundArray[SPOOKY][0] = New_Texture(editor->container->renderer,
 	 "../assets/img/Spooky/background_still.png");
-	
 	editor->backgroundArray[LAVA][0] = New_Texture(editor->container->renderer,
 	"../assets/img/Lava/background_tiled.png");
 	editor->backgroundArray[ICE][0] = New_Texture(editor->container->renderer,
 	"../assets/img/Ice/background_tiled.png");
-	editor->backgroundArray[MEDIEVAL][0] = New_Texture(editor->container->renderer,
-	"../assets/img/Medieval/background_tiled.png");
-	editor->backgroundArray[SPOOKY][0] = New_Texture(editor->container->renderer,
-	"../assets/img/Spooky/background_tiled.png");
+
 	
 	return editor;
 }
@@ -141,7 +137,7 @@ void LevelEditor_End(LevelEditor *editor) {
 			Destroy_Texture(editor->textureArray[i][j]);
 	
 		}
-		for (int j = 0; j < 2; j++) {
+		for (int j = 0; j < 1; j++) {
 			Destroy_Texture(editor->backgroundArray[i][j]);
 		}
 	}
@@ -172,11 +168,12 @@ void LevelEditor_Render(LevelEditor *editor) {
 	LevelType theme = editor->level->theme;
 	
 	//This renders the background for the editor
-	Texture_Render(editor->backgroundArray[theme][1], editor->container->renderer, 0, 0, NULL);
+/*	Texture_Render(editor->backgroundArray[theme][1], editor->container->renderer, 0, 0, NULL);
 	Texture_Render(editor->backgroundArray[theme][0], editor->container->renderer, editor->FirstBkgRP[0].x, editor->FirstBkgRP[0].y, NULL);
 	Texture_Render(editor->backgroundArray[theme][0], editor->container->renderer, editor->FirstBkgRP[1].x, editor->FirstBkgRP[1].y, NULL);
 	Texture_Render(editor->backgroundArray[theme][0], editor->container->renderer, editor->FirstBkgRP[2].x, editor->FirstBkgRP[2].y, NULL);
-
+*/
+	Texture_Render(editor->backgroundArray[theme][0], editor->container->renderer, 0, 0, NULL);
 	/* 
 	This loops through the level in the editor and renders each of the objects in the level
 	It basically goes through each tile of the level, and if there is an object, then 
