@@ -1,0 +1,11 @@
+Sword:
+render 11 right and 8 (maybe 9) up of top left of player hitboxes
+Size is 34x47
+
+Arrow:
+render 27 right, 12 down
+Size is 11x7
+
+Smoke Puff:
+render at same position as player
+Size is 26x36
