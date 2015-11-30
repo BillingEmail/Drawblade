@@ -20,7 +20,7 @@ Game * New_Game(Container *container, GameMode mode, const char *custom_level_na
 	/* Set up for Custom Level mode */
 	if (mode == CUSTOM_LEVEL) {
 		/* Place to store custom level path */
-		ret->custom_level_path = malloc(64 * sizeof(char));
+		ret->custom_level_path = malloc(64);
 		/* If no name provided */
 		if (!custom_level_name) {
 			fprintf(stderr, "New_Game called with mode CUSTOM_LEVEL but no path provided\n");
