@@ -297,18 +297,11 @@ void LevelEditor_AdjustBackground(LevelEditor *editor, int xdiff, int ydiff) {
 	xdiff = (int)(xdiff * .20);
 	ydiff = (int)(ydiff * .20);
 	
-	if ((editor->FirstBkgRP[1].x % editor->backgroundArray[editor->level->theme][0]->w) < 2) {
-		editor->FirstBkgRP[0].x = -editor->backgroundArray[editor->level->theme][0]->w + 1;
-		editor->FirstBkgRP[1].x = 0;
-		editor->FirstBkgRP[2].x = editor->backgroundArray[editor->level->theme][0]->w - 1;
-	}
+		editor->FirstBkgRP[1] -= xdiff;
 
-	for (int i = 0; i < 3; i++) {
-		editor->FirstBkgRP[i].x -= xdiff;
-		editor->FirstBkgRP[i].y = 0;
-	}
-	
-	
+		editor->FirstBkgRP[0].x = -editor->backgroundArray[editor->level->theme][0]->w + 1;
+		editor->FirstBkgRP[2].x = editor->backgroundArray[editor->level->theme][0]->w - 1;
+		
 }
 
 /* 
