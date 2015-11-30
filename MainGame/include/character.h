@@ -17,6 +17,9 @@ typedef struct {
 	float y;
 } vector;
 
+/* How a kind of character behaves - may use the player */
+typedef void (*BehaviorFunction)(void *character_type, int instance_index, void *player);
+
 /* Traits unique to characters */
 typedef struct _character_traits {
 	vector velocity;
@@ -46,14 +49,12 @@ typedef struct _charactertype {
 	int defaultactionCost;
 	int defaultactionRegen;
 
-	void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int);
+	BehaviorFunction behavior;
 
 } CharacterType;
 
-typedef void (*Behavior)(CharacterType *s, int, CharacterType, int);
-
 /* Create a new character type from an ObjectType and whether or not it falls */
-CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int), int HP, int defaultactionCost, int defaultactionRegen);
+CharacterType * New_CharacterType(ObjectType *ot, BehaviorFunction behavior, int HP, int defaultactionCost, int defaultactionRegen);
 
 /* Destroy a charactertype, including it's objecttype etc */
 void Destroy_CharacterType(CharacterType *t);
@@ -72,7 +73,7 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y);
 void CharacterType_KillCharacter(CharacterType *ct, int instance_index);
 
 /* Update a character - temporary */
-void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, unsigned int dt);
+void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, unsigned int dt, void *player);
 
 /* Update the hitboxes to where the dstrect is */
 

@@ -1,16 +1,11 @@
 #ifndef BEHAVIOR_H
 #define BEHAVIOR_H
 
-#include "character.h"
-#include "player.h"
-
-typedef void (*BehaviorFunction)(CharacterType *self, int self_index, CharacterType *target, int t_index);
-
 /* Types of behavior for different classes of characters */
-void FlyingBehavior(CharacterType *self, int self_index, Player *p);
+void FlyingBehavior(void *self, int self_index, void *player);
 
-void FightingBehavior(CharacterType *self, int self_index, Player *p);
+void FightingBehavior(void *self, int self_index, void *player);
 
-void RangingBehavior(CharacterType *self, int self_index, Player *p);
+void RangingBehavior(void *self, int self_index, void *player);
 
 #endif

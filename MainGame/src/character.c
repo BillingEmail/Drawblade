@@ -13,7 +13,7 @@
 #include "../../shared/include/container.h"
 
 /* Create a new CharacterType */
-CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _charactertype *self, int, struct _charactertype *, int), int HP, int actionCost, int actionRegen) {
+CharacterType * New_CharacterType(ObjectType *ot, BehaviorFunction behavior, int HP, int actionCost, int actionRegen) {
 	CharacterType *ret = malloc(sizeof(CharacterType));
 	if (!ret) {
 		fprintf(stderr, "Error creating CharacterType\n");
@@ -25,9 +25,9 @@ CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _chara
 	ret->behavior = behavior;
 
 	/* Create room for one character trait - increased when added */
-	ret->character_traits = malloc(12 * sizeof(CharacterTraits));
+	ret->character_traits = malloc(1 * sizeof(CharacterTraits));
 	ret->character_traits_count = 0;
-	ret->character_traits_size = 12;
+	ret->character_traits_size = 1;
 	ret->defaultHP = HP;
 	ret->defaultactionCost = actionCost;
 	ret->defaultactionRegen = actionRegen;
@@ -37,11 +37,8 @@ CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _chara
 
 /* Destroy a CharacterType and each instance */
 void Destroy_CharacterType(CharacterType *ct) {
-	/* The only dynamically allocated aspect of CharacterType is the list of traits */
-	int i;
-	for (i = 0; i < ct->object_type->instance_count; i++) {
-		free(ct->character_traits);
-	}
+	free(ct->character_traits);
+
 	/* This will take care of everything else */
 	Destroy_ObjectType(ct->object_type);
 
@@ -50,6 +47,7 @@ void Destroy_CharacterType(CharacterType *ct) {
 
 /* testing */
 void CharacterType_AddCharacter(CharacterType *ct, int x, int y) {
+	debug_msg("Added character to CharacterType at %p, count: %d\n", ct, ct->character_traits_count + 1);
 	ObjectType_AddObject(ct->object_type, x, y);
 
 	/* losing my patience with commenting rn tbh */
@@ -71,44 +69,42 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y) {
 	ct->character_traits[ct->character_traits_count].actionCost = ct->defaultactionCost;
 	ct->character_traits[ct->character_traits_count].actionRegen = ct->defaultactionRegen;
 	ct->character_traits[ct->character_traits_count].numActions = 100;
-	ct->character_traits_count++;
+	ct->character_traits_count = ct->object_type->instance_count;
 }
 
 
-void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, unsigned int dt) {
+void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, unsigned int dt, void *p) {
 	/* ch_object is the physical object of the character instance */
 	Object *ch_object = ct->object_type->instances + instance_index;
 	/* ch_traits are the traits of the character instance */
-//	CharacterTraits *ch_traits = &ct->character_traits[instance_index];
+	CharacterTraits *ch_traits = &ct->character_traits[instance_index];
 
 
-	printf("%d, %d\n", ch_object->animation, __LINE__);
-	printf("goblin max health: %d\n", ct->defaultHP);
-	//ch_object->animation = 1;	
-	/* need to pass player to this -- playerType global? */
-//	ct->behavior(ct, instance_index, NULL, 0);
+//	printf("%d, %d\n", ch_object->animation, __LINE__);
+//	printf("goblin max health: %d\n", ct->defaultHP);
+//	ct->behavior(ct, instance_index, p);
 
 	/* Cap velocities at +-5 */
-//	if (ch_traits->velocity.x > 5) {
-//		ch_traits->velocity.x = 5;
-//	}
-//	if (ch_traits->velocity.y > 5) {
-//		ch_traits->velocity.y = 5;
-//	}
-//	if (ch_traits->velocity.x < -5) {
-//		ch_traits->velocity.x = -5;
-//	}
-//	if (ch_traits->velocity.y < -5) {
-//		ch_traits->velocity.y = -5;
-//	}
+	if (ch_traits->velocity.x > 5) {
+		ch_traits->velocity.x = 5;
+	}
+	if (ch_traits->velocity.y > 5) {
+		ch_traits->velocity.y = 5;
+	}
+	if (ch_traits->velocity.x < -5) {
+		ch_traits->velocity.x = -5;
+	}
+	if (ch_traits->velocity.y < -5) {
+		ch_traits->velocity.y = -5;
+	}
 
 
 
 	/* Apply velocities to the position */
-//	ch_object->dstrect.x += ch_traits->velocity.x;
-//	ch_object->dstrect.y += ch_traits->velocity.y;
+	ch_object->dstrect.x += ch_traits->velocity.x;
+	ch_object->dstrect.y += ch_traits->velocity.y;
 
-//	CharacterType_AdjustHitboxes(ct, instance_index);
+	CharacterType_AdjustHitboxes(ct, instance_index);
 }
 
 void CharacterType_AdjustHitboxes(CharacterType *ct, int instance_index) {
