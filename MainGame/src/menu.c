@@ -486,18 +486,19 @@ void RunMenuManager(Container *container) {
 	unsigned int delay;
 
 	while (running) {
+		MenuInput = Menu_Run(CurrentMenu, container);
 		CurrentTime = SDL_GetTicks();
 		dt = CurrentTime - LastTime;
 		LastTime = CurrentTime;
-		/* Run the menu, get the input (button click) */
-		MenuInput = Menu_Run(CurrentMenu, container);
+
 		delay += dt;
 		if (delay < 500) {
 			continue;
 		} else {
 			delay = 0;
 		}
-		/* If we're on the main menu */
+	
+	/* If we're on the main menu */
 		if (CurrentMenu == MainMenu) {
 			switch(MenuInput.action) {
 				/* If the start button was pressed */

@@ -177,9 +177,9 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 
 void World_Update(World *w, unsigned int dt, Container *container) {	
 	/* Update enemies */
-	for (int i = 0; i < 1; i++) { //w->EnemyTypeCount; i++) {
+	for (int i = 0; i < w->EnemyTypeCount; i++) {
 //		printf("i: %d\n", i);
-		for (int e = 0; e < 1; e++) { //w->EnemyTypes[i]->character_traits_count; e++) {
+		for (int e = 0; e < w->EnemyTypes[i]->character_traits_count; e++) {
 			CharacterType_UpdateCharacter(w->EnemyTypes[i], dt, e);
 //			printf("e: %d\n", e);
 		}
@@ -214,6 +214,7 @@ void World_Render(World *w, unsigned int dt, Container *container) {
 
 void World_Destroy(World *w) {
 	for (int i = 0; i < w->EnemyTypeCount; i++) {
+		printf("destroy enemy type %d\n", i);
 		Destroy_CharacterType(w->EnemyTypes[i]);
 	}
 	for (int i = 0; i < w->ObjectTypeCount; i++) {

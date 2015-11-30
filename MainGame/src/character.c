@@ -25,9 +25,9 @@ CharacterType * New_CharacterType(ObjectType *ot, void (*behavior)(struct _chara
 	ret->behavior = behavior;
 
 	/* Create room for one character trait - increased when added */
-	ret->character_traits = malloc(2 * sizeof(CharacterTraits));
+	ret->character_traits = malloc(12 * sizeof(CharacterTraits));
 	ret->character_traits_count = 0;
-	ret->character_traits_size = 2;
+	ret->character_traits_size = 12;
 	ret->defaultHP = HP;
 	ret->defaultactionCost = actionCost;
 	ret->defaultactionRegen = actionRegen;
@@ -83,7 +83,8 @@ void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, unsign
 
 
 	printf("%d, %d\n", ch_object->animation, __LINE__);
-	ch_object->animation = 1;	
+	printf("goblin max health: %d\n", ct->defaultHP);
+	//ch_object->animation = 1;	
 	/* need to pass player to this -- playerType global? */
 //	ct->behavior(ct, instance_index, NULL, 0);
 
