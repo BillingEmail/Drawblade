@@ -14,7 +14,7 @@ Textbox * New_Textbox(Texture *t, int x, int y, int maxCharacters) {
 	/* Create the textbox */
 	ret = malloc(sizeof(Textbox));
 	/* Create the space for the input text */
-	ret->text = calloc(maxCharacters, sizeof(char));
+	ret->text = calloc(maxCharacters, 1);
 	/* Default text to "" */
 	ret->text[0] = '\0';
 	/* Reference texture */

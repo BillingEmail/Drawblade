@@ -322,7 +322,7 @@ Menu * New_LevelEditorCreateCustomLevelHorizontalSizeMenu(Container *container) 
 		ret,
 		New_Textbox(
 			New_Texture(container->renderer, "../assets/img/Menus/textbox.png"),
-			350, 200, 10
+			480, 278, 10
 		)
 	);
 
@@ -350,7 +350,7 @@ Menu * New_LevelEditorCreateCustomLevelHorizontalSizeMenu(Container *container) 
 	Menu_AddImage(
 		ret,
 		New_Texture(container->renderer, "../assets/img/Menus/enterwidth.png"),
-		400, 278
+		400, 200
 	);
 
 	return ret;
@@ -406,7 +406,7 @@ Menu * New_LevelEditorCreateCustomLevelVerticalSizeMenu(Container *container) {
 		ret,
 		New_Textbox(
 			New_Texture(container->renderer, "../assets/img/Menus/textbox.png"),
-			400, 400, 10
+			480, 278, 10
 		)
 	);
 
@@ -434,7 +434,7 @@ Menu * New_LevelEditorCreateCustomLevelVerticalSizeMenu(Container *container) {
 	Menu_AddImage(
 		ret,
 		New_Texture(container->renderer, "../assets/img/Menus/enterheight.png"),
-		400, 278
+		400, 200
 	);
 
 	return ret;
@@ -570,7 +570,10 @@ void RunMenuManager(Container *container) {
 				case CREATE_CUSTOM_LEVEL:
 					CurrentMenu = LevelEditorCreateCustomLevelHorizontalSizeMenu;
 				break;
-				default: break;
+				default:
+					fprintf(stderr, "Internal error: %s:%s:%d\n", __FILE__, __func__, __LINE__);
+				break;
+
 			}
 		/* If w're on the Load Custom Level to Edit menu */
 		} else if (CurrentMenu == LevelEditorLoadCustomLevelMenu) {
@@ -584,7 +587,9 @@ void RunMenuManager(Container *container) {
 					Level_Edit(level, container);
 					CurrentMenu = LevelEditorSaveLevelMenu;
 				break;
-				default: break;
+				default:
+					fprintf(stderr, "Internal error: %s:%s:%d\n", __FILE__, __func__, __LINE__);
+				break;
 			}
 		/* If we're getting the width of the level to make */
 		} else if (CurrentMenu == LevelEditorCreateCustomLevelHorizontalSizeMenu) {
@@ -596,7 +601,9 @@ void RunMenuManager(Container *container) {
 					width = atoi(MenuInput.text);
 					CurrentMenu = LevelEditorCreateCustomLevelVerticalSizeMenu;
 				break;
-				default: break;
+				default:
+					fprintf(stderr, "Internal error: %s:%s:%d\n", __FILE__, __func__, __LINE__);
+				break;
 			}
 		/* If we're getting the height of the level to make */
 		} else if (CurrentMenu == LevelEditorCreateCustomLevelVerticalSizeMenu) {
@@ -610,7 +617,9 @@ void RunMenuManager(Container *container) {
 					Level_Edit(level, container);
 					CurrentMenu = LevelEditorSaveLevelMenu;
 				break;
-				default: break;
+				default:
+					fprintf(stderr, "Internal error: %s:%s:%d\n", __FILE__, __func__, __LINE__);
+				break;
 			}
 		} else if (CurrentMenu == LevelEditorSaveLevelMenu) {
 			switch(MenuInput.action) {
@@ -621,6 +630,9 @@ void RunMenuManager(Container *container) {
 					CurrentMenu = MainMenu;
 					Level_SaveByName(level, MenuInput.text);
 					CurrentMenu = MainMenu;
+				break;
+				default:
+					fprintf(stderr, "Internal error: %s:%s:%d\n", __FILE__, __func__, __LINE__);
 				break;
 			}
 		}
@@ -633,6 +645,4 @@ void RunMenuManager(Container *container) {
 	Menu_Destroy(LevelEditorCreateCustomLevelVerticalSizeMenu);
 	Menu_Destroy(LevelEditorCreateCustomLevelHorizontalSizeMenu);
 	Menu_Destroy(LevelEditorLoadCustomLevelMenu);
-
-
 }
