@@ -41,7 +41,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 	ret->is_complete = false;	
 	switch (level->theme) {
 		case LAVA:
-			ret->background.still = New_Texture(container->renderer, "../assets/img/Lava/background_still.png");
+			ret->background.still = New_Texture(container->renderer, "../assets/img/Lava/background_tiled.png");
 			player_texture = "../assets/img/Lava/player.png";
 			brick_texture = "../assets/img/Lava/brick.png";
 			melee_enemy_texture = "../assets/img/Lava/melee_enemy.png";
@@ -57,7 +57,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			flying_enemy_texture = "../assets/img/Medieval/flying_enemy.png";
 		break;
 		case ICE:
-			ret->background.still = New_Texture(container->renderer, "../assets/img/Ice/background_still.png");
+			ret->background.still = New_Texture(container->renderer, "../assets/img/Ice/background_tiled.png");
 			player_texture = "../assets/img/Ice/player.png";
 			brick_texture = "../assets/img/Ice/brick.png";
 			melee_enemy_texture = "../assets/img/Ice/melee_enemy.png";
@@ -181,7 +181,7 @@ void World_Update(World *w, unsigned int dt, Container *container) {
 		printf("i: %d\n", i);
 		for (int e = 0; e < w->EnemyTypes[i]->character_traits_count; e++) {
 			CharacterType_UpdateCharacter(w->EnemyTypes[i], dt, e);
-			printf("e: %d\n", e);	
+			printf("e: %d\n", e);
 		}
 	}
 	Player_Update(w->player, dt, container);

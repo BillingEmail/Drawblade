@@ -6,6 +6,9 @@
 #include <SDL2/SDL_image.h>
 #include "../include/texture.h"
 
+#define SCREEN_W 1280
+#define SCREEN_H 720
+
 /* Create a new texture from an image path */
 Texture * New_Texture(SDL_Renderer *renderer, char *path) {
 	/* The pointer that will be returned */
@@ -63,6 +66,16 @@ void Texture_Render(Texture *t, SDL_Renderer *r, int x, int y, SDL_Rect *Camera)
 	if (t == NULL) {
 		return;
 	}
+
+	if (Camera) {
+		if (x + t->w - Camera->x < 0 ||
+			y - t->h - Camera->y < 0 ||
+			x + t->w - Camera->x > SCREEN_W ||
+			y - t->h - Camera->y > SCREEN_H) {
+			return;
+		}
+	}
+
 	
 	/* Destination relative to window to render texture */
 	SDL_Rect renderRect;

@@ -211,6 +211,7 @@ Level * New_BlankLevel(int width, int height) {
 	Level *ret = malloc(sizeof(Level));
 	ret->width = width;
 	ret->height = height;
+	ret->theme = 0;
 	Level_CreateTiles(ret);
 	return ret;
 }
