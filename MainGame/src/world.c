@@ -45,15 +45,15 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			player_texture = "../assets/img/Lava/player.png";
 			brick_texture = "../assets/img/Lava/brick.png";
 			melee_enemy_texture = "../assets/img/Lava/melee_enemy.png";
-			ranged_enemy_texture = "../assets/img/Lava/melee_enemy.png";
-			flying_enemy_texture = "../assets/img/Lava/flying_enemy.png";			
+			ranged_enemy_texture = "../assets/img/Lava/ranged_enemy.png";
+			flying_enemy_texture = "../assets/img/Lava/flying_enemy.png";
 		break;
 		case MEDIEVAL:
 			ret->background.still = New_Texture(container->renderer, "../assets/img/Medieval/background_still.png");
 			player_texture = "../assets/img/Medieval/player.png";
 			brick_texture = "../assets/img/Medieval/brick.png";
 			melee_enemy_texture = "../assets/img/Medieval/melee_enemy.png";
-			ranged_enemy_texture = "../assets/img/Medieval/melee_enemy.png";
+			ranged_enemy_texture = "../assets/img/Medieval/ranged_enemy.png";
 			flying_enemy_texture = "../assets/img/Medieval/flying_enemy.png";
 		break;
 		case ICE:
@@ -61,7 +61,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			player_texture = "../assets/img/Ice/player.png";
 			brick_texture = "../assets/img/Ice/brick.png";
 			melee_enemy_texture = "../assets/img/Ice/melee_enemy.png";
-			ranged_enemy_texture = "../assets/img/Ice/melee_enemy.png";
+			ranged_enemy_texture = "../assets/img/Ice/ranged_enemy.png";
 			flying_enemy_texture = "../assets/img/Ice/flying_enemy.png";
 		break;
 		case SPOOKY:
@@ -69,8 +69,8 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			player_texture = "../assets/img/Spooky/player.png";
 			brick_texture = "../assets/img/Spooky/brick.png";
 			melee_enemy_texture = "../assets/img/Spooky/melee_enemy.png";
-			ranged_enemy_texture = "../assets/img/Spooky/melee_enemy.png";
-			flying_enemy_texture = "../assets/img/Spook/flying_enemy.png";					
+			ranged_enemy_texture = "../assets/img/Spooky/ranged_enemy.png";
+			flying_enemy_texture = "../assets/img/Spook/flying_enemy.png";
 		break;
 	}
 
@@ -88,11 +88,10 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 		0, 0,
 		level->theme
 	);
-	ret->player->traits->hitpoints = 5;
+	debug_msg("Player CharacterType: %p\tObjectType: %p\n", ret->player->ctype, ret->player->otype);
 
 	ret->EnemyTypeCount = 3;
 	ret->EnemyTypes = malloc(ret->EnemyTypeCount * sizeof(CharacterType *));	
-
 
 	/* Create Melee enemy type */	
 	ret->EnemyTypes[0] = New_CharacterType(
@@ -106,6 +105,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 		), NULL,
 		1, 100, 5
 	);
+	debug_msg("Melee enemy CharacterType: %p\tObjectType: %p\n", ret->EnemyTypes[0], ret->EnemyTypes[0]->object_type);
 
 	ret->EnemyTypes[1] = New_CharacterType(
 		New_ObjectType(
@@ -118,6 +118,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 		), NULL,
 		1, 100, 1
 	);
+	debug_msg("Ranged enemy CharacterType: %p\tObjectType: %p\tTexture: %p\n", ret->EnemyTypes[1], ret->EnemyTypes[1]->object_type, ret->EnemyTypes[1]->object_type->spritesheet->texture);
 
 	ret->EnemyTypes[2] = New_CharacterType(
 		New_ObjectType(
@@ -130,11 +131,12 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 		), NULL, /* behavior */
 		2, 100, 1
 	);
+	debug_msg("Flying enemy CharacterType: %p\tObjectType: %p\n", ret->EnemyTypes[2], ret->EnemyTypes[2]->object_type);
 
 	ret->ObjectTypeCount = 1;
 	ret->ObjectTypes = malloc(ret->ObjectTypeCount * sizeof(ObjectType *));
 
-	ret->ObjectTypes[OBJECT_BRICK] = New_ObjectType(
+	ret->ObjectTypes[0] = New_ObjectType(
 		New_Spritesheet(
 			New_Texture(container->renderer, brick_texture),
 			1, 16
@@ -155,18 +157,18 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 					ret->player->object->dstrect.y = y * TILE_SCALE;
 				break;
 				case MELEE:
-					puts("adding melee enemy");
 					CharacterType_AddCharacter(ret->EnemyTypes[0], x * TILE_SCALE, y * TILE_SCALE);
 				break;
 				case RANGED:
-					puts("adding ranged enemy");
 					CharacterType_AddCharacter(ret->EnemyTypes[1], x * TILE_SCALE, y * TILE_SCALE);
 				break;
 				case FLYING:
-					puts("adding flying enemy");
 					CharacterType_AddCharacter(ret->EnemyTypes[2], x * TILE_SCALE, y * TILE_SCALE);
+//				case BOSS:
+//					ret->boss->object->dstrect.x = x * TILE_SCALE;
+//					ret->boss->object->dstrect.y = y * TILE_SCALE;
+//				break;
 				default:
-
 				break;
 			}
 		}
@@ -177,11 +179,9 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 
 void World_Update(World *w, unsigned int dt, Container *container) {	
 	/* Update enemies */
-	for (int i = 0; i < w->EnemyTypeCount; i++) {
-//		printf("i: %d\n", i);
+	for (int i = 0; i < 3; i++) {
 		for (int e = 0; e < w->EnemyTypes[i]->character_traits_count; e++) {
-			CharacterType_UpdateCharacter(w->EnemyTypes[i], dt, e);
-//			printf("e: %d\n", e);
+			CharacterType_UpdateCharacter(w->EnemyTypes[i], dt, e, w->player);
 		}
 	}
 	Player_Update(w->player, dt, container);
@@ -196,15 +196,13 @@ void World_Render(World *w, unsigned int dt, Container *container) {
 	/* Render all of the objects */
 	for (int i = 0; i < w->ObjectTypeCount; i++) {
 		for (int o = 0; o < w->ObjectTypes[i]->instance_count; o++) {
-			/* TODO Check if the object is within view, only render it if so */
 			/* Render the object */
 			ObjectType_RenderObject(w->ObjectTypes[i], o, dt, container);
 		}
 	}
 	/* Render all of the characters/enemies */
-	for (int i = 0; i < w->EnemyTypeCount; i++) {
+	for (int i = 0; i < 3; i++) {
 		for (int e = 0; e < w->EnemyTypes[i]->object_type->instance_count; e++) {
-			/* TODO Check if the enemy is within view, only render it if so */
 			/* Render the enemy */
 			CharacterType_RenderCharacter(w->EnemyTypes[i], e, dt, container);
 		}
@@ -213,8 +211,8 @@ void World_Render(World *w, unsigned int dt, Container *container) {
 }
 
 void World_Destroy(World *w) {
-	for (int i = 0; i < w->EnemyTypeCount; i++) {
-		printf("destroy enemy type %d\n", i);
+	for (int i = 0; i < 3; i++) {
+		debug_msg("Destroying enemy type %d\n", i);
 		Destroy_CharacterType(w->EnemyTypes[i]);
 	}
 	for (int i = 0; i < w->ObjectTypeCount; i++) {

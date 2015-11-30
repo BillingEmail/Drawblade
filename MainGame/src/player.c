@@ -11,7 +11,7 @@ Player * New_Player(ObjectType *ot, int x, int y, LevelType theme) {
 	Player *ret = malloc(sizeof(Player));
 	ret->theme = theme;
 
-	ret->ctype = New_CharacterType(ot, NULL, 5, 100, 10);
+	ret->ctype = New_CharacterType(ot, NULL, 5, 100, 5);
 	/* Add the player character */
 	CharacterType_AddCharacter(ret->ctype, x, y);
 	/* shortcut to the objecttype, not sure why */

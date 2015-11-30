@@ -10,8 +10,14 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-/* Contains commonly-used interfacing objects */
+#define DEBUG
 
+#ifdef DEBUG
+#define debug_msg(FS, ...) fprintf(stderr, "%s: In function '%s':\n\t%s:%d:debug_msg: \x1b[31m" FS "\x1b[0m", \
+	__FILE__, __func__, __FILE__, __LINE__, __VA_ARGS__)
+#endif
+
+/* Contains commonly-used interfacing objects */
 typedef struct _Renderpos {
 	int x;
 	int y;

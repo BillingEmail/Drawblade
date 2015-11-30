@@ -88,14 +88,12 @@ void ObjectType_AddObject(ObjectType *ot, int x, int y) {
 	temprect->w = ot->size.w;
 	temprect->h = 8;
 
-	
-
 	/* Copy the passed initial animation and initial sprite */
 	ot->instances[ot->instance_count].animation = 0;
 	ot->instances[ot->instance_count].lastAnimation = 0;
 
 	ot->instances[ot->instance_count].sprite_index = calloc(ot->spritesheet->animation_count, sizeof(int));
-
+	debug_msg("Added object to ObjectType at %p, count: %d\n", ot, ot->instance_count + 1);
 	ot->instance_count++;
 }
 
@@ -152,7 +150,6 @@ void Destroy_ObjectType(ObjectType *ot) {
 		free(ot->animations[i]);
 	}
 	for (int i = 0; i < ot->instance_count; i++) {
-		printf("%d --\n", i);
 		free(ot->instances[i].sprite_index);
 	}
 	free(ot->animations);

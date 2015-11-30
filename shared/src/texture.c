@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "../include/texture.h"
+#include "../include/container.h"
 
 #define SCREEN_W 1280
 #define SCREEN_H 720
@@ -64,6 +65,7 @@ void Destroy_Texture(Texture *T) {
 /* Render a texture by itself */
 void Texture_Render(Texture *t, SDL_Renderer *r, int x, int y, SDL_Rect *Camera) {
 	if (t == NULL) {
+		debug_msg("Cannot render NULL texture at %d %d\n", x, y);
 		return;
 	}
 	
