@@ -5,5 +5,9 @@ SRC= ../shared/src/*.c src/button.c src/textbox.c src/character.c src/collisions
 all:
 	$(CC) $(CFLAGS) src/main.c -o drawblade $(SRC) $(LDFLAGS)
 
+
+charactertest:
+	$(CC) $(CFLAGS) src/tests/charactertest.c -o charactertest $(SRC) $(LDFLAGS)
+
 menutest:
 	$(CC) $(CFLAGS) src/tests/testmainmenu.c -o menutest ../shared/src/container.c ../shared/src/texture.c src/mainmenu.c $(LDFLAGS)
