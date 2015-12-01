@@ -22,6 +22,8 @@ Player * New_Player(ObjectType *ot, int x, int y, LevelType theme) {
 	ret->traits->velocity.y = 0;
 	ret->traits->velocity.x = 0;
 
+	ret->traits->hitpoints = 100000;
+
 	return ret;
 }
 
