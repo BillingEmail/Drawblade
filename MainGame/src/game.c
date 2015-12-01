@@ -122,6 +122,7 @@ void Game_Run(Game *game, Container *container) {
 				game->current_level++;
 				World_Destroy(game->world);
 				game->world = LoadWorld(game->current_level, container);
+				if (!game->world) return;
 			/* Restart world if CUSTOM_LEVEL mode */
 			} else if (game->mode == CUSTOM_LEVEL) {
 				World_Destroy(game->world);
@@ -142,6 +143,7 @@ void Game_Run(Game *game, Container *container) {
 			World_Destroy(game->world);
 			if (game->mode == ADVENTURE) {
 				game->world = LoadWorld(game->current_level, container);
+				if (!game->world) return;
 			} else if (game->mode == CUSTOM_LEVEL) {
 				game->world = NewWorld_FromFile(game->custom_level_path, container);
 			}
