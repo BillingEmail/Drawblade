@@ -1,14 +1,9 @@
 #Drawblade
 
-####Imagination at play.
-
 ####What is Drawblade?
-Drawblade is a 2-dimensional, side-scrolling platformer game based on the imagination of a bored student. He finds himself losing interest in the professor's lecture and decides to create a world of his own, where an adventurer fights his way to the finish, struggling against whatever the student's imagination throws at him.
-
-Additionally, you have the ability to be the bored yet incredibly imaginative student by utilizing the Drawblade Level Editor, which will allow you to create your own scenes for the adventurer to fight through.
+Drawblade is a simple 2-dimensional platform game that involves levels that are a race to the finish before time is up. Find and tag the finish flag before the timer bar is empty to advance to the next level! Also, create your own levels with the Level Editor.
 
 ####How can I play?
-At the moment, Drawblade is deep in development, but much of the features are available.
 ```
 git clone https://github.com/BillingEmail/Drawblade.git
 cd Drawblade/MainGame
