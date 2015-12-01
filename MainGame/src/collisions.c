@@ -22,20 +22,29 @@ void World_RunCollisions(World *world) {
 			//Player collision
 			checkNormalCollision(world->player->ctype, 0, &world->ObjectTypes[i]->instances[j].dstrect);
 			//For each enemy check collision with each block
-			for (int k = 0; k < world->EnemyTypeCount; k++) {
+/*			for (int k = 0; k < world->EnemyTypeCount; k++) {
 				for (int l = 0; l < world->EnemyTypes[k]->object_type->instance_count; l++) {
 					checkNormalCollision(world->EnemyTypes[k], l, &world->ObjectTypes[i]->instances[j].dstrect);
 				}
 			}
+*/		}
+	}
+
+	for (int i = 0; i < world->goalpost->instance_count; i++) {
+		for (int j = 0; j < 4; j++) {
+			if (SDL_HasIntersection(world->player->object->hitboxes + j, &world->goalpost->instances[i].dstrect)) {
+				world->is_complete = true;
+				return;
+			}
 		}
 	}
 
-	for (int i = 0; i < world->EnemyTypeCount; i++) {
+/*	for (int i = 0; i < world->EnemyTypeCount; i++) {
 		for (int j = 0; j < world->EnemyTypes[i]->object_type->instance_count; j++) {
 			checkEnemyCollision(world->player, &world->EnemyTypes[i]->object_type->instances[j].dstrect);
 		}
 	}
-
+*/
 }
 
 void checkNormalCollision(CharacterType *charactertype, int instance_index, SDL_Rect *block) {

@@ -31,6 +31,8 @@ typedef struct _world {
 
 	Player *player;
 
+	ObjectType *goalpost;
+
 	CharacterType **EnemyTypes;
 
 	ObjectType **ObjectTypes;

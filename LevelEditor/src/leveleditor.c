@@ -100,14 +100,14 @@ editor into the textureArray and backgroundArray
 	"../assets/img/LevelEditor/Spooky/ranged_enemy.png");
 
 	//Sets up the Boss Enemies
-	editor->textureArray[LAVA][BOSS] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Lava/boss.png");
-	editor->textureArray[ICE][BOSS] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Ice/boss.png");
-	editor->textureArray[MEDIEVAL][BOSS] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Medieval/boss.png");
-	editor->textureArray[SPOOKY][BOSS] = New_Texture(editor->container->renderer,
-	"../assets/img/LevelEditor/Spooky/boss.png");
+	editor->textureArray[LAVA][GOALPOST] = New_Texture(editor->container->renderer,
+	"../assets/img/goalpost.png");
+	editor->textureArray[ICE][GOALPOST] = New_Texture(editor->container->renderer,
+	"../assets/img/goalpost.png");
+	editor->textureArray[MEDIEVAL][GOALPOST] = New_Texture(editor->container->renderer,
+	"../assets/img/goalpost.png");
+	editor->textureArray[SPOOKY][GOALPOST] = New_Texture(editor->container->renderer,
+	"../assets/img/goalpost.png");
 	
 	//Sets up the Backgrounds
 
@@ -181,6 +181,7 @@ void LevelEditor_Render(LevelEditor *editor) {
 	*/
 	for (int i = 0; i < editor->level->height; i++) {
 		for (int j = 0; j < editor->level->width; j++) {
+			if (editor->level->tileArray[i][j] == BLANK) continue;
 			if (editor->level->tileArray[i][j] == BRICK) {
 				Texture_RenderBrick(
 					editor->textureArray[theme][editor->level->tileArray[i][j]], 
@@ -214,7 +215,7 @@ void LevelEditor_Render(LevelEditor *editor) {
 	}
 	
 	//Renders the currently selected item on the mouse cursor location, so the user can see it
-	if (editor->currentItem != BRICK) {
+	if (editor->currentItem != BRICK && editor->currentItem != BLANK) {
 		Texture_Render(editor->textureArray[theme][editor->currentItem], editor->container->renderer,
 			editor->container->mouse.x - TILE_SCALE / 2, editor->container->mouse.y - TILE_SCALE / 2, NULL);
 	}
@@ -363,11 +364,11 @@ void LevelEditor_getCurrentItemType(LevelEditor *editor) {
 	if (editor->container->keyboardstate[SDL_SCANCODE_1]) editor->currentItem = BLANK;
 	if (editor->container->keyboardstate[SDL_SCANCODE_2]) editor->currentItem = BRICK;
 	if (editor->container->keyboardstate[SDL_SCANCODE_3]) editor->currentItem = PLAYER;
-	if (editor->container->keyboardstate[SDL_SCANCODE_4]) editor->currentItem = FLYING;
-	if (editor->container->keyboardstate[SDL_SCANCODE_5]) editor->currentItem = MELEE;
+	if (editor->container->keyboardstate[SDL_SCANCODE_4]) editor->currentItem = GOALPOST;
+/*	if (editor->container->keyboardstate[SDL_SCANCODE_5]) editor->currentItem = MELEE;
 	if (editor->container->keyboardstate[SDL_SCANCODE_6]) editor->currentItem = RANGED;
 	if (editor->container->keyboardstate[SDL_SCANCODE_7]) editor->currentItem = BOSS;
-
+*/
 }
 
 /* Collects keyboard inputs for the current theme */

@@ -7,7 +7,7 @@
 
 // This is for what type of enemy is in what tile
 typedef enum _EntityTypes {
-	BLANK, BRICK, PLAYER, FLYING, MELEE, RANGED, BOSS
+	BLANK, BRICK, PLAYER, FLYING, MELEE, RANGED, GOALPOST
 } Tile;
 // This is for whether you are loading a file or not
 typedef enum _Mode {

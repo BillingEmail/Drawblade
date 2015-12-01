@@ -10,20 +10,11 @@
 
 /* Used to render either "Level Complete!" or "Level Failed" when
  * goalpost is touched or timer runs out, respectively */
-void RenderLevelEnd(Container *container, Texture *t, World *world, unsigned int ct) {
-	unsigned int dt, lastTime, currentTime, timeLeft;
-	lastTime = 0;
-	timeLeft = 3000;
+void RenderLevelEnd(Container *container, Texture *t, World *world) {
+	int framesLeft = 300;
 
-	while (timeLeft > 0) {
-		debug_msg("time left: %u\n", timeLeft);
-		currentTime = SDL_GetTicks() - ct;
-		dt = currentTime - lastTime;
-		lastTime = currentTime;
-		timeLeft -= dt;
-		if (timeLeft < 16) {
-			timeLeft = 0;
-		}
+	while (framesLeft > 0) {
+		framesLeft--;
 
 		World_Render(world, 0, container);
 		Texture_Render(t, container->renderer, 1280 / 2 - t->w / 2,
@@ -124,7 +115,7 @@ void Game_Run(Game *game, Container *container) {
 		/* ************** Switch to next level ********* */
 		/* If the world has been completed */
 		if (game->world->is_complete || container->keyboardstate[SDL_SCANCODE_N]) {
-			RenderLevelEnd(container, game->levelComplete, game->world, currentTime);
+			RenderLevelEnd(container, game->levelComplete, game->world);
 			/* switch to next world -- TODO will later be a function with a transition */
 			/* Increment world if ADVENTURE mode */			
 			if (game->mode == ADVENTURE) {
@@ -147,9 +138,13 @@ void Game_Run(Game *game, Container *container) {
 		/* ************** Restart world on death ******* */
 		/* TODO put in a function */
 		if (game->world->player->traits->hitpoints == 0) {
-			RenderLevelEnd(container, game->levelFailed, game->world, currentTime);
+			RenderLevelEnd(container, game->levelFailed, game->world);
 			World_Destroy(game->world);
-			game->world = LoadWorld(game->current_level, container);
+			if (game->mode == ADVENTURE) {
+				game->world = LoadWorld(game->current_level, container);
+			} else if (game->mode == CUSTOM_LEVEL) {
+				game->world = NewWorld_FromFile(game->custom_level_path, container);
+			}
 		}
 
 		/* ************* Quit game on keypress Q ****** */

@@ -131,16 +131,16 @@ void Container_KeyBoardUpdateCamera(Container *container) {
 		multiplier = 3;
 	}
 
-	if (container->keyboardstate[SDL_SCANCODE_UP]) {
+	if (container->keyboardstate[SDL_SCANCODE_W]) {
 		container->camera->y -= 5 * multiplier;
 	}
-	if (container->keyboardstate[SDL_SCANCODE_DOWN]) {
+	if (container->keyboardstate[SDL_SCANCODE_S]) {
 		container->camera->y += 5 * multiplier;
 	}
-	if (container->keyboardstate[SDL_SCANCODE_RIGHT]) {
+	if (container->keyboardstate[SDL_SCANCODE_D]) {
 		container->camera->x += 5 * multiplier;
 	}
-	if (container->keyboardstate[SDL_SCANCODE_LEFT]) {
+	if (container->keyboardstate[SDL_SCANCODE_A]) {
 		container->camera->x -= 5 * multiplier;
 	}
 }
