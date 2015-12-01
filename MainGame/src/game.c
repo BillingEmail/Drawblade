@@ -11,7 +11,7 @@
 /* Used to render either "Level Complete!" or "Level Failed" when
  * goalpost is touched or timer runs out, respectively */
 void RenderLevelEnd(Container *container, Texture *t, World *world) {
-	int framesLeft = 300;
+	int framesLeft = 150;
 
 	while (framesLeft > 0) {
 		framesLeft--;
@@ -122,12 +122,12 @@ void Game_Run(Game *game, Container *container) {
 				game->current_level++;
 				World_Destroy(game->world);
 				game->world = LoadWorld(game->current_level, container);
-				if (!game->world) return;
 			/* Restart world if CUSTOM_LEVEL mode */
 			} else if (game->mode == CUSTOM_LEVEL) {
 				World_Destroy(game->world);
 				game->world = NewWorld_FromFile(game->custom_level_path, container);
 			}
+			if (!game->world) return;
 		}
 
 
@@ -143,10 +143,10 @@ void Game_Run(Game *game, Container *container) {
 			World_Destroy(game->world);
 			if (game->mode == ADVENTURE) {
 				game->world = LoadWorld(game->current_level, container);
-				if (!game->world) return;
 			} else if (game->mode == CUSTOM_LEVEL) {
 				game->world = NewWorld_FromFile(game->custom_level_path, container);
 			}
+			if (!game->world) return;
 		}
 
 		/* ************* Quit game on keypress Q ****** */
@@ -163,7 +163,9 @@ void Game_Run(Game *game, Container *container) {
 /* Close and destroy everything */
 void Game_Close(Game *game) {
 	HUD_Destroy(game->hud);
-	World_Destroy(game->world);
+	if (game->world) {
+		World_Destroy(game->world);
+	}
 	if (game->mode == CUSTOM_LEVEL) {
 		free(game->custom_level_path);
 	}
@@ -178,8 +180,8 @@ World * LoadWorld(int worldnum, Container *c) {
 	/* Path to level to be loaded */
 	sprintf(path, "../assets/levels/level%d.lvl", worldnum);
 
-	printf("LOADING LEVEL FROM: \"%s\"\n", path);
+	debug_msg("LOADING LEVEL FROM: \"%s\"\n", path);
 	ret = NewWorld_FromFile(path, c);
-
+	if (!ret) return NULL;
 	return ret;
 }

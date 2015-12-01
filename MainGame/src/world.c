@@ -16,6 +16,11 @@ World * NewWorld_FromFile(const char *path, Container *container) {
 	World *ret;
 	Level *level = malloc(sizeof(Level));
 	FILE *why_satya = fopen(path, "rb");
+	if (!why_satya) {
+		debug_msg("Level %s not found\n", path);
+		free(level);
+		return NULL;
+	}
 	Level_LoadFromFile(level, why_satya);
 	fclose(why_satya);
 
