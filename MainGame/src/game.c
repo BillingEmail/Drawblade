@@ -11,11 +11,14 @@
 /* Used to render either "Level Complete!" or "Level Failed" when
  * goalpost is touched or timer runs out, respectively */
 void RenderLevelEnd(Container *container, Texture *t, World *world) {
+	//The number of frames until the Texture runs out
 	int framesLeft = 150;
-
+	
+	//Renders the texture until the timer is finished
 	while (framesLeft > 0) {
 		framesLeft--;
-
+		
+		//makes sure you still rendering the world
 		World_Render(world, 0, container);
 		Texture_Render(t, container->renderer, 1280 / 2 - t->w / 2,
 			720 / 2 - t->h / 2, NULL);
@@ -75,6 +78,7 @@ Game * New_Game(Container *container, GameMode mode, const char *custom_level_na
 
 /* Main game loop */
 void Game_Run(Game *game, Container *container) {
+	//used for calculating differences in milliseconds between frames
 	unsigned int dt;
 	unsigned int currentTime;
 	unsigned int lastTime = 0;
@@ -85,18 +89,21 @@ void Game_Run(Game *game, Container *container) {
 	} else if (game->mode == CUSTOM_LEVEL) {
 		game->world = NewWorld_FromFile(game->custom_level_path, container);
 	}
+	//Set the camera to the player's position
 	Container_PlayerUpdateCamera(container, game->world->player);
 
 	game->running = true;
 	/* **************** Main game loop ***************** */
 	while (game->running) {
+		//All of the calculations to get delta time
+		//This is needed in animation
 		currentTime = SDL_GetTicks();
 		dt = currentTime - lastTime;
 		lastTime = currentTime;
 
 		/* Health acting as a timer: finish the level in time */
 		game->world->player->traits->hitpoints -= dt;
-		debug_msg("hitpoints -= %u\tnow: %d\n", dt, game->world->player->traits->hitpoints);
+		//Case where hp is below 0
 		if ((game->world->player->traits->hitpoints -= dt) < 0) {
 			game->world->player->traits->hitpoints = 0;
 		}
@@ -133,13 +140,8 @@ void Game_Run(Game *game, Container *container) {
 			if (!game->world) return;
 		}
 
-
-		/* HITPOINTS TEST ****************************************************/
-/*		if (container->keyboardstate[SDL_SCANCODE_H]) {
-			game->world->player->traits->hitpoints -= 0.5;
-		}
-*/
 		/* ************** Restart world on death ******* */
+		//basically loads the level from scratch
 		if (game->world->player->traits->hitpoints == 0) {
 			RenderLevelEnd(container, game->levelFailed, game->world);
 			World_Destroy(game->world);

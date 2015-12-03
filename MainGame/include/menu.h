@@ -12,6 +12,7 @@ typedef struct _menu_return {
 		char *text; /* Only used if action == LOAD_LEVEL_PATH in the Load Custom Level menu */
 } MenuReturn;
 
+//Defines what an image is
 typedef struct _image {
 	Texture *texture;
 	int x;

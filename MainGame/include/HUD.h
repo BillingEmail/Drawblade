@@ -4,6 +4,8 @@
 #include "../../shared/include/texture.h"
 #include "../../shared/include/level.h"
 #include "../include/player.h"
+
+//Holds all of the textures and where you render them
 typedef struct _hud {
 	Texture **weaponTextures;
 	Texture *actionFrameTexture;

@@ -8,9 +8,10 @@
 #include "../include/player.h"
 #include "../../shared/include/level.h"
 
+//Creates a hud, and then fills it by loading all of the textures and placing them where they should be on screen
 HUD * Create_HUD(Container *container) {
 	HUD *ret = malloc(sizeof(HUD));
-
+	
 	ret->actionFrameTexture = New_Texture(container->renderer, "../assets/img/HUD/actionframe.png");
 	ret->actionBarTexture = New_Texture(container->renderer, "../assets/img/HUD/actionbar.png");
 	ret->healthBarTexture = New_Texture(container->renderer, "../assets/img/HUD/healthbar.png");
@@ -38,6 +39,7 @@ HUD * Create_HUD(Container *container) {
 	return ret;
 }
 
+//Renders all of the pieces of the hud
 void HUD_Render(HUD *h, Player *p, LevelType theme, Container *container) {
 	//Will render a number of hearts 0-5
 	HUD_RenderHearts(h, p, container); 
@@ -47,13 +49,17 @@ void HUD_Render(HUD *h, Player *p, LevelType theme, Container *container) {
 //	HUD_RenderActionBar(h, p, container);
 }
 
+/* Renders how many hitpoints you have on the screen each fram */
 void HUD_RenderHearts(HUD *h, Player *player, Container *container) {
+	//Defines where you will be rendering the hearts
+	//This has a length which is defined by a fractino of how many hitpoints you have
 	SDL_Rect HealthBar = {
 		0, 0,
 		player->traits->hitpoints / 78,
 		h->healthbardst.h
 	};
-	debug_msg("hp: %d; w: %d\n", player->traits->hitpoints, HealthBar.w);
+
+
 
 	//Renders the frame
 //	Texture_Render(h->actionFrameTexture, container->renderer, h->actionframe2dst.x, h->actionframe2dst.y, NULL);
@@ -67,6 +73,7 @@ void HUD_RenderHearts(HUD *h, Player *player, Container *container) {
 
 }
 
+/* Unused now, but originally was for rendering how many times the player can attack */
 void HUD_RenderActionBar(HUD *h, Player *player, Container *container) {
 	Texture_Render(h->actionFrameTexture, container->renderer, h->actionframedst.x, h->actionframedst.y, NULL);
 	//For rendering the action bar with amount filled related to numactions player has

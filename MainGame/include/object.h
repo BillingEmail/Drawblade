@@ -144,7 +144,10 @@ void ObjectType_ObjectNextSprite(ObjectType *ot, int instance_index);
 
 /* Destroy an object */
 void Destroy_Object(Object *o);
-
+/* 
+If the animation has changed, reset all of the sprite indicies, to make sure you reset all of the other animations back to 0 
+This is to make sure the user doesnt start a new animation to see it starting on the 6th frame, or some random other frame
+*/
 void ObjectType_ResetSpriteIndexes(ObjectType *o, int ii, int animation);
 
 #endif

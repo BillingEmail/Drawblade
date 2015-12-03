@@ -10,10 +10,12 @@
 #include "character.h"
 #include "../../shared/include/level.h"
 
+//Defines all of the object types
 enum {
 	OBJECT_BRICK = 0,
 };
 
+//Defines all of the enemy types
 enum {
 	ENEMY_1 = 0,
 	ENEMY_2 = 1,
@@ -61,6 +63,7 @@ void World_Update(World *w, unsigned int dt, Container *container);
 /* Load a world from a file */
 World * NewWorld_FromFile(const char *path, Container *c);
 
+/* Each brick is given a certain look based on the bricks around it */
 void World_SetBrickSprites(World *w, int instance);
 
 /* Destroy a world */
@@ -69,6 +72,7 @@ void Destroy_World(World *w);
 /* Render all of the facets of the world */
 void World_Render(World *w, unsigned int dt, Container *c);
 
+/* Cleans the world and frees resources */
 void World_Destroy(World *w);
 
 #endif

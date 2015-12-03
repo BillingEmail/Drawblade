@@ -11,7 +11,7 @@
 #define CHARACTER_H
 
 #include "object.h"
-
+//just to store an x and y value
 typedef struct {
 	float x;
 	float y;
@@ -20,7 +20,10 @@ typedef struct {
 /* How a kind of character behaves - may use the player */
 typedef void (*BehaviorFunction)(void *character_type, int instance_index, void *player);
 
-/* Traits unique to characters */
+/* 
+Traits unique to characters 
+Deal with whether you can attack or not, your health, your speed, etc.
+*/
 typedef struct _character_traits {
 	vector velocity;
 	vector acceleration;
@@ -45,10 +48,12 @@ typedef struct _charactertype {
 
 	int character_traits_size; /* size of traits array */
 
+	//Defaults for the charactertype as a whole, so every character instance has these
 	int defaultHP;
 	int defaultactionCost;
 	int defaultactionRegen;
-
+	
+	//How the character reacts to the player
 	BehaviorFunction behavior;
 
 } CharacterType;
@@ -76,11 +81,12 @@ void CharacterType_KillCharacter(CharacterType *ct, int instance_index);
 void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, unsigned int dt, void *player);
 
 /* Update the hitboxes to where the dstrect is */
-
 void CharacterType_AdjustHitboxes(CharacterType *ct, int instance_index);
 
+/* Sets the animation to a certain animation type */
 void CharacterType_SetCharacterAnimation(CharacterType *c, int ii, int animation, unsigned int delay);
 
+/* Moves the character through its animation frame by frame */
 void CharacterType_AnimateCharacter(CharacterType *ct, int ii, int animation, unsigned int *delay, unsigned int duration);
 
 

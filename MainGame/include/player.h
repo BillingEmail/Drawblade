@@ -5,6 +5,8 @@
 #include "character.h"
 #include "object.h"
 #include "../../shared/include/level.h"
+
+//Defines all of the animations a player has */
 enum {
 	RUN_RIGHT = 0,
 	RUN_LEFT = 1,
@@ -49,6 +51,7 @@ void Player_Attack(Player *p, Container *c);
 /* Call CharacterType_KillCharacter() and end the game :^) */
 void Player_Die(Player *p);
 
+/* Updates the camera based on the player's position */
 void Container_PlayerUpdateCamera(Container *c, Player *p);
 
 #endif

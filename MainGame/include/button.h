@@ -6,7 +6,10 @@
 #include "../../shared/include/texture.h"
 #include "../../shared/include/container.h"
 
-/* A signal that a button returns when it is clicked */
+/* 
+A signal that a button returns when it is clicked
+It is correlated to another screen that will be selected by this action
+ */
 typedef enum _action {
 	START, LOAD_CUSTOM_LEVEL, QUIT, BACK, CREATE_CUSTOM_LEVEL, LEVEL_EDITOR, NEXT, START_EDITING, CANCEL, SAVE
 } Action;
