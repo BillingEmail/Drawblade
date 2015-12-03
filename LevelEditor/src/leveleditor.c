@@ -1,3 +1,9 @@
+/* leveleditor.c - Everything to do with the level editor.
+ *
+ * Author: Satya Patel
+ */
+
+
 #include "../include/leveleditor.h"
 #include <SDL2/SDL.h>
 #include <stdlib.h>

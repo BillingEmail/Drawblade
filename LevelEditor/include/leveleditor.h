@@ -1,3 +1,8 @@
+/* leveleditor.h - Everything to do with the level editor.
+ *
+ * Author: Satya Patel
+ */
+
 #ifndef LEVELEDITOR_H
 #define LEVELEDITOR_H
 
