@@ -79,8 +79,6 @@ void Game_Run(Game *game, Container *container) {
 	unsigned int currentTime;
 	unsigned int lastTime = 0;
 
-
-
 	/* load the first level */
 	if (game->mode == ADVENTURE) {
 		game->world = LoadWorld(game->current_level, container);
@@ -98,6 +96,7 @@ void Game_Run(Game *game, Container *container) {
 
 		/* Health acting as a timer: finish the level in time */
 		game->world->player->traits->hitpoints -= dt;
+		debug_msg("hitpoints -= %u\tnow: %d\n", dt, game->world->player->traits->hitpoints);
 		if ((game->world->player->traits->hitpoints -= dt) < 0) {
 			game->world->player->traits->hitpoints = 0;
 		}
@@ -122,22 +121,25 @@ void Game_Run(Game *game, Container *container) {
 				game->current_level++;
 				World_Destroy(game->world);
 				game->world = LoadWorld(game->current_level, container);
+				
 			/* Restart world if CUSTOM_LEVEL mode */
 			} else if (game->mode == CUSTOM_LEVEL) {
 				World_Destroy(game->world);
 				game->world = NewWorld_FromFile(game->custom_level_path, container);
 			}
+			currentTime = SDL_GetTicks();
+			dt = currentTime - lastTime;
+			lastTime = currentTime;
 			if (!game->world) return;
 		}
 
 
 		/* HITPOINTS TEST ****************************************************/
-		if (container->keyboardstate[SDL_SCANCODE_H]) {
+/*		if (container->keyboardstate[SDL_SCANCODE_H]) {
 			game->world->player->traits->hitpoints -= 0.5;
 		}
-
+*/
 		/* ************** Restart world on death ******* */
-		/* TODO put in a function */
 		if (game->world->player->traits->hitpoints == 0) {
 			RenderLevelEnd(container, game->levelFailed, game->world);
 			World_Destroy(game->world);
@@ -147,6 +149,9 @@ void Game_Run(Game *game, Container *container) {
 				game->world = NewWorld_FromFile(game->custom_level_path, container);
 			}
 			if (!game->world) return;
+			currentTime = SDL_GetTicks();
+			dt = currentTime - lastTime;
+			lastTime = currentTime;
 		}
 
 		/* ************* Quit game on keypress Q ****** */
