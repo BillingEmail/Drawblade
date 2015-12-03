@@ -60,7 +60,7 @@ void HUD_RenderHearts(HUD *h, Player *player, Container *container) {
 	//This has a length which is defined by a fraction of how many hitpoints you have
 	SDL_Rect HealthBar = {
 		0, 0,
-		player->traits->hitpoints / 78,
+		player->traits->hitpoints / 156,
 		h->healthbardst.h
 	};
 
