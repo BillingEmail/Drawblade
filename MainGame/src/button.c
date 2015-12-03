@@ -4,9 +4,12 @@
 Button * New_Button(Texture *t, Action action, int x, int y, int w, int h) {
 	Button *ret = malloc(sizeof(Button));
 
+	/* Gives the button a texture you passed in */
 	ret->texture = t;
+	/* Tells the button which screen it should open when clicked */
 	ret->action = action;
 
+	/* the size and coordinates of the button */
 	ret->renderRect.x = x;
 	ret->renderRect.y = y;
 	ret->renderRect.w = w;
@@ -23,6 +26,7 @@ void Button_Destroy(Button *b) {
 
 /* Return true if the mouse is clicking the button */
 bool Button_Clicked(Button *button, Container *container) {
+	/* Checks if you are left clicking within the bounds of the button */
 	return (container->mouse.leftClick &&
 			container->mouse.x >= button->renderRect.x &&
 			container->mouse.x <= button->renderRect.x + button->renderRect.w &&
@@ -32,5 +36,6 @@ bool Button_Clicked(Button *button, Container *container) {
 
 /* Render a button */
 void Button_Render(Button *button, Container *container) {
+	/* Renders the button's texture at its coordinates */
 	Texture_Render(button->texture, container->renderer, button->renderRect.x, button->renderRect.y, NULL);
 }

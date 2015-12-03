@@ -5,6 +5,11 @@
 #include "../include/character.h"
 #include "../include/behavior.h"
 
+
+
+/* This code has been scrapped due to the fact that we were unable to make characters not crash */
+/* Originally, every character was going to have this behavior function which would move it towards the player */
+
 void FlyingBehavior(CharacterType *selfType, int self_index, CharacterType *targetType, int target_index) {
 	CharacterTraits *self = selfType->character_traits + self_index;
 /*
