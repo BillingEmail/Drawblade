@@ -1,11 +1,14 @@
+/* HUD.h - the Heads Up Display
+ *
+ * Authors: Kyle Condon, Sean Rapp
+ */
+
 #ifndef HUD_H
 #define HUD_H
 #include "../../shared/include/container.h"
 #include "../../shared/include/texture.h"
 #include "../../shared/include/level.h"
 #include "../include/player.h"
-
-//Holds all of the textures and where you render them
 typedef struct _hud {
 	Texture **weaponTextures;
 	Texture *actionFrameTexture;

@@ -1,3 +1,11 @@
+/* level.h - The blueprint for a world.
+ * Used in loading/saving levels, and editing
+ * them.
+ *
+ * Author: Satya Patel
+ */
+
+
 #ifndef level_h
 #define level_h
 #include <stdio.h>

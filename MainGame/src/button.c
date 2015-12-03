@@ -1,3 +1,8 @@
+/* button.c - implementation of a button to be used with a Menu
+ *
+ * Author: Sean Rapp
+ */
+
 #include "../include/button.h"
 
 /* Create a new button with an action, size, and location */

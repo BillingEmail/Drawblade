@@ -1,3 +1,8 @@
+/* textbox.h - Data type for a textbox for a menu - reads in text from keyboard
+ *
+ * Author: Sean Rapp
+ */
+
 #ifndef TEXTBOX_H
 #define TEXTBOX_H
 

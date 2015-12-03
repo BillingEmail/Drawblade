@@ -1,3 +1,10 @@
+/* level.c - A blueprint for a world.
+ * (i.e., a layout for entities in a world, but not the actual world
+ * used for saving to and loading from files, and editing)
+ *
+ * Author: Satya Patel
+ */
+
 #include "../include/level.h"
 #include <stdio.h>
 #include <stdlib.h>

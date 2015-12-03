@@ -1,5 +1,7 @@
 /* texture.c - implementation of the type Texture
  * See texture.h for details.
+ *
+ * Author: Sean Rapp
  */
 
 #include <SDL2/SDL.h>

@@ -1,6 +1,8 @@
 /* objecttype.c - implementation for type ObjectType
  *
  * See objecttype.h for details.
+ *
+ * Author: Sean Rapp
  */
 
 #include <SDL2/SDL.h>

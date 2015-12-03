@@ -1,6 +1,8 @@
 /* spritesheet.c - implementation of type Spritesheet.
  *
  * See spritesheet.h for details.
+ *
+ * Author: Sean Rapp
  */
 
 #include <SDL2/SDL.h>

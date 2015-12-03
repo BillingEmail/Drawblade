@@ -1,3 +1,9 @@
+/* textbox.c - A textbox to be used in menus
+ *
+ * Author: Sean Rapp
+ */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 

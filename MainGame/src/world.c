@@ -1,6 +1,6 @@
-/* world.c
+/* world.c - the instance of a level (on which the game operates)
  *
- * see world.h ok
+ * Authors: Sean Rapp, Satya Patel
  */
 
 #include <stdio.h>

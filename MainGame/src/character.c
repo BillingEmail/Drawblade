@@ -1,6 +1,8 @@
 /* character.c - Implementation for CharacterType
  *
  * See character.h for details
+ *
+ * Author: Sean Rapp, Satya Patel
  */
 
 #include <SDL2/SDL.h>

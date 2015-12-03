@@ -1,3 +1,8 @@
+/* game.c - The overhead for a single running game - excludes menus, level editor
+ *
+ * Author: Sean Rapp
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -1,3 +1,9 @@
+/* player.h - Data type for the player
+ *
+ * Author: Sean Rapp
+ */
+
+
 #ifndef PLAYER_H
 #define PLAYER_H
 
@@ -6,7 +12,7 @@
 #include "object.h"
 #include "../../shared/include/level.h"
 
-//Defines all of the animations a player has */
+/* The animations the player has */
 enum {
 	RUN_RIGHT = 0,
 	RUN_LEFT = 1,
@@ -20,7 +26,7 @@ enum {
 	STAND_LEFT = 9
 };
 
-/* we'll make a player type later with weapon etc */
+/* The player type - equipped with shortcuts to commonly used objects */
 typedef struct _player {
 	CharacterType *ctype; /* the actual type */
 
@@ -48,10 +54,7 @@ void Player_Update(Player *p, unsigned int dt, Container *c);
 
 void Player_Attack(Player *p, Container *c);
 
-/* Call CharacterType_KillCharacter() and end the game :^) */
-void Player_Die(Player *p);
-
-/* Updates the camera based on the player's position */
+/* Update the camera based on the player's position */
 void Container_PlayerUpdateCamera(Container *c, Player *p);
 
 #endif

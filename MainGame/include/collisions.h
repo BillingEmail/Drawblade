@@ -1,3 +1,8 @@
+/* collisions.h - Finding collisions and adjusting the colliding objects
+ *
+ * Author: Satya Patel
+ */
+
 #ifndef collisions_h
 #define collisions_h
 

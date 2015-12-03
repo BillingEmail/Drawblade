@@ -1,3 +1,9 @@
+/* main.c - We could have put everything in one function, then just called it
+ * in main(), but we didn't. Instead, we did something very, very close.
+ *
+ * Author: Sean Rapp
+ */
+
 #include <stdbool.h>
 #include "../include/game.h"
 #include "../../shared/include/container.h"

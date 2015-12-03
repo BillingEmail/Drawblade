@@ -1,3 +1,9 @@
+/* container.c - Contains everything related to SDL that is commonly
+ * needed nearly everywhere. Very nice.
+ *
+ * Authors: Sean Rapp, Satya Patel
+ */
+
 #include "../include/container.h"
 
 

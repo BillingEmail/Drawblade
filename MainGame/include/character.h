@@ -5,6 +5,8 @@
  * CharacterTypes are made, and they essentially have an ObjectType,
  * and traits specific to the character, such as if they are affected
  * by gravity.
+ *
+ * Author: Sean Rapp
  */
 
 #ifndef CHARACTER_H

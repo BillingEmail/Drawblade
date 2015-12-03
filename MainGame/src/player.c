@@ -1,5 +1,10 @@
+/* player.c - functions specific to the player
+ *
+ * Authors: Satya Patel, Sean Rapp
+ */
+
+
 #include <stdlib.h>
-#define MAINGAME
 #include "../include/player.h"
 #include <math.h>
 #include "../include/behavior.h"
@@ -27,6 +32,7 @@ Player * New_Player(ObjectType *ot, int x, int y, LevelType theme) {
 	return ret;
 }
 
+/* Free the player */
 void Destroy_Player(Player *p) {
 	/* Destroy everything below player */
 	Destroy_CharacterType(p->ctype);
@@ -34,12 +40,16 @@ void Destroy_Player(Player *p) {
 	p = NULL;
 }
 
+/* Render the player */
 void Player_Render(Player *p, unsigned int dt, Container *c) {
 	static unsigned int delay = 0;
 	delay += dt;
+
+	/* Depending on which animation is set, animate the player accordingly */
 	switch (p->object->animation) {
 		case RUN_LEFT:
 			CharacterType_AnimateCharacter(p->ctype, 0, RUN_LEFT, &delay, 100);
+			/* Cycle through the sprites */
 			if (p->object->sprite_index[RUN_LEFT] > 7) {
 				p->object->sprite_index[RUN_LEFT] = 0;
 			}
@@ -47,6 +57,7 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 		break;
 		case RUN_RIGHT:
 			CharacterType_AnimateCharacter(p->ctype, 0, RUN_RIGHT, &delay, 100);
+			/* Cyclle through the sprites */
 			if (p->object->sprite_index[RUN_RIGHT] > 7) {
 				p->object->sprite_index[RUN_RIGHT] = 0;
 			}
@@ -54,12 +65,14 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 		break;
 		case JUMP_LEFT:
 			CharacterType_AnimateCharacter(p->ctype, 0, JUMP_LEFT, &delay, 50);
+			/* Animate to the fourth sprite then stop */
 			if (p->object->sprite_index[JUMP_LEFT] > 3) {
 				p->object->sprite_index[JUMP_LEFT] = 3;
 			}
 			p->object->sprite_index[JUMP_RIGHT] = p->object->sprite_index[JUMP_LEFT];
 		case JUMP_RIGHT:
 			CharacterType_AnimateCharacter(p->ctype, 0, JUMP_RIGHT, &delay, 50);
+			/* Animate to the fourth sprite then stop */
 			if (p->object->sprite_index[JUMP_RIGHT] > 3) {
 				p->object->sprite_index[JUMP_RIGHT] = 3;
 			}
@@ -95,7 +108,7 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 	p->object->lastAnimation = p->object->animation;
 }
 
-/* Take input from wrapper and apply to the player */
+/* Take user input and apply to the player */
 void Player_Update(Player *p, unsigned int dt, Container *container) {
 	/* Checks whether the last sprite was facing left or right */
 	bool facingLeft = (p->object->lastAnimation % 2 == 1);
@@ -108,17 +121,19 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 			ObjectType_SetObjectAnimation(p->otype, 0, STAND_RIGHT);
 		}
 
+		/* Move left */
 		if (container->keyboardstate[SDL_SCANCODE_A]) {
 				ObjectType_SetObjectAnimation(p->otype, 0, RUN_LEFT);
 			p->traits->velocity.x -= 0.5;
 		
 		}
-
+		/* Move right */
 		if (container->keyboardstate[SDL_SCANCODE_D]) {
 				ObjectType_SetObjectAnimation(p->otype, 0, RUN_RIGHT);
 			p->traits->velocity.x += 0.5;
 		}
 
+		/* Jump */
 		if (container->keyboardstate[SDL_SCANCODE_SPACE]) {
 			if (p->traits->is_on_floor) {
 				p->traits->velocity.y = -7;
@@ -191,12 +206,15 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		p->traits->velocity.y = -7;
 	}
 
+	/* Gravity */
 	p->traits->velocity.y += .20;
+	/* Slow down after A or D key is released instead of stopping at once */
 	p->traits->velocity.x *= 0.9;
 
-	
+	/* Set to 0 if nearly 0 */
 	if (fabs(p->traits->velocity.x) < 0.3) p->traits->velocity.x = 0;
 
+	/* Apply velocity */
 	p->object->dstrect.x += ceil(p->traits->velocity.x);
 	p->object->dstrect.y += ceil(p->traits->velocity.y);	
 
@@ -210,6 +228,7 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	CharacterType_AdjustHitboxes(p->ctype, 0);
 }
 
+/* Move the character according to the player's position */
 void Container_PlayerUpdateCamera(Container *container, Player *p) {
 	container->camera->x = p->object->dstrect.x - container->camera->w / 2;
 	container->camera->y = p->object->dstrect.y - container->camera->h / 2;

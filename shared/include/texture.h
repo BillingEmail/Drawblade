@@ -3,6 +3,8 @@
  * The Texture is used primarily to hold an image
  * that will be rendered to an object. The object may
  * use the entire texture, or just a clip from the texture.
+ *
+ * Author: Sean Rapp
  */
 
 #ifndef TEXTURE_H_

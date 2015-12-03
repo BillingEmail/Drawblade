@@ -1,3 +1,9 @@
+/* button.h - Data type for a button to be used on a menu
+ *
+ * Author: Sean Rapp
+ */
+
+
 #ifndef BUTTON_H
 #define BUTTON_H
 
@@ -6,10 +12,7 @@
 #include "../../shared/include/texture.h"
 #include "../../shared/include/container.h"
 
-/* 
-A signal that a button returns when it is clicked
-It is correlated to another screen that will be selected by this action
- */
+/* A signal that a button returns when it is clicked */
 typedef enum _action {
 	START, LOAD_CUSTOM_LEVEL, QUIT, BACK, CREATE_CUSTOM_LEVEL, LEVEL_EDITOR, NEXT, START_EDITING, CANCEL, SAVE
 } Action;

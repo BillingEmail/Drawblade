@@ -1,7 +1,8 @@
 /* world.h - type definition for a World
  *
- * A world is just a list of objects/characters
- * for now.
+ * The working environment of the running game.
+ *
+ * Authors: Sean Rapp, Satya Patel
  */
 #ifndef WORLD_H
 #define WORLD_H

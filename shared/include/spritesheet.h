@@ -3,6 +3,8 @@
  * A spritesheet holds a texture that will be used as a spritesheet for
  * an object. It also holds the amount of animations that are in the
  * spritesheet, and an array of how many frames are in each animation.
+ *
+ * Author: Sean Rapp
  */
 
 #ifndef SPRITESHEET_H

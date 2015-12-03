@@ -1,3 +1,11 @@
+/* menu.c - A simple GUI with images, buttons, and textboxes
+ * Also includes shortcuts to create the menus used in the program.
+ * Disgusting organization, read at your discretion.
+ *
+ * Author: Sean Rapp
+ */
+
+
 #include <stdbool.h>
 #include <stdlib.h>
 #include "../include/game.h"

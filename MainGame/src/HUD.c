@@ -1,4 +1,8 @@
-//Using SDL, SDL_image, standard IO, and strings
+/* HUD.c - the Heads Up Display - health/timer
+ *
+ * Author: Sean Rapp, Kyle Condon
+ */
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
@@ -8,7 +12,8 @@
 #include "../include/player.h"
 #include "../../shared/include/level.h"
 
-//Creates a hud, and then fills it by loading all of the textures and placing them where they should be on screen
+/*Creates a hud, and then fills it by loading all of the textures and placing
+ * them where they should be on screen */
 HUD * Create_HUD(Container *container) {
 	HUD *ret = malloc(sizeof(HUD));
 	
@@ -39,7 +44,7 @@ HUD * Create_HUD(Container *container) {
 	return ret;
 }
 
-//Renders all of the pieces of the hud
+/* Renders all of the pieces of the hud */
 void HUD_Render(HUD *h, Player *p, LevelType theme, Container *container) {
 	//Will render a number of hearts 0-5
 	HUD_RenderHearts(h, p, container); 
@@ -49,10 +54,10 @@ void HUD_Render(HUD *h, Player *p, LevelType theme, Container *container) {
 //	HUD_RenderActionBar(h, p, container);
 }
 
-/* Renders how many hitpoints you have on the screen each fram */
+/* Renders how many hitpoints you have on the screen each frame */
 void HUD_RenderHearts(HUD *h, Player *player, Container *container) {
 	//Defines where you will be rendering the hearts
-	//This has a length which is defined by a fractino of how many hitpoints you have
+	//This has a length which is defined by a fraction of how many hitpoints you have
 	SDL_Rect HealthBar = {
 		0, 0,
 		player->traits->hitpoints / 78,
@@ -61,16 +66,10 @@ void HUD_RenderHearts(HUD *h, Player *player, Container *container) {
 
 
 
-	//Renders the frame
+	//Renders the action bar
 //	Texture_Render(h->actionFrameTexture, container->renderer, h->actionframe2dst.x, h->actionframe2dst.y, NULL);
 
 	SDL_RenderCopy(container->renderer, h->healthBarTexture->texture, NULL, &HealthBar);
-	//Based on player health, will render health bar
-//	for (int i = 0; i < (player->traits->hitpoints)*40; i++){		
-//		Texture_Render(h->healthBarTexture, container->renderer, h->healthbardst.x + i, h->healthbardst.y, NULL);
-//	}
-
-
 }
 
 /* Unused now, but originally was for rendering how many times the player can attack */

@@ -1,3 +1,9 @@
+/* menu.h - Data type for a menu with menu elements
+ *
+ * Author: Sean Rapp
+ */
+
+
 #ifndef MENU_H
 #define MENU_H
 
@@ -12,7 +18,6 @@ typedef struct _menu_return {
 		char *text; /* Only used if action == LOAD_LEVEL_PATH in the Load Custom Level menu */
 } MenuReturn;
 
-//Defines what an image is
 typedef struct _image {
 	Texture *texture;
 	int x;
@@ -41,6 +46,8 @@ typedef struct _menu {
 /* Create a new menu with a background */
 Menu * New_Menu(Texture *background);
 
+/* ******* MENU SHORTCUTS ******** */
+
 /* Shortcut to creating the Main Menu, just calls New_Menu and Menu_AddButton etc etc */
 Menu * New_MainMenu(Container *container);
 
@@ -53,12 +60,19 @@ Menu * New_LevelEditorMenu(Container *container);
 /* " Load a custom level to edit menu */
 Menu * New_LevelEditorLoadCustomLevelMenu(Container *container);
 
-/* " Create a new custom level to edit */
-Menu * New_LevelEditorCreateCustomLevelMenu(Container *container);
+/* " Create a new custom level to edit - get the width */
+Menu * New_LevelEditorCreateCustomHorizontalSizeLevelMenu(Container *container);
+
+/* " " - get the height */
+Menu * New_LevelEditorCreateCustomVerticalSizeLevelMenu(Container *container);
+
+/* ******** OVERHEAD FOR EVERYTHING ******** */
 
 /* Overhead manager for menus, basically runs the whole deal */
 void RunMenuManager(Container *container);
 
+
+/* ****** ACTUAL MENU FUNCTIONS ******* */
 /* Add a button to a menu */
 void Menu_AddButton(Menu *m, Button *b);
 

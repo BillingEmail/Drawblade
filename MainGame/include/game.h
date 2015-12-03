@@ -1,4 +1,7 @@
-/* game.h - overhead shit */
+/* game.h - The running game (excludes level editors and menus
+ *
+ * Author: Sean Rapp
+ */
 
 #ifndef GAME_H
 #define GAME_H
@@ -9,27 +12,25 @@
 #include "../../shared/include/container.h"
 #include "HUD.h"
 
-/* The structure of a game */
-
-//Needed in the New_Game function
 typedef enum { ADVENTURE, CUSTOM_LEVEL } GameMode;
 
-/* The struct for a game */
 typedef struct __game_overhead {
 	World *world; /* the current world */
-	HUD *hud; /* the ui the player can use */
+	HUD *hud;
 
-	int current_level; 
+	int current_level; /* Used in mode = ADVENTURE. Used to load the adventure
+	                    * level for the game, i.e. assets/levels/level<current_level>.lvl */
 
-	bool running; /* set to false when the player dies, level is complete, etc. */
-	bool paused; /* stops the game */
+	bool running; /* Totally necessary - if the should be running */
+	bool paused; /* Game paused */
 
-	GameMode mode; /*lets you know whether game mode is adventure or not */
+	GameMode mode; /* Mode for the game - either ADVENTURE or CUSTOM_LEVEL */
 	
-	char *custom_level_path; /* Unused if mode == ADVENTURE */
+	char *custom_level_path; /* Unused if mode == ADVENTURE; used to load the
+	                          * custom level in CUSTOM_LEVEL mode  */
 
-	Texture *levelComplete; /* Textures for the end screens */
-	Texture *levelFailed;
+	Texture *levelComplete; /* When you complete a level, this shows up. */
+	Texture *levelFailed; /* Likewise when you fail. Do better. */
 
 } Game;
 

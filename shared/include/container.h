@@ -1,5 +1,7 @@
 /* container.h - A container to hold commonly-used interfacing objects, 
  * such as the window, renderer, and input such as the keyboard and mouse.
+ *
+ * Author: Sean Rapp, Satya Patel
  */
 
 #ifndef CONTAINER_H
