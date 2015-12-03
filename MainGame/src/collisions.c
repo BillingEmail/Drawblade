@@ -1,3 +1,8 @@
+/* collisions.c - Finding collisions and adjusting objects accordingly
+ *
+ * Author: Satya Patel
+ */
+
 #include "../include/collisions.h"
 #include "../include/player.h"
 #include "../include/object.h"
