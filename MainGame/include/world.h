@@ -21,7 +21,7 @@ enum {
 	ENEMY_1 = 0,
 	ENEMY_2 = 1,
 	ENEMY_3 = 2
-};;
+};
 
 /* List of characters and objects -- remember that each type also has a list
  * instances of that type
