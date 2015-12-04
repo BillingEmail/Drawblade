@@ -174,11 +174,6 @@ void LevelEditor_Render(LevelEditor *editor) {
 	LevelType theme = editor->level->theme;
 	
 	//This renders the background for the editor
-/*	Texture_Render(editor->backgroundArray[theme][1], editor->container->renderer, 0, 0, NULL);
-	Texture_Render(editor->backgroundArray[theme][0], editor->container->renderer, editor->FirstBkgRP[0].x, editor->FirstBkgRP[0].y, NULL);
-	Texture_Render(editor->backgroundArray[theme][0], editor->container->renderer, editor->FirstBkgRP[1].x, editor->FirstBkgRP[1].y, NULL);
-	Texture_Render(editor->backgroundArray[theme][0], editor->container->renderer, editor->FirstBkgRP[2].x, editor->FirstBkgRP[2].y, NULL);
-*/
 	Texture_Render(editor->backgroundArray[theme][0], editor->container->renderer, 0, 0, NULL);
 	/* 
 	This loops through the level in the editor and renders each of the objects in the level
@@ -189,6 +184,8 @@ void LevelEditor_Render(LevelEditor *editor) {
 		for (int j = 0; j < editor->level->width; j++) {
 			if (editor->level->tileArray[i][j] == BLANK) continue;
 			if (editor->level->tileArray[i][j] == BRICK) {
+				//Bricks have a special render function, since you need to know what the brick looks like
+				//This is found by the function get brick choice, and then the choice is then rendered by this function
 				Texture_RenderBrick(
 					editor->textureArray[theme][editor->level->tileArray[i][j]], 
 					editor->container->renderer, j * TILE_SCALE, i * TILE_SCALE, editor->container->camera,
@@ -196,6 +193,7 @@ void LevelEditor_Render(LevelEditor *editor) {
 				);	
 			}
 			else {
+				//Renders the object
 				Texture_Render(
 					editor->textureArray[theme][editor->level->tileArray[i][j]],
 					editor->container->renderer, j * TILE_SCALE, i * TILE_SCALE, editor->container->camera	
@@ -231,7 +229,7 @@ void LevelEditor_Render(LevelEditor *editor) {
 		Texture_Render(editor->blankIcon, editor->container->renderer, 
 		editor->container->mouse.x - 78 / 2, editor->container->mouse.y - 72 / 2, NULL);
 	}
-
+	//If the current item selected is brick, it just renders the default brick option(ALL)
 	if (editor->currentItem == BRICK) {
 		Texture_RenderBrick(
 			editor->textureArray[theme][BRICK],
@@ -244,8 +242,9 @@ void LevelEditor_Render(LevelEditor *editor) {
 	}
 
 }
-
+/* Behaves exactly as the Texture_Render function in texture.c, but also has a brickchoice to handle the sprites for the brick */
 void Texture_RenderBrick(Texture *t, SDL_Renderer *r, int x, int y, SDL_Rect *Camera, BrickChoice b) {
+	//Safety in case texture is null
 	if (t == NULL) {
 		return;
 	}

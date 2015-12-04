@@ -11,6 +11,7 @@
 #include "../../shared/include/container.h"
 #include <stdbool.h>
 
+/* All of the components of a leveleditor */
 typedef struct _LevelEditor {
 	Container *container;
 	Level *level;

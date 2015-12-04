@@ -121,7 +121,8 @@ void ObjectType_ObjectNextSprite(ObjectType *ot, int instance_index) {
 /* Render an instance of ObjectType */
 void ObjectType_RenderObject(ObjectType *ot, int instance_index, unsigned int dt, Container *container) {
 	SDL_Rect *objectrefrect = &ot->instances[instance_index].dstrect;
-
+	
+	/*uses the camera to create a new location for rendering */
 	SDL_Rect dstrect = {
 		objectrefrect->x - container->camera->x,
 		objectrefrect->y - container->camera->y,
@@ -136,7 +137,7 @@ void ObjectType_RenderObject(ObjectType *ot, int instance_index, unsigned int dt
 
 //	printf("s %d\n", ot->instances[instance_index].sprite_index[ot->instances[instance_index].animation]);
 //	printf("a %d\n", ot->instances[instance_index].animation);
-
+	//adds the object to the renderer
 	SDL_RenderCopy(
 		container->renderer,
 		ot->spritesheet->texture->texture,
@@ -160,7 +161,7 @@ void Destroy_ObjectType(ObjectType *ot) {
 	free(ot);
 	ot = NULL;
 }
-
+/* Resets all of the indexes of all of the animations except for the one of the current animation and its reflection */
 void ObjectType_ResetSpriteIndexes(ObjectType *ot, int ii, int animation) {
 	bool odd = (animation % 2 == 1);
 	for (int i = 0; i < ot->spritesheet->animation_count; i++) {

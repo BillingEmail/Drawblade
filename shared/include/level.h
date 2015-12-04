@@ -35,7 +35,7 @@ typedef struct _Level {
 	Tile **tileArray;
 } Level;
 
-
+/* The different brick sprite types */
 typedef enum _BrickChoice {
 	NUDE, TOP, RIGHT, BOTTOM, LEFT,
 	TOPRIGHT, RIGHTBOTTOM, BOTTOMLEFT, TOPLEFT,
@@ -54,13 +54,11 @@ void Level_Save(Level *level);
 void Level_Destroy(Level *level);
 void Level_CreateTiles(Level *level);
 
-/* because satya didn't think when designing */
 Level * New_LevelFromFile(const char *path);
 
 /* convenicneniceencnce */
 Level * New_LevelByName(const char *name);
 
-/* because satya has bad design */
 Level * New_BlankLevel(int width, int height);
 
 /* " */

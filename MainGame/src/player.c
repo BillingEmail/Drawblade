@@ -80,6 +80,7 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 		break;
 		case ATTACK_LEFT:
 			CharacterType_AnimateCharacter(p->ctype, 0, ATTACK_LEFT, &delay, 50);
+			/* Stop attacking when you hit the final sprite */
 			if (p->object->sprite_index[ATTACK_LEFT] > 2) {
 				p->traits->is_attacking = false;
 				p->object->sprite_index[ATTACK_LEFT] = 2; 
@@ -95,6 +96,7 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 			p->object->sprite_index[ATTACK_LEFT] = p->object->sprite_index[ATTACK_RIGHT];
 		break;
 		case STAND_RIGHT:
+		/* Just set it to the standing still animation in running */
 			ObjectType_ResetSpriteIndexes(p->ctype->object_type, 0, STAND_RIGHT);
 			ObjectType_SetObjectAnimation(p->otype, 0, RUN_RIGHT);
 		break;
@@ -112,6 +114,7 @@ void Player_Render(Player *p, unsigned int dt, Container *c) {
 void Player_Update(Player *p, unsigned int dt, Container *container) {
 	/* Checks whether the last sprite was facing left or right */
 	bool facingLeft = (p->object->lastAnimation % 2 == 1);
+	/* Only makes these checks if the player isnt hit or dead */
 	if (!p->traits->is_hit && !p->traits->is_dead) {
 	
 		if (facingLeft) {
@@ -186,10 +189,10 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 		}
 */	}
 
-	
+	/* Also not needed with the timer
 	p->traits->numActions += p->traits->actionRegen;
 	if (p->traits->numActions > 100) p->traits->numActions = 100;
-
+	*/
 	p->traits->is_on_floor = false;
 	
 	/* cap velocities */
@@ -218,13 +221,14 @@ void Player_Update(Player *p, unsigned int dt, Container *container) {
 	p->object->dstrect.x += ceil(p->traits->velocity.x);
 	p->object->dstrect.y += ceil(p->traits->velocity.y);	
 
+	/* Since the player is never hit, this is not needed
 	p->traits->hitDelta -= dt;
 
 	if (p->traits->hitDelta < 0) {
 		p->traits->is_hit = false;
 		p->traits->hitDelta = .75;
 	}
-
+	*/
 	CharacterType_AdjustHitboxes(p->ctype, 0);
 }
 

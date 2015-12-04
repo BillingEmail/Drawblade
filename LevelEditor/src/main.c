@@ -10,9 +10,6 @@
 The main for the Level Editor
 It calls the functions for Creating a level,
 Saving a level, and Editing a level
-
-
-thanks for that wonderful comment satya lol
  */
 int main (void) {
 	Level * level = New_Level();

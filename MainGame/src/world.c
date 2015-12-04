@@ -12,9 +12,11 @@
 #include "../../shared/include/container.h"
 #include "../../shared/include/level.h"
 
+//Creates a new world from a file
 World * NewWorld_FromFile(const char *path, Container *container) {
 	World *ret;
 	Level *level = malloc(sizeof(Level));
+	//I was young and foolish ok
 	FILE *why_satya = fopen(path, "rb");
 	if (!why_satya) {
 		debug_msg("Level %s not found\n", path);
@@ -24,13 +26,14 @@ World * NewWorld_FromFile(const char *path, Container *container) {
 	Level_LoadFromFile(level, why_satya);
 	fclose(why_satya);
 
+	//Adds all of the objects from the level into the world
 	ret = World_LoadWorldFromLevel(level, container);
 
 	Level_Destroy(level);
 
 	return ret;
 }
-
+//Looks through the level and adds every object and character from the level into the world 
 World * World_LoadWorldFromLevel(Level * level, Container *container) {
 	World *ret = malloc(sizeof(World));
 	char *player_texture;
@@ -41,9 +44,9 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 */
 	ret->size.h = level->height * TILE_SCALE;
 	ret->size.w = level->width * TILE_SCALE;
-
 	ret->theme = level->theme;
 	ret->is_complete = false;	
+	//Depending on the theme of the level, different textures are loaded
 	switch (level->theme) {
 		case LAVA:
 			ret->background.still = New_Texture(container->renderer, "../assets/img/Lava/background_tiled.png");
@@ -78,7 +81,8 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 			flying_enemy_texture = "../assets/img/Spook/flying_enemy.png";
 */		break;
 	}
-
+	
+	//Loads in a player, which contains an objecttype and other variables
 	ret->player = New_Player(
 		New_ObjectType(
 			New_Spritesheet(
@@ -94,7 +98,8 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 		level->theme
 	);
 	debug_msg("Player CharacterType: %p\tObjectType: %p\n", ret->player->ctype, ret->player->otype);
-
+	
+	//Adds an objecttype for the goalposts
 	ret->goalpost = New_ObjectType(
 		New_Spritesheet(
 			New_Texture(container->renderer, "../assets/img/goalpost.png"),
@@ -161,6 +166,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 	/* Collect and load instances from level tiles */
 	for (int y = 0; y < level->height; y++) {
 		for (int x = 0; x < level->width; x++) {
+			//Add whatever object you need to add
 			switch (level->tileArray[y][x]) {
 				case BRICK:
 					ObjectType_AddObject(ret->ObjectTypes[OBJECT_BRICK], x * TILE_SCALE, y * TILE_SCALE);
@@ -193,7 +199,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 
 	return ret;
 }
-
+//Update the player and run collisions
 void World_Update(World *w, unsigned int dt, Container *container) {	
 	/* Update enemies */
 	/*for (int i = 0; i < 3; i++) {
@@ -205,6 +211,7 @@ void World_Update(World *w, unsigned int dt, Container *container) {
 	World_RunCollisions(w);	
 }
 
+//Render every object in the world
 void World_Render(World *w, unsigned int dt, Container *container) {
 	/* Render the background first */
 	Texture_Render(w->background.still, container->renderer, 0, 0, NULL);
@@ -229,7 +236,7 @@ void World_Render(World *w, unsigned int dt, Container *container) {
 	}
 */	Player_Render(w->player, dt, container);
 }
-
+//Destroy all of the world's components and then the world itself
 void World_Destroy(World *w) {
 /*	for (int i = 0; i < 3; i++) {
 		debug_msg("Destroying enemy type %d\n", i);
