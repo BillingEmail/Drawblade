@@ -12,7 +12,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
 #define debug_msg(FS, ...) fprintf(stderr, "%s: In function '%s':\n\t%s:%d:debug_msg: \x1b[31m" FS "\x1b[0m", \

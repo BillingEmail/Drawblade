@@ -6,7 +6,7 @@
  * and traits specific to the character, such as if they are affected
  * by gravity.
  *
- * Author: Sean Rapp
+ * Authors: Sean Rapp, Satya Patel
  */
 
 #ifndef CHARACTER_H

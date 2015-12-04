@@ -28,11 +28,11 @@ World * NewWorld_FromFile(const char *path, Container *container) {
 
 	//Adds all of the objects from the level into the world
 	ret = World_LoadWorldFromLevel(level, container);
-
 	Level_Destroy(level);
 
 	return ret;
 }
+
 //Looks through the level and adds every object and character from the level into the world 
 World * World_LoadWorldFromLevel(Level * level, Container *container) {
 	World *ret = malloc(sizeof(World));
@@ -97,9 +97,9 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 		0, 0,
 		level->theme
 	);
-	debug_msg("Player CharacterType: %p\tObjectType: %p\n", ret->player->ctype, ret->player->otype);
 	
 	//Adds an objecttype for the goalposts
+
 	ret->goalpost = New_ObjectType(
 		New_Spritesheet(
 			New_Texture(container->renderer, "../assets/img/goalpost.png"),
