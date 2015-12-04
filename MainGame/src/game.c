@@ -140,7 +140,7 @@ void Game_Run(Game *game, Container *container) {
 				game->world = NewWorld_FromFile(game->custom_level_path, container);
 			}
 			if (!game->world) return;
-
+			lastTime = SDL_GetTicks();
 			continue;
 		}
 
@@ -155,7 +155,7 @@ void Game_Run(Game *game, Container *container) {
 				game->world = NewWorld_FromFile(game->custom_level_path, container);
 			}
 			if (!game->world) return;
-
+			lastTime = SDL_GetTicks();
 			continue;
 		}
 
