@@ -24,8 +24,7 @@ World * NewWorld_FromFile(const char *path, Container *container) {
 	Level_LoadFromFile(level, why_satya);
 	fclose(why_satya);
 
-	ret = World_LoadWorldFromLevel(level, container);
-
+	ret = World_LoadWorldFromLevel(level, container);	
 	Level_Destroy(level);
 
 	return ret;
@@ -93,7 +92,7 @@ World * World_LoadWorldFromLevel(Level * level, Container *container) {
 		0, 0,
 		level->theme
 	);
-	debug_msg("Player CharacterType: %p\tObjectType: %p\n", ret->player->ctype, ret->player->otype);
+	//debug_msg("Player CharacterType: %p\tObjectType: %p\n", ret->player->ctype, ret->player->otype);
 
 	ret->goalpost = New_ObjectType(
 		New_Spritesheet(

@@ -86,7 +86,7 @@ void Game_Run(Game *game, Container *container) {
 	//used for calculating differences in milliseconds between frames
 	unsigned int dt;
 	unsigned int currentTime;
-	unsigned int lastTime = 0;
+	unsigned int lastTime = SDL_GetTicks();
 
 	/* load the first level */
 	if (game->mode == ADVENTURE) {
@@ -108,6 +108,7 @@ void Game_Run(Game *game, Container *container) {
 
 		/* Health acting as a timer: finish the level in time */
 		game->world->player->traits->hitpoints -= dt;
+		debug_msg("hp: %d\tdt: %u\n", game->world->player->traits->hitpoints, dt);
 		//Case where hp is below 0
 		if ((game->world->player->traits->hitpoints -= dt) < 0) {
 			game->world->player->traits->hitpoints = 0;
@@ -132,17 +133,15 @@ void Game_Run(Game *game, Container *container) {
 			if (game->mode == ADVENTURE) {
 				game->current_level++;
 				World_Destroy(game->world);
-				game->world = LoadWorld(game->current_level, container);
-				
+				game->world = LoadWorld(game->current_level, container);	
 			/* Restart world if CUSTOM_LEVEL mode */
 			} else if (game->mode == CUSTOM_LEVEL) {
 				World_Destroy(game->world);
 				game->world = NewWorld_FromFile(game->custom_level_path, container);
 			}
-			currentTime = SDL_GetTicks();
-			dt = currentTime - lastTime;
-			lastTime = currentTime;
 			if (!game->world) return;
+
+			continue;
 		}
 
 		/* ************** Restart world on death ******* */
@@ -156,9 +155,8 @@ void Game_Run(Game *game, Container *container) {
 				game->world = NewWorld_FromFile(game->custom_level_path, container);
 			}
 			if (!game->world) return;
-			currentTime = SDL_GetTicks();
-			dt = currentTime - lastTime;
-			lastTime = currentTime;
+
+			continue;
 		}
 
 		/* ************* Quit game on keypress Q ****** */
