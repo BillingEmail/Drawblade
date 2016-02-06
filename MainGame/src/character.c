@@ -60,7 +60,7 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y) {
 	//debug_msg("Added character to CharacterType at %p, count: %d\n", ct, ct->character_traits_count + 1);
 	/* Adds an object that is correlated to a character */
 	ObjectType_AddObject(ct->object_type, x, y);
-
+	ct->character_traits_count = ct->object_type->instance_count;
 	/* Reallocs the array if you need more space for more enemies */
 	if (ct->character_traits_count == ct->character_traits_size) {
 		ct->character_traits = realloc(ct->character_traits,
@@ -68,20 +68,20 @@ void CharacterType_AddCharacter(CharacterType *ct, int x, int y) {
 		ct->character_traits_size *= 2;
 	}
 	/* Sets all of the defaults for a charactertype */
-	ct->object_type->instances[ct->character_traits_count].animation = 0;
-	ct->object_type->instances[ct->character_traits_count].lastAnimation = 0;
-	ct->character_traits[ct->character_traits_count].hitDelta = 0;
-	ct->character_traits[ct->character_traits_count].is_dead = false;
-	ct->character_traits[ct->character_traits_count].is_on_floor = false;
-	ct->character_traits[ct->character_traits_count].is_hit = false;
-	ct->character_traits[ct->character_traits_count].is_attacking = false;
-	ct->character_traits[ct->character_traits_count].hitpoints = ct->defaultHP;
-	ct->character_traits[ct->character_traits_count].actionCost = ct->defaultactionCost;
-	ct->character_traits[ct->character_traits_count].actionRegen = ct->defaultactionRegen;
-	ct->character_traits[ct->character_traits_count].numActions = 100;
+	int temp = ct->character_traits_count;
+	ct->object_type->instances[ct->character_traits_count - 1].animation = 0;
+	ct->object_type->instances[ct->character_traits_count - 1].lastAnimation = 0;
+	ct->character_traits[ct->character_traits_count - 1].hitDelta = 0;
+	ct->character_traits[ct->character_traits_count - 1].is_dead = false;
+	ct->character_traits[ct->character_traits_count - 1].is_on_floor = false;
+	ct->character_traits[ct->character_traits_count - 1].is_hit = false;
+	ct->character_traits[ct->character_traits_count - 1].is_attacking = false;
+	ct->character_traits[ct->character_traits_count - 1].hitpoints = ct->defaultHP;
+	ct->character_traits[ct->character_traits_count - 1].actionCost = ct->defaultactionCost;
+	ct->character_traits[ct->character_traits_count - 1].actionRegen = ct->defaultactionRegen;
+	ct->character_traits[ct->character_traits_count - 1].numActions = 100;
 	
 	/* Increments the size of the CharacterType */
-	ct->character_traits_count = ct->object_type->instance_count;
 }
 
 /* Takes the charactertype and an index, and updates the character at that position */
@@ -104,7 +104,6 @@ void CharacterType_UpdateCharacter(CharacterType *ct, int instance_index, unsign
 	if (ch_traits->velocity.y < -5) {
 		ch_traits->velocity.y = -5;
 	}
-
 
 
 	/* Apply velocities to the position */

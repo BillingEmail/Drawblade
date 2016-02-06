@@ -370,10 +370,10 @@ void LevelEditor_getCurrentItemType(LevelEditor *editor) {
 	if (editor->container->keyboardstate[SDL_SCANCODE_2]) editor->currentItem = BRICK;
 	if (editor->container->keyboardstate[SDL_SCANCODE_3]) editor->currentItem = PLAYER;
 	if (editor->container->keyboardstate[SDL_SCANCODE_4]) editor->currentItem = GOALPOST;
-/*	if (editor->container->keyboardstate[SDL_SCANCODE_5]) editor->currentItem = MELEE;
+	if (editor->container->keyboardstate[SDL_SCANCODE_5]) editor->currentItem = MELEE;
 	if (editor->container->keyboardstate[SDL_SCANCODE_6]) editor->currentItem = RANGED;
 	if (editor->container->keyboardstate[SDL_SCANCODE_7]) editor->currentItem = BOSS;
-*/
+
 }
 
 /* Collects keyboard inputs for the current theme */
