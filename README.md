@@ -11,13 +11,15 @@ Drawblade is a simple 2-dimensional platform game that involves levels that are 
 
 ####How can I play?
 ```
+Run these commands to download and start the game:
 git clone https://github.com/BillingEmail/Drawblade.git
 cd Drawblade/MainGame
 make
 ./drawblade
 
+Controls:
 The game is played with WASD, with space to jump
-When using the level editor:
+When using the level editor,
 UIOP is used to switch between themes
 WASD is used to navigate the level
 The number keys are used to select what you want to place down on the map
