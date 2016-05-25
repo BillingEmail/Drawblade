@@ -15,6 +15,12 @@ git clone https://github.com/BillingEmail/Drawblade.git
 cd Drawblade/MainGame
 make
 ./drawblade
+
+The game is played with WASD, with space to jump
+When using the level editor:
+UIOP is used to switch between themes
+WASD is used to navigate the level
+The number keys are used to select what you want to place down on the map
 ```
 
 ####How is it made?
